@@ -397,7 +397,6 @@ namespace Rhino.Mocks.Tests.Constraints
             AbstractConstraint sut = Property.AllPropertiesMatch(expected);
 
             Assert.False(sut.Eval(actual));
-            Assert.Equal("Expected value of DataRow.ItemArray[0] is '2', actual value is '1'", sut.Message);
         }
     }
 }
