@@ -1,51 +1,51 @@
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	using Xunit;
+    using Xunit;
 
-	
-	public class SetupResultAndIgnoreArguments
-	{
-		[Fact]
-		public void CanUseSetupResultAndIgnoreArguments_WhenUsingUnorderedBlock()
-		{
-			MockRepository mocks = new MockRepository();
-			IFetcher fetcher = mocks.DynamicMock<IFetcher>();
 
-			using (mocks.Unordered())
-			{
-				SetupResult.For(fetcher.GetUsersWithCriteriaLike(null)).IgnoreArguments().Return(
-					new Student[] {new Student(), new Student()});
-			}
+    public class SetupResultAndIgnoreArguments
+    {
+        [Fact]
+        public void CanUseSetupResultAndIgnoreArguments_WhenUsingUnorderedBlock()
+        {
+            MockRepository mocks = new MockRepository();
+            IFetcher fetcher = mocks.DynamicMock<IFetcher>();
 
-			mocks.ReplayAll();
+            using (mocks.Unordered())
+            {
+                SetupResult.For(fetcher.GetUsersWithCriteriaLike(null)).IgnoreArguments().Return(
+                    new Student[] { new Student(), new Student() });
+            }
 
-			Assert.Equal(2, fetcher.GetUsersWithCriteriaLike("foo").Length);
-		}
+            mocks.ReplayAll();
 
-		[Fact]
-		public void CanUseSetupResultAndIgnoreArguments_WhenUsingOrderedBlock()
-		{
-			MockRepository mocks = new MockRepository();
-			IFetcher fetcher = mocks.DynamicMock<IFetcher>();
+            Assert.Equal(2, fetcher.GetUsersWithCriteriaLike("foo").Length);
+        }
 
-			using (mocks.Ordered())
-			{
-				SetupResult.For(fetcher.GetUsersWithCriteriaLike(null)).IgnoreArguments().Return(
-					new Student[] { new Student(), new Student() });
-			}
+        [Fact]
+        public void CanUseSetupResultAndIgnoreArguments_WhenUsingOrderedBlock()
+        {
+            MockRepository mocks = new MockRepository();
+            IFetcher fetcher = mocks.DynamicMock<IFetcher>();
 
-			mocks.ReplayAll();
+            using (mocks.Ordered())
+            {
+                SetupResult.For(fetcher.GetUsersWithCriteriaLike(null)).IgnoreArguments().Return(
+                    new Student[] { new Student(), new Student() });
+            }
 
-			Assert.Equal(2, fetcher.GetUsersWithCriteriaLike("foo").Length);
-		}
-	}
+            mocks.ReplayAll();
 
-	public interface IFetcher
-	{
-		Student[] GetUsersWithCriteriaLike(string likeString);
-	}
+            Assert.Equal(2, fetcher.GetUsersWithCriteriaLike("foo").Length);
+        }
+    }
 
-	public class Student
-	{
-	}
+    public interface IFetcher
+    {
+        Student[] GetUsersWithCriteriaLike(string likeString);
+    }
+
+    public class Student
+    {
+    }
 }

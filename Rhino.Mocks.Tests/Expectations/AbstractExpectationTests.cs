@@ -27,122 +27,121 @@
 #endregion
 
 
-using System.Reflection;
-using Xunit;
-using Rhino.Mocks.Expectations;
 using Rhino.Mocks.Impl;
 using Rhino.Mocks.Interfaces;
+using System.Reflection;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.Expectations
 {
 
-	public abstract class AbstractExpectationTests
-	{
-		private MethodInfo method = typeof (IDemo).GetMethod("VoidNoArgs");
+    public abstract class AbstractExpectationTests
+    {
+        private MethodInfo method = typeof(IDemo).GetMethod("VoidNoArgs");
 
-		protected abstract IExpectation GetExpectation(MethodInfo m, Range r, int actual);
+        protected abstract IExpectation GetExpectation(MethodInfo m, Range r, int actual);
 
-		protected static void SetupExpectation(IExpectation expectation, Range r, int actual)
-		{
-			expectation.Expected = r;
-			for (int i = 0; i < actual; i++)
-			{
-				expectation.AddActualCall();
-			}
-		}
+        protected static void SetupExpectation(IExpectation expectation, Range r, int actual)
+        {
+            expectation.Expected = r;
+            for (int i = 0; i < actual; i++)
+            {
+                expectation.AddActualCall();
+            }
+        }
 
-		[Fact]
-		public void ExpectationEqualToSameTypeWithSameArgs()
-		{
-			IExpectation one = GetExpectation(method, new Range(2,3), 4);
-			IExpectation two = GetExpectation(method, new Range(2,3), 4);
-			Assert.NotSame(one,two);
-			Assert.Equal(one,two);
-		}
+        [Fact]
+        public void ExpectationEqualToSameTypeWithSameArgs()
+        {
+            IExpectation one = GetExpectation(method, new Range(2, 3), 4);
+            IExpectation two = GetExpectation(method, new Range(2, 3), 4);
+            Assert.NotSame(one, two);
+            Assert.Equal(one, two);
+        }
 
-		[Fact]
-		public void ExpectationNotEqualToNull()
-		{
-			IExpectation one = GetExpectation(method, new Range(2,3), 4);
-			Assert.False(one.Equals(null));
-	
-		}
+        [Fact]
+        public void ExpectationNotEqualToNull()
+        {
+            IExpectation one = GetExpectation(method, new Range(2, 3), 4);
+            Assert.False(one.Equals(null));
 
-		[Fact]
-		public void AbstractExpectationPropertiesReturnTheValuesSetByDerivedClass()
-		{
-			Range r = new Range(0, 30);
-			IExpectation test = GetExpectation(method, r, 5);
-			Assert.Equal(r, test.Expected);
-			Assert.Equal(5, test.ActualCallsCount);
-		}
+        }
 
-
-		[Fact]
-		public void SettingMethodRepeatToAnyMeansThatCanAlwaysAcceptCalls()
-		{
-			IExpectation test = GetExpectation(method, new Range(0,0), 5);
-			Assert.False(test.CanAcceptCalls);
-			test.RepeatableOption = RepeatableOption.Any;
-			Assert.True(test.CanAcceptCalls);
-		}
-
-		[Fact]
-		public void SettingReaptableToAnyMeansThatExceptionIsAlwaysSatisfied()
-		{
-			IExpectation test = GetExpectation(method, new Range(0,1), 5);
-			Assert.False(test.ExpectationSatisfied);
-			test.RepeatableOption = RepeatableOption.Any;
-			Assert.True(test.ExpectationSatisfied);
-	
-		}
-
-		[Fact]
-		public void HasCallLeftWhenThereIsACallLeft()
-		{
-			Range r = new Range(0, 1);
-			IExpectation test = GetExpectation(method, r, 0);
-			Assert.True(test.CanAcceptCalls);
-		}
+        [Fact]
+        public void AbstractExpectationPropertiesReturnTheValuesSetByDerivedClass()
+        {
+            Range r = new Range(0, 30);
+            IExpectation test = GetExpectation(method, r, 5);
+            Assert.Equal(r, test.Expected);
+            Assert.Equal(5, test.ActualCallsCount);
+        }
 
 
-		[Fact]
-		public void HasCallLeftWhenThereArentCallLeft()
-		{
-			Range r = new Range(0, 1);
-			IExpectation test = GetExpectation(method, r, 1);
-			Assert.False(test.CanAcceptCalls);
-		}
+        [Fact]
+        public void SettingMethodRepeatToAnyMeansThatCanAlwaysAcceptCalls()
+        {
+            IExpectation test = GetExpectation(method, new Range(0, 0), 5);
+            Assert.False(test.CanAcceptCalls);
+            test.RepeatableOption = RepeatableOption.Any;
+            Assert.True(test.CanAcceptCalls);
+        }
 
-		[Fact]
-		public void AddActualMethodIncreaseActualCalls()
-		{
-			Range r = new Range(0, 5);
-			IExpectation test = GetExpectation(method, r, 0);
-			Assert.Equal(0, test.ActualCallsCount);
+        [Fact]
+        public void SettingReaptableToAnyMeansThatExceptionIsAlwaysSatisfied()
+        {
+            IExpectation test = GetExpectation(method, new Range(0, 1), 5);
+            Assert.False(test.ExpectationSatisfied);
+            test.RepeatableOption = RepeatableOption.Any;
+            Assert.True(test.ExpectationSatisfied);
+
+        }
+
+        [Fact]
+        public void HasCallLeftWhenThereIsACallLeft()
+        {
+            Range r = new Range(0, 1);
+            IExpectation test = GetExpectation(method, r, 0);
+            Assert.True(test.CanAcceptCalls);
+        }
+
+
+        [Fact]
+        public void HasCallLeftWhenThereArentCallLeft()
+        {
+            Range r = new Range(0, 1);
+            IExpectation test = GetExpectation(method, r, 1);
+            Assert.False(test.CanAcceptCalls);
+        }
+
+        [Fact]
+        public void AddActualMethodIncreaseActualCalls()
+        {
+            Range r = new Range(0, 5);
+            IExpectation test = GetExpectation(method, r, 0);
+            Assert.Equal(0, test.ActualCallsCount);
             test.AddActualCall();
 
-			Assert.Equal(1, test.ActualCallsCount);
+            Assert.Equal(1, test.ActualCallsCount);
             test.AddActualCall();
             Assert.Equal(2, test.ActualCallsCount);
-		}
+        }
 
-		[Fact]
-		public void ExpectationIsClosedForVoidMethod()
-		{
-			Range r = new Range(0, 5);
-			MethodInfo voidMethod = typeof (IDemo).GetMethod("VoidNoArgs");
-			IExpectation test = GetExpectation(voidMethod, r, 0);
-			Assert.True(test.ActionsSatisfied);
-		}
+        [Fact]
+        public void ExpectationIsClosedForVoidMethod()
+        {
+            Range r = new Range(0, 5);
+            MethodInfo voidMethod = typeof(IDemo).GetMethod("VoidNoArgs");
+            IExpectation test = GetExpectation(voidMethod, r, 0);
+            Assert.True(test.ActionsSatisfied);
+        }
 
-		[Fact]
-		public void HashCodeIsTheSameAcrossInvocations()
-		{
-			Range r = new Range(0, 5);
-			MethodInfo voidMethod = typeof (IDemo).GetMethod("VoidNoArgs");
-			IExpectation test = GetExpectation(voidMethod, r, 0);
-			Assert.Equal(test.GetHashCode(),test.GetHashCode());
-		}
-	}
+        [Fact]
+        public void HashCodeIsTheSameAcrossInvocations()
+        {
+            Range r = new Range(0, 5);
+            MethodInfo voidMethod = typeof(IDemo).GetMethod("VoidNoArgs");
+            IExpectation test = GetExpectation(voidMethod, r, 0);
+            Assert.Equal(test.GetHashCode(), test.GetHashCode());
+        }
+    }
 }

@@ -55,7 +55,7 @@ namespace Rhino.Mocks.Tests
     public abstract class ProcessorBase
     {
         public int Register;
-        
+
         public virtual int Inc()
         {
             Register = Add(1);
@@ -64,7 +64,7 @@ namespace Rhino.Mocks.Tests
 
         public abstract int Add(int i);
     }
-    
+
     public class Cage
     {
         //lots of info about cage
@@ -81,31 +81,31 @@ namespace Rhino.Mocks.Tests
         void MoveToCage(Cage cage);
     }
 
-    
+
     public class IntegrationTests
     {
         public delegate bool CageDelegate(Cage cage);
 
         public Cage recordedCage;
 
-[Fact]
-public void UsingPartialMocks()
-{
-    MockRepository mocks = new MockRepository();
-    ProcessorBase proc = (ProcessorBase) mocks.PartialMock(typeof (ProcessorBase));
-    Expect.Call(proc.Add(1)).Return(1);
-    Expect.Call(proc.Add(1)).Return(2);
-    
-    mocks.ReplayAll();
-    
-    proc.Inc();
-    Assert.Equal(1, proc.Register);
-    proc.Inc();
-    Assert.Equal(2, proc.Register);
-    
-    mocks.VerifyAll();
-}
-        
+        [Fact]
+        public void UsingPartialMocks()
+        {
+            MockRepository mocks = new MockRepository();
+            ProcessorBase proc = (ProcessorBase)mocks.PartialMock(typeof(ProcessorBase));
+            Expect.Call(proc.Add(1)).Return(1);
+            Expect.Call(proc.Add(1)).Return(2);
+
+            mocks.ReplayAll();
+
+            proc.Inc();
+            Assert.Equal(1, proc.Register);
+            proc.Inc();
+            Assert.Equal(2, proc.Register);
+
+            mocks.VerifyAll();
+        }
+
         [Fact]
         public void ExampleUsingCallbacks()
         {

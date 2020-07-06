@@ -31,20 +31,20 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	internal class InternalClass
-	{
-	}
+    internal class InternalClass
+    {
+    }
 
-	
-	public class InternalClassMockingFixture
-	{
-		[Fact]
-		public void MockInternalClass()
-		{
-			MockRepository mocker = new MockRepository();
-			InternalClass mockInternalClass = mocker.StrictMock<InternalClass>();
 
-			Assert.NotNull(mockInternalClass);
-		}
-	}
+    public class InternalClassMockingFixture
+    {
+        [Fact]
+        public void MockInternalClass()
+        {
+            MockRepository mocker = new MockRepository();
+            InternalClass mockInternalClass = mocker.StrictMock<InternalClass>();
+
+            Assert.NotNull(mockInternalClass);
+        }
+    }
 }

@@ -1,12 +1,13 @@
-using System.Reflection;
 using Castle.Core.Interceptor;
 using Rhino.Mocks.Interfaces;
+using System.Reflection;
 
 namespace Rhino.Mocks.Impl.Invocation.Actions
 {
     ///<summary>
     ///</summary>
-    public class RegularInvocation : IInvocationActionn {
+    public class RegularInvocation : IInvocationActionn
+    {
         MockRepository mockRepository;
         ///<summary>
         ///</summary>

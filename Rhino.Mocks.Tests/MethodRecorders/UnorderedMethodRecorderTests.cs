@@ -27,7 +27,6 @@
 #endregion
 
 
-using Xunit;
 using Rhino.Mocks.Exceptions;
 using Rhino.Mocks.Expectations;
 using Rhino.Mocks.Generated;
@@ -35,43 +34,44 @@ using Rhino.Mocks.Impl;
 using Rhino.Mocks.Interfaces;
 using Rhino.Mocks.MethodRecorders;
 using Rhino.Mocks.Tests.Expectations;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.MethodRecorders
 {
-	
-	public class UnorderedMethodRecorderTests : IMethodRecorderTests
-	{
-		[Fact]
-		public void CanRecordMethodsAndVerifyThem()
-		{
-			UnorderedMethodRecorder recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-			recorder.Record(demo, voidNoArgs, new AnyArgsExpectation(new FakeInvocation(voidNoArgs), new Range(1, 1)));
-			recorder.Record(demo, voidThreeArgs, new AnyArgsExpectation(new FakeInvocation(voidNoArgs), new Range(1, 1)));
 
-			Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(voidThreeArgs),demo, voidThreeArgs, new object[0]));
-			Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs),demo, voidNoArgs, new object[0]));
-		}
+    public class UnorderedMethodRecorderTests : IMethodRecorderTests
+    {
+        [Fact]
+        public void CanRecordMethodsAndVerifyThem()
+        {
+            UnorderedMethodRecorder recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+            recorder.Record(demo, voidNoArgs, new AnyArgsExpectation(new FakeInvocation(voidNoArgs), new Range(1, 1)));
+            recorder.Record(demo, voidThreeArgs, new AnyArgsExpectation(new FakeInvocation(voidNoArgs), new Range(1, 1)));
+
+            Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(voidThreeArgs), demo, voidThreeArgs, new object[0]));
+            Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), demo, voidNoArgs, new object[0]));
+        }
 
 
-		[Fact]
-		public void ReplayUnrecordedMethods()
-		{
-			UnorderedMethodRecorder recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-			recorder.Record(demo, voidNoArgs, new AnyArgsExpectation(new FakeInvocation(voidNoArgs), new Range(1, 1)));
-			recorder.Record(demo, voidThreeArgs, new AnyArgsExpectation(new FakeInvocation(voidNoArgs), new Range(1, 1)));
+        [Fact]
+        public void ReplayUnrecordedMethods()
+        {
+            UnorderedMethodRecorder recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+            recorder.Record(demo, voidNoArgs, new AnyArgsExpectation(new FakeInvocation(voidNoArgs), new Range(1, 1)));
+            recorder.Record(demo, voidThreeArgs, new AnyArgsExpectation(new FakeInvocation(voidNoArgs), new Range(1, 1)));
 
-			Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(voidThreeArgs),demo, voidThreeArgs, new object[0]));
-			Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs),demo, voidNoArgs, new object[0]));
+            Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(voidThreeArgs), demo, voidThreeArgs, new object[0]));
+            Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), demo, voidNoArgs, new object[0]));
 
-			Assert.Throws<ExpectationViolationException>("IDemo.VoidNoArgs(); Expected #1, Actual #2.",
-			                                             () =>
-			                                             recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), demo,
-			                                                                             voidNoArgs, new object[0]));
-		}
+            Assert.Throws<ExpectationViolationException>("IDemo.VoidNoArgs(); Expected #1, Actual #2.",
+                                                         () =>
+                                                         recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), demo,
+                                                                                         voidNoArgs, new object[0]));
+        }
 
-		protected override IMethodRecorder CreateRecorder()
-		{
-			return new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-		}
-	}
+        protected override IMethodRecorder CreateRecorder()
+        {
+            return new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+        }
+    }
 }

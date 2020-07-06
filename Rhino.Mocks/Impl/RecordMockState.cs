@@ -27,59 +27,59 @@
 #endregion
 
 
-using System;
-using System.Reflection;
 using Castle.Core.Interceptor;
 using Rhino.Mocks.Interfaces;
 using Rhino.Mocks.Utilities;
+using System;
+using System.Reflection;
 
 namespace Rhino.Mocks.Impl
 {
-	/// <summary>
-	/// Records all the expectations for a mock
-	/// </summary>
-	public class RecordMockState : IMockState
-	{
-		#region Variables
+    /// <summary>
+    /// Records all the expectations for a mock
+    /// </summary>
+    public class RecordMockState : IMockState
+    {
+        #region Variables
 
-		private MockRepository repository;
-		private readonly IMockedObject mockedObject;
-		private int methodCallsCount = 0;
-		private IExpectation lastExpectation;
-	    private bool lastCallWasPropertyBehavior;
-	    private ExpectationBuilder expectationBuilder;
+        private MockRepository repository;
+        private readonly IMockedObject mockedObject;
+        private int methodCallsCount = 0;
+        private IExpectation lastExpectation;
+        private bool lastCallWasPropertyBehavior;
+        private ExpectationBuilder expectationBuilder;
 
-	    #endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-		/// <summary>
-		/// Gets the last expectation.
-		/// </summary>
-		public IExpectation LastExpectation
-		{
-			get { return lastExpectation; }
-			set
-			{
-			    lastCallWasPropertyBehavior = false;
-			    lastExpectation = value;
-			}
-		}
+        /// <summary>
+        /// Gets the last expectation.
+        /// </summary>
+        public IExpectation LastExpectation
+        {
+            get { return lastExpectation; }
+            set
+            {
+                lastCallWasPropertyBehavior = false;
+                lastExpectation = value;
+            }
+        }
 
-		/// <summary>
-		/// Gets the total method calls count.
-		/// </summary>
-		public int MethodCallsCount
-		{
-			get { return methodCallsCount; }
-		}
+        /// <summary>
+        /// Gets the total method calls count.
+        /// </summary>
+        public int MethodCallsCount
+        {
+            get { return methodCallsCount; }
+        }
 
-		/// <summary>
-		/// Get the options for the last method call
-		/// </summary>
-		public IMethodOptions<T> GetLastMethodOptions<T>()
-		{
-            if(lastCallWasPropertyBehavior)
+        /// <summary>
+        /// Get the options for the last method call
+        /// </summary>
+        public IMethodOptions<T> GetLastMethodOptions<T>()
+        {
+            if (lastCallWasPropertyBehavior)
             {
                 string message =
                     @"You are trying to set an expectation on a property that was defined to use PropertyBehavior.
@@ -87,28 +87,28 @@ Instead of writing code such as this: mockObject.Stub(x => x.SomeProperty).Retur
 You can use the property directly to achieve the same result: mockObject.SomeProperty = 42;";
                 throw new InvalidOperationException(message);
             }
-		    if (LastExpectation == null)
-				throw new InvalidOperationException("There is no matching last call on this object. Are you sure that the last call was a virtual or interface method call?");
-			return new MethodOptions<T>(repository, this, mockedObject, LastExpectation);
-		}
+            if (LastExpectation == null)
+                throw new InvalidOperationException("There is no matching last call on this object. Are you sure that the last call was a virtual or interface method call?");
+            return new MethodOptions<T>(repository, this, mockedObject, LastExpectation);
+        }
 
-		/// <summary>
-		/// Get the options for the last method call
-		/// </summary>
-		public IMethodOptions<object> LastMethodOptions
-		{
-			get { return GetLastMethodOptions<object>(); }
-		}
+        /// <summary>
+        /// Get the options for the last method call
+        /// </summary>
+        public IMethodOptions<object> LastMethodOptions
+        {
+            get { return GetLastMethodOptions<object>(); }
+        }
 
-		/// <summary>
-		/// Set the exception to throw when Verify is called.
-		/// This is used to report exception that may have happened but where caught in the code.
-		/// This way, they are reported anyway when Verify() is called.
-		/// </summary>
-		public void SetExceptionToThrowOnVerify(Exception ex)
-		{
-			//not implementing this, since there is never a call to Verify() anyway.
-		}
+        /// <summary>
+        /// Set the exception to throw when Verify is called.
+        /// This is used to report exception that may have happened but where caught in the code.
+        /// This way, they are reported anyway when Verify() is called.
+        /// </summary>
+        public void SetExceptionToThrowOnVerify(Exception ex)
+        {
+            //not implementing this, since there is never a call to Verify() anyway.
+        }
 
         /// <summary>
         /// This method is called to indicate that a property behavior call.
@@ -116,86 +116,86 @@ You can use the property directly to achieve the same result: mockObject.SomePro
         /// Stubbed properties with Return().
         /// </summary>
 	    public void NotifyCallOnPropertyBehavior()
-	    {
-	        LastExpectation = null;
-	        lastCallWasPropertyBehavior = true;
-	    }
+        {
+            LastExpectation = null;
+            lastCallWasPropertyBehavior = true;
+        }
 
-	    /// <summary>
-		/// Gets the matching verify state for this state
-		/// </summary>
-		public IMockState VerifyState
-		{
-			get { throw InvalidOperationOnRecord(); }
-		}
+        /// <summary>
+        /// Gets the matching verify state for this state
+        /// </summary>
+        public IMockState VerifyState
+        {
+            get { throw InvalidOperationOnRecord(); }
+        }
 
-		#endregion
+        #endregion
 
-		#region C'tor
+        #region C'tor
 
-		/// <summary>
-		/// Creates a new <see cref="RecordMockState"/> instance.
-		/// </summary>
-		/// <param name="repository">Repository.</param>
-		/// <param name="mockedObject">The proxy that generates the method calls</param>
-		public RecordMockState(IMockedObject mockedObject, MockRepository repository)
-		{
-			Validate.IsNotNull(mockedObject, "proxy");
-			Validate.IsNotNull(repository, "repository");
-			this.repository = repository;
-			this.mockedObject = mockedObject;
+        /// <summary>
+        /// Creates a new <see cref="RecordMockState"/> instance.
+        /// </summary>
+        /// <param name="repository">Repository.</param>
+        /// <param name="mockedObject">The proxy that generates the method calls</param>
+        public RecordMockState(IMockedObject mockedObject, MockRepository repository)
+        {
+            Validate.IsNotNull(mockedObject, "proxy");
+            Validate.IsNotNull(repository, "repository");
+            this.repository = repository;
+            this.mockedObject = mockedObject;
             expectationBuilder = new ExpectationBuilder();
-		}
+        }
 
-		#endregion
+        #endregion
 
-		#region Methods
+        #region Methods
 
-		/// <summary>
-		/// Add a method call for this state' mock.
-		/// </summary>
+        /// <summary>
+        /// Add a method call for this state' mock.
+        /// </summary>
         /// <param name="invocation">The invocation for this method</param>
-		/// <param name="method">The method that was called</param>
-		/// <param name="args">The arguments this method was called with</param>
-		public object MethodCall(IInvocation invocation, MethodInfo method, params object[] args)
-		{
-			try
-			{
-				AssertPreviousMethodIsClose();
-				repository.lastMockedObject = mockedObject;
-				MockRepository.lastRepository = repository;
-				IExpectation expectation;
-				
-				// Has the Arg class been used?
-				if (ArgManager.HasBeenUsed)
-				{
-					expectation = expectationBuilder.BuildParamExpectation(invocation, method);
-				} 
-				else
-				{
-					expectation = expectationBuilder.BuildDefaultExpectation(invocation, method, args, GetDefaultCallCountRangeExpectation);
-				}
+        /// <param name="method">The method that was called</param>
+        /// <param name="args">The arguments this method was called with</param>
+        public object MethodCall(IInvocation invocation, MethodInfo method, params object[] args)
+        {
+            try
+            {
+                AssertPreviousMethodIsClose();
+                repository.lastMockedObject = mockedObject;
+                MockRepository.lastRepository = repository;
+                IExpectation expectation;
+
+                // Has the Arg class been used?
+                if (ArgManager.HasBeenUsed)
+                {
+                    expectation = expectationBuilder.BuildParamExpectation(invocation, method);
+                }
+                else
+                {
+                    expectation = expectationBuilder.BuildDefaultExpectation(invocation, method, args, GetDefaultCallCountRangeExpectation);
+                }
                 RhinoMocks.Logger.Log(string.Format("{0} -> {1} ", expectation.ErrorMessage, expectation.GetType()));
-				repository.Recorder.Record(mockedObject, method, expectation);
-				LastExpectation = expectation;
-				methodCallsCount++;
-				RhinoMocks.Logger.LogRecordedExpectation(invocation, expectation);
-			    object returnValue;
+                repository.Recorder.Record(mockedObject, method, expectation);
+                LastExpectation = expectation;
+                methodCallsCount++;
+                RhinoMocks.Logger.LogRecordedExpectation(invocation, expectation);
+                object returnValue;
                 if (TryCreateReturnValue(expectation, out returnValue))
                     return returnValue;
-				return ReturnValueUtil.DefaultValue(method.ReturnType, invocation);
-			}
-			finally
-			{
-				// Consume the Arg constraints only once, and reset it after each call.
-				// this is in the finally block to make sure that an exeption does not
-				// make subsequent unit tests fail.
-				ArgManager.Clear();
-			}
-		}
+                return ReturnValueUtil.DefaultValue(method.ReturnType, invocation);
+            }
+            finally
+            {
+                // Consume the Arg constraints only once, and reset it after each call.
+                // this is in the finally block to make sure that an exeption does not
+                // make subsequent unit tests fail.
+                ArgManager.Clear();
+            }
+        }
 
-	    private bool TryCreateReturnValue(IExpectation expectation, out object returnValue)
-	    {
+        private bool TryCreateReturnValue(IExpectation expectation, out object returnValue)
+        {
             returnValue = null;
 
             //use already created instance if any
@@ -217,52 +217,52 @@ You can use the property directly to achieve the same result: mockObject.SomePro
                 }
                 return false;
             }
-	        //create new instance
-	        try
-	        {
-	            returnValue = Repository.DynamicMock(expectation.Method.ReturnType);
-	        }
-	        catch (Exception)
-	        {
-	            // couldn't create mock object for it, we fall back to returning a default value
-	            returnValue = null;
-	            return false;
-	        }
+            //create new instance
+            try
+            {
+                returnValue = Repository.DynamicMock(expectation.Method.ReturnType);
+            }
+            catch (Exception)
+            {
+                // couldn't create mock object for it, we fall back to returning a default value
+                returnValue = null;
+                return false;
+            }
 
-	        mockedObject.DependentMocks.Add(MockRepository.GetMockedObject(returnValue));
+            mockedObject.DependentMocks.Add(MockRepository.GetMockedObject(returnValue));
 
-	        expectation.ReturnValue = returnValue;
-	        expectation.AllowTentativeReturn = true;
+            expectation.ReturnValue = returnValue;
+            expectation.AllowTentativeReturn = true;
 
-	        return true;
-	    }
+            return true;
+        }
 
-	    /// <summary>
-		/// Verify that we can move to replay state and move 
-		/// to the reply state.
-		/// </summary>
-		public virtual IMockState Replay()
-		{
-			AssertPreviousMethodIsClose();
-			return DoReplay();
-		}
+        /// <summary>
+        /// Verify that we can move to replay state and move 
+        /// to the reply state.
+        /// </summary>
+        public virtual IMockState Replay()
+        {
+            AssertPreviousMethodIsClose();
+            return DoReplay();
+        }
 
-		/// <summary>
-		/// Verify that we can move to replay state and move 
-		/// to the reply state.
-		/// </summary>
-		protected virtual IMockState DoReplay()
-		{
-			return new ReplayMockState(this);
-		}
+        /// <summary>
+        /// Verify that we can move to replay state and move 
+        /// to the reply state.
+        /// </summary>
+        protected virtual IMockState DoReplay()
+        {
+            return new ReplayMockState(this);
+        }
 
-		/// <summary>
-		/// Verify that this mock expectations have passed.
-		/// </summary>
-		public virtual void Verify()
-		{
-			throw InvalidOperationOnRecord();
-		}
+        /// <summary>
+        /// Verify that this mock expectations have passed.
+        /// </summary>
+        public virtual void Verify()
+        {
+            throw InvalidOperationOnRecord();
+        }
 
         /// <summary>
         /// Gets a mock state that match the original mock state of the object.
@@ -272,26 +272,27 @@ You can use the property directly to achieve the same result: mockObject.SomePro
             return new RecordMockState(mockedObject, repository);
         }
 
-		#endregion
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 
-		/// <summary>
-		/// Asserts the previous method is closed (had an expectation set on it so we can replay it correctly)
-		/// </summary>
-		protected virtual void AssertPreviousMethodIsClose()
-		{
-			if (LastExpectation != null && !LastExpectation.ActionsSatisfied)
-				throw new InvalidOperationException("Previous method '" + LastExpectation.ErrorMessage + "' requires a return value or an exception to throw.");
-		}
+        /// <summary>
+        /// Asserts the previous method is closed (had an expectation set on it so we can replay it correctly)
+        /// </summary>
+        protected virtual void AssertPreviousMethodIsClose()
+        {
+            if (LastExpectation != null && !LastExpectation.ActionsSatisfied)
+                throw new InvalidOperationException("Previous method '" + LastExpectation.ErrorMessage + "' requires a return value or an exception to throw.");
+        }
 
-		private Exception InvalidOperationOnRecord()
-		{
+        private Exception InvalidOperationOnRecord()
+        {
             // Format the mock types into a string for display in the exception message,
             // using the pattern {Namespace.IType1, Namespace.IType2}.
             string mockedTypes = string.Empty;
-            if (this.mockedObject.ImplementedTypes.Length > 0) {
-                mockedTypes = string.Format("{{{0}}} ", string.Join(", ", Array.ConvertAll<Type, string>(this.mockedObject.ImplementedTypes, delegate(Type ty) { return ty.FullName; })));
+            if (this.mockedObject.ImplementedTypes.Length > 0)
+            {
+                mockedTypes = string.Format("{{{0}}} ", string.Join(", ", Array.ConvertAll<Type, string>(this.mockedObject.ImplementedTypes, delegate (Type ty) { return ty.FullName; })));
             }
 
             return new InvalidOperationException(string.Format("This action is invalid when the mock object {0}is in record state.", mockedTypes));
@@ -320,5 +321,5 @@ You can use the property directly to achieve the same result: mockObject.SomePro
         }
 
         #endregion
-	}
+    }
 }

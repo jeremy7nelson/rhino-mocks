@@ -27,79 +27,76 @@
 #endregion
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	
-	public class FieldProblem_Brian
-	{
-		[Fact]
-		public void SetExpectationOnNullableValue()
-		{
-			MockRepository mocks = new MockRepository();
-			IFoo foo = mocks.StrictMock<IFoo>();
 
-			int? id = 2;
+    public class FieldProblem_Brian
+    {
+        [Fact]
+        public void SetExpectationOnNullableValue()
+        {
+            MockRepository mocks = new MockRepository();
+            IFoo foo = mocks.StrictMock<IFoo>();
 
-			Expect.Call(foo.Id).Return(id).Repeat.Twice();
-			Expect.Call(foo.Id).Return(null);
-			Expect.Call(foo.Id).Return(1);
+            int? id = 2;
 
-			mocks.ReplayAll();
+            Expect.Call(foo.Id).Return(id).Repeat.Twice();
+            Expect.Call(foo.Id).Return(null);
+            Expect.Call(foo.Id).Return(1);
 
-			Assert.True(foo.Id.HasValue);
-			Assert.Equal(2, foo.Id.Value);
-			Assert.False(foo.Id.HasValue);
-			Assert.Equal(1, foo.Id.Value);
+            mocks.ReplayAll();
 
-			mocks.VerifyAll();
-		}
+            Assert.True(foo.Id.HasValue);
+            Assert.Equal(2, foo.Id.Value);
+            Assert.False(foo.Id.HasValue);
+            Assert.Equal(1, foo.Id.Value);
 
-		[Fact]
-		public void MockingInternalMetohdsAndPropertiesOfInternalClass()
-		{
-			
-			TestClass testClass = new TestClass();
+            mocks.VerifyAll();
+        }
 
-			string testMethod = testClass.TestMethod();
-			string testProperty = testClass.TestProperty;
+        [Fact]
+        public void MockingInternalMetohdsAndPropertiesOfInternalClass()
+        {
 
-			MockRepository mockRepository = new MockRepository();
+            TestClass testClass = new TestClass();
 
-			TestClass mockTestClass = mockRepository.StrictMock<TestClass>();
+            string testMethod = testClass.TestMethod();
+            string testProperty = testClass.TestProperty;
 
-			Expect.Call(mockTestClass.TestMethod()).Return("MockTestMethod");
-			Expect.Call(mockTestClass.TestProperty).Return("MockTestProperty");
+            MockRepository mockRepository = new MockRepository();
 
-			mockRepository.ReplayAll();
+            TestClass mockTestClass = mockRepository.StrictMock<TestClass>();
 
-			Assert.Equal("MockTestMethod", mockTestClass.TestMethod());
-			Assert.Equal("MockTestProperty", mockTestClass.TestProperty);
+            Expect.Call(mockTestClass.TestMethod()).Return("MockTestMethod");
+            Expect.Call(mockTestClass.TestProperty).Return("MockTestProperty");
 
-			mockRepository.VerifyAll();
+            mockRepository.ReplayAll();
 
-		}
+            Assert.Equal("MockTestMethod", mockTestClass.TestMethod());
+            Assert.Equal("MockTestProperty", mockTestClass.TestProperty);
 
-		public interface IFoo
-		{
-			int? Id { get;}
-		}
+            mockRepository.VerifyAll();
 
-		internal class TestClass
-		{
-			internal virtual string TestMethod()
-			{
-				return "TestMethod";
-			}
+        }
 
-			internal virtual string TestProperty
-			{
-				get { return "TestProperty"; }
-			}
-		}
-	}
+        public interface IFoo
+        {
+            int? Id { get; }
+        }
+
+        internal class TestClass
+        {
+            internal virtual string TestMethod()
+            {
+                return "TestMethod";
+            }
+
+            internal virtual string TestProperty
+            {
+                get { return "TestProperty"; }
+            }
+        }
+    }
 }

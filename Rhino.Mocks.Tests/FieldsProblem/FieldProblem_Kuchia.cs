@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_Kuchia : IDisposable
     {
         private MockRepository _mocks;

@@ -1,79 +1,78 @@
-using System.Reflection;
 using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	
-	public class FieldProblem_Oliver
-	{
-		public interface ITestGen<T>
-		{
-			int Foo { get; set; }
-		}
 
-		public interface ITestNormal
-		{
-			int Foo { get; set;}
-		}
+    public class FieldProblem_Oliver
+    {
+        public interface ITestGen<T>
+        {
+            int Foo { get; set; }
+        }
 
-		[Fact]
-		public void StubGenericInterface_CanReadWriteProperties()
-		{
-			MockRepository mocks = new MockRepository();
-			ITestGen<int> test = mocks.Stub<ITestGen<int>>();
+        public interface ITestNormal
+        {
+            int Foo { get; set; }
+        }
 
-			mocks.ReplayAll();
+        [Fact]
+        public void StubGenericInterface_CanReadWriteProperties()
+        {
+            MockRepository mocks = new MockRepository();
+            ITestGen<int> test = mocks.Stub<ITestGen<int>>();
 
-			test.Foo = 10;
-			Assert.Equal(10, test.Foo);
+            mocks.ReplayAll();
 
-			mocks.VerifyAll();
-		}
+            test.Foo = 10;
+            Assert.Equal(10, test.Foo);
 
-		[Fact]
-		public void StubInterface_CanReadWriteProperties()
-		{
-			MockRepository mocks = new MockRepository();
-			ITestNormal test = mocks.Stub<ITestNormal>();
+            mocks.VerifyAll();
+        }
 
-			mocks.ReplayAll();
+        [Fact]
+        public void StubInterface_CanReadWriteProperties()
+        {
+            MockRepository mocks = new MockRepository();
+            ITestNormal test = mocks.Stub<ITestNormal>();
 
-			test.Foo = 10;
-			Assert.Equal(10, test.Foo);
+            mocks.ReplayAll();
 
-			mocks.VerifyAll();
-		}
+            test.Foo = 10;
+            Assert.Equal(10, test.Foo);
 
-		[Fact]
-		public void MockGenericInterface_CanSetProperties()
-		{
-			MockRepository mocks = new MockRepository();
-			ITestGen<int> test = mocks.StrictMock<ITestGen<int>>();
+            mocks.VerifyAll();
+        }
 
-			SetupResult.For(test.Foo).PropertyBehavior();
+        [Fact]
+        public void MockGenericInterface_CanSetProperties()
+        {
+            MockRepository mocks = new MockRepository();
+            ITestGen<int> test = mocks.StrictMock<ITestGen<int>>();
 
-			mocks.ReplayAll();
+            SetupResult.For(test.Foo).PropertyBehavior();
 
-			test.Foo = 10;
-			Assert.Equal(10, test.Foo);
+            mocks.ReplayAll();
 
-			mocks.VerifyAll();
-		}
+            test.Foo = 10;
+            Assert.Equal(10, test.Foo);
 
-		[Fact]
-		public void MockNormalInterface_CanSetProperties()
-		{
-			MockRepository mocks = new MockRepository();
-			ITestNormal test = mocks.StrictMock<ITestNormal>();
+            mocks.VerifyAll();
+        }
 
-			SetupResult.For(test.Foo).PropertyBehavior();
+        [Fact]
+        public void MockNormalInterface_CanSetProperties()
+        {
+            MockRepository mocks = new MockRepository();
+            ITestNormal test = mocks.StrictMock<ITestNormal>();
 
-			mocks.ReplayAll();
+            SetupResult.For(test.Foo).PropertyBehavior();
 
-			test.Foo = 10;
-			Assert.Equal(10, test.Foo);
+            mocks.ReplayAll();
 
-			mocks.VerifyAll();
-		}
-	}
+            test.Foo = 10;
+            Assert.Equal(10, test.Foo);
+
+            mocks.VerifyAll();
+        }
+    }
 }

@@ -27,70 +27,66 @@
 #endregion
 
 
-using Xunit;
 using Rhino.Mocks.Interfaces;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	using System;
-	using System.Diagnostics;
-	using System.IO;
 
-	
-	public class PropertyWithTypeParameterTest
-	{
-		[Fact]
-		public void CreatedClosedGenericType()
-		{
-			MockRepository mocks = new MockRepository();
-			mocks.StrictMock<ClosedGenericType>();
-		}
+    public class PropertyWithTypeParameterTest
+    {
+        [Fact]
+        public void CreatedClosedGenericType()
+        {
+            MockRepository mocks = new MockRepository();
+            mocks.StrictMock<ClosedGenericType>();
+        }
 
 
-		[Fact]
-		public void UsingdoOnMethodWithGenericReturnValue()
-		{
-			MockRepository mocks = new MockRepository();
-			IGenericType<object> mock = mocks.StrictMock<IGenericType<object>>();
-			IMethodOptions<object> methodOptions = Expect.Call(mock.MyMethod());
-			methodOptions.Do((MyDelegate)delegate { return new object(); });
-		}
+        [Fact]
+        public void UsingdoOnMethodWithGenericReturnValue()
+        {
+            MockRepository mocks = new MockRepository();
+            IGenericType<object> mock = mocks.StrictMock<IGenericType<object>>();
+            IMethodOptions<object> methodOptions = Expect.Call(mock.MyMethod());
+            methodOptions.Do((MyDelegate)delegate { return new object(); });
+        }
 
-		[Fact]
-		public void DoubleGeneric()
-		{
-			MockRepository mocks = new MockRepository();
-			IDoubleGeneric<int> mock = mocks.StrictMock<IDoubleGeneric<int>>();
-			Expect.Call(mock.Method<string>(1, ""));
-		}
-	}
+        [Fact]
+        public void DoubleGeneric()
+        {
+            MockRepository mocks = new MockRepository();
+            IDoubleGeneric<int> mock = mocks.StrictMock<IDoubleGeneric<int>>();
+            Expect.Call(mock.Method<string>(1, ""));
+        }
+    }
 
-	public interface IDoubleGeneric<One>
-	{
-		object Method<T>(One one, T two);
-	}
+    public interface IDoubleGeneric<One>
+    {
+        object Method<T>(One one, T two);
+    }
 
-	public interface IGenericType<T>
-	{
-		T MyMethod();
-	}
+    public interface IGenericType<T>
+    {
+        T MyMethod();
+    }
 
-	public delegate object MyDelegate();
+    public delegate object MyDelegate();
 
-	public class ClosedGenericType : OpenGenericType<TypeParameterType>
-	{
-		public override TypeParameterType GenericProperty
-		{
-			get { return null; }
-		}
-	}
+    public class ClosedGenericType : OpenGenericType<TypeParameterType>
+    {
+        public override TypeParameterType GenericProperty
+        {
+            get { return null; }
+        }
+    }
 
-	public abstract class OpenGenericType<T>
-	{
-		public abstract T GenericProperty { get; }
-	}
+    public abstract class OpenGenericType<T>
+    {
+        public abstract T GenericProperty { get; }
+    }
 
-	public class TypeParameterType
-	{
-	}
+    public class TypeParameterType
+    {
+    }
 }

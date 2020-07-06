@@ -30,37 +30,37 @@ using Castle.Core.Interceptor;
 
 namespace Rhino.Mocks.Interfaces
 {
-	/// <summary>
-	/// Log expectations - allows to see what is going on inside Rhino Mocks
-	/// </summary>
-	public interface IExpectationLogger
-	{
+    /// <summary>
+    /// Log expectations - allows to see what is going on inside Rhino Mocks
+    /// </summary>
+    public interface IExpectationLogger
+    {
 
-	    /// <summary>
-	    /// Logs the message
-	    /// </summary>
-	    /// <param name="message">The message.</param>
-	    void Log(string message);
+        /// <summary>
+        /// Logs the message
+        /// </summary>
+        /// <param name="message">The message.</param>
+        void Log(string message);
 
-		/// <summary>
-		/// Logs the expectation as is was recorded
-		/// </summary>
-		/// <param name="invocation">The invocation.</param>
-		/// <param name="expectation">The expectation.</param>
-		void LogRecordedExpectation(IInvocation invocation, IExpectation expectation);
+        /// <summary>
+        /// Logs the expectation as is was recorded
+        /// </summary>
+        /// <param name="invocation">The invocation.</param>
+        /// <param name="expectation">The expectation.</param>
+        void LogRecordedExpectation(IInvocation invocation, IExpectation expectation);
 
-		/// <summary>
-		/// Logs the expectation as it was recorded
-		/// </summary>
-		/// <param name="invocation">The invocation.</param>
-		/// <param name="expectation">The expectation.</param>
-		void LogReplayedExpectation(IInvocation invocation, IExpectation expectation);
+        /// <summary>
+        /// Logs the expectation as it was recorded
+        /// </summary>
+        /// <param name="invocation">The invocation.</param>
+        /// <param name="expectation">The expectation.</param>
+        void LogReplayedExpectation(IInvocation invocation, IExpectation expectation);
 
-		/// <summary>
-		/// Logs the unexpected method call.
-		/// </summary>
-		/// <param name="invocation">The invocation.</param>
-		/// <param name="message">The message.</param>
-		void LogUnexpectedMethodCall(IInvocation invocation, string message);
-	}
+        /// <summary>
+        /// Logs the unexpected method call.
+        /// </summary>
+        /// <param name="invocation">The invocation.</param>
+        /// <param name="message">The message.</param>
+        void LogUnexpectedMethodCall(IInvocation invocation, string message);
+    }
 }

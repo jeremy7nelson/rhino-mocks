@@ -28,18 +28,17 @@
 
 
 using System;
-using System.Text;
 using Xunit;
 
 namespace Rhino.Mocks.Tests
 {
-    
+
     public class DoHanlderTests
     {
         MockRepository mocks;
         IDemo demo;
 
-		public DoHanlderTests()
+        public DoHanlderTests()
         {
             mocks = new MockRepository();
             demo = (IDemo)mocks.StrictMock(typeof(IDemo));
@@ -58,7 +57,7 @@ namespace Rhino.Mocks.Tests
         public void SayHelloWorld()
         {
             INameSource nameSource = (INameSource)mocks.StrictMock(typeof(INameSource));
-            Expect.Call(nameSource.CreateName(null,null)).IgnoreArguments().
+            Expect.Call(nameSource.CreateName(null, null)).IgnoreArguments().
                     Do(new NameSourceDelegate(Formal));
             mocks.ReplayAll();
             string expected = "Hi, my name is Ayende Rahien";
@@ -67,18 +66,18 @@ namespace Rhino.Mocks.Tests
         }
 
         delegate string NameSourceDelegate(string first, string suranme);
-        
+
         private string Formal(string first, string surname)
         {
-            return first + " " +surname;
+            return first + " " + surname;
         }
-        
+
         public class Speaker
         {
             private readonly string firstName;
             private readonly string surname;
 
-            private INameSource nameSource ;
+            private INameSource nameSource;
 
             public Speaker(string firstName, string surname, INameSource nameSource)
             {
@@ -86,7 +85,7 @@ namespace Rhino.Mocks.Tests
                 this.surname = surname;
                 this.nameSource = nameSource;
             }
-            
+
             public string Introduce()
             {
                 string name = nameSource.CreateName(firstName, surname);
@@ -98,7 +97,7 @@ namespace Rhino.Mocks.Tests
         {
             string CreateName(string firstName, string surname);
         }
-        
+
         [Fact]
         public void CanThrow()
         {
@@ -118,26 +117,26 @@ namespace Rhino.Mocks.Tests
         [Fact]
         public void InvalidReturnValueThrows()
         {
-        	Assert.Throws<InvalidOperationException>(
-        		"The delegate return value should be assignable from System.Int32",
-        		() => Expect.Call(demo.ReturnIntNoArgs()).Do(new GetDay(GetSunday)));
-            
+            Assert.Throws<InvalidOperationException>(
+                "The delegate return value should be assignable from System.Int32",
+                () => Expect.Call(demo.ReturnIntNoArgs()).Do(new GetDay(GetSunday)));
+
         }
 
         [Fact]
         public void InvalidDelegateThrows()
         {
-        	Assert.Throws<InvalidOperationException>("Callback arguments didn't match the method arguments",
-        	                                         () =>
-        	                                         Expect.Call(demo.ReturnIntNoArgs()).Do(new IntDelegate(IntMethod)));
+            Assert.Throws<InvalidOperationException>("Callback arguments didn't match the method arguments",
+                                                     () =>
+                                                     Expect.Call(demo.ReturnIntNoArgs()).Do(new IntDelegate(IntMethod)));
         }
 
         [Fact]
         public void CanOnlySpecifyOnce()
         {
-        	Assert.Throws<InvalidOperationException>(
-        		"Can set only a single return value or exception to throw or delegate to execute on the same method call.",
-        		() => Expect.Call(demo.EnumNoArgs()).Do(new GetDay(ThrowDay)).Return(DayOfWeek.Saturday));
+            Assert.Throws<InvalidOperationException>(
+                "Can set only a single return value or exception to throw or delegate to execute on the same method call.",
+                () => Expect.Call(demo.EnumNoArgs()).Do(new GetDay(ThrowDay)).Return(DayOfWeek.Saturday));
         }
 
         public delegate DayOfWeek GetDay();

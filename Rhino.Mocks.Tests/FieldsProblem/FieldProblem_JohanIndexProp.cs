@@ -27,14 +27,12 @@
 #endregion
 
 
-using System;
-using System.Text;
 using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
-    public class FieldProblem_JohanIndexProp 
+
+    public class FieldProblem_JohanIndexProp
     {
         [Fact]
         public void StrictMockWithIndexedProp()
@@ -42,7 +40,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
             MockRepository mocks = new MockRepository();
             IWithIndexedProperty index = (IWithIndexedProperty)mocks.StrictMock(typeof(IWithIndexedProperty));
             Expect.Call(index.get_Foo("Blah")).Return(5);
-            index.set_Foo("Foo",2);
+            index.set_Foo("Foo", 2);
             mocks.ReplayAll();
 
             Assert.Equal(5, index.get_Foo("Blah"));

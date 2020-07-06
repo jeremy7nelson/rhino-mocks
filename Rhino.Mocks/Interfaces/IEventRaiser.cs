@@ -41,9 +41,9 @@ namespace Rhino.Mocks.Interfaces
         /// </summary>
         void Raise(params object[] args);
 
-		/// <summary>
-		/// The most common form for the event handler signature
-		/// </summary>
-		void Raise(object sender, EventArgs e);
+        /// <summary>
+        /// The most common form for the event handler signature
+        /// </summary>
+        void Raise(object sender, EventArgs e);
     }
 }

@@ -32,38 +32,38 @@ using Xunit;
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
 
-	
-	public class FieldProblem_Andreas
-	{
-		[Fact]
-		public void BackToRecordAll_EraseAllRecordedExpectations()
-		{
-			MockRepository repository = new MockRepository();
-			TestedClass mockObject = (TestedClass)repository.StrictMock(typeof(TestedClass));
 
-			mockObject.AnyMethod();
-			repository.BackToRecordAll();
-			mockObject.AnyMethod();
+    public class FieldProblem_Andreas
+    {
+        [Fact]
+        public void BackToRecordAll_EraseAllRecordedExpectations()
+        {
+            MockRepository repository = new MockRepository();
+            TestedClass mockObject = (TestedClass)repository.StrictMock(typeof(TestedClass));
 
-			repository.ReplayAll();
-			mockObject.AnyMethod();
-			repository.VerifyAll();
+            mockObject.AnyMethod();
+            repository.BackToRecordAll();
+            mockObject.AnyMethod();
 
-		}
+            repository.ReplayAll();
+            mockObject.AnyMethod();
+            repository.VerifyAll();
 
-		[Fact]
-		public void CanCallBackToRecordAllWhenRepositoryIsEmpty()
-		{
-			MockRepository mocks = new MockRepository();
-			mocks.BackToRecordAll();
-		}
-	}
+        }
 
-	public class TestedClass
-	{
-		public virtual void AnyMethod()
-		{
+        [Fact]
+        public void CanCallBackToRecordAllWhenRepositoryIsEmpty()
+        {
+            MockRepository mocks = new MockRepository();
+            mocks.BackToRecordAll();
+        }
+    }
 
-		}
-	}
+    public class TestedClass
+    {
+        public virtual void AnyMethod()
+        {
+
+        }
+    }
 }

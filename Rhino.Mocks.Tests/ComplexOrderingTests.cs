@@ -38,32 +38,32 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests
 {
-	public class ComplexOrderingTests
-	{
-		private IMethodRecorder recorder,nestedRecorder;
-		private object proxy;
-		private MethodInfo method;
-		private IExpectation expectation;
-		private object[] args;
+    public class ComplexOrderingTests
+    {
+        private IMethodRecorder recorder, nestedRecorder;
+        private object proxy;
+        private MethodInfo method;
+        private IExpectation expectation;
+        private object[] args;
 
-		public ComplexOrderingTests()
-		{
-			recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-			nestedRecorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-			recorder.AddRecorder(nestedRecorder);
+        public ComplexOrderingTests()
+        {
+            recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+            nestedRecorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+            recorder.AddRecorder(nestedRecorder);
 
-			proxy = new object();
-			method = typeof (object).GetMethod("ToString");
-			expectation = new AnyArgsExpectation(new FakeInvocation(method), new Range(1, 1));
-			args = new object[0];
-		}
+            proxy = new object();
+            method = typeof(object).GetMethod("ToString");
+            expectation = new AnyArgsExpectation(new FakeInvocation(method), new Range(1, 1));
+            args = new object[0];
+        }
 
-		[Fact]
-		public void ComplexOrdering()
-		{
-			string expected = "Unordered: { Unordered: { Object.ToString(); } }";
-			recorder.Record(proxy,method, expectation);
-			Assert.Equal(expected, recorder.GetExpectedCallsMessage());
-		}
-	}
+        [Fact]
+        public void ComplexOrdering()
+        {
+            string expected = "Unordered: { Unordered: { Object.ToString(); } }";
+            recorder.Record(proxy, method, expectation);
+            Assert.Equal(expected, recorder.GetExpectedCallsMessage());
+        }
+    }
 }

@@ -6,7 +6,8 @@ namespace Rhino.Mocks.Impl.Invocation.Specifications
     ///<summary>
     ///Summary description for FollowsEventNamingStandard
     ///</summary>
-    public class FollowsEventNamingStandard : ISpecification<IInvocation> {
+    public class FollowsEventNamingStandard : ISpecification<IInvocation>
+    {
         ///<summary>
         ///</summary>
         public const string AddPrefix = "add_";

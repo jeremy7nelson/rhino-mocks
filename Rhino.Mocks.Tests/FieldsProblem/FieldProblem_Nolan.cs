@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
@@ -15,7 +13,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
         String ChildString { get; set; }
     }
 
-    
+
     public class StubDemoTestFixture : IDisposable
     {
 
@@ -29,7 +27,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 
         #region Setup and Teardown
 
-		public StubDemoTestFixture()
+        public StubDemoTestFixture()
         {
             _mocks = new MockRepository();
 

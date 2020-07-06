@@ -117,10 +117,10 @@ namespace Rhino.Mocks.Expectations
         /// </summary>
         public object[] OutRefParams
         {
-			get
-			{
-				return outRefParams;
-			}
+            get
+            {
+                return outRefParams;
+            }
             set
             {
                 if (outRefParams != null)
@@ -207,9 +207,9 @@ namespace Rhino.Mocks.Expectations
             {
                 if (repeatableOption != RepeatableOption.Normal && repeatableOption != RepeatableOption.OriginalCall)
                     return true;
-                if(expected.Min > actualCallsCount )
+                if (expected.Min > actualCallsCount)
                     return false;
-                if(Expected.Max==null)
+                if (Expected.Max == null)
                     return true;
                 return actualCallsCount <= expected.Max.Value;
             }
@@ -236,8 +236,8 @@ namespace Rhino.Mocks.Expectations
         /// </summary>
         public Delegate ActionToExecute
         {
-        	get { return actionToExecute; }
-        	set
+            get { return actionToExecute; }
+            set
             {
                 ActionOnMethodNotSpesified();
                 AssertReturnTypeMatch(value);
@@ -246,7 +246,7 @@ namespace Rhino.Mocks.Expectations
             }
         }
 
-    	/// <summary>
+        /// <summary>
         /// Gets or sets the exception to throw on a method matching this expectation.
         /// </summary>
         public Exception ExceptionToThrow
@@ -311,27 +311,27 @@ namespace Rhino.Mocks.Expectations
             actualCallsCount++;
         }
 
-		/// <summary>
-		/// Builds the verification failure message.
-		/// </summary>
-		/// <returns></returns>
-    	public string BuildVerificationFailureMessage()
-    	{
-			StringBuilder sb = new StringBuilder();
-			string expectationMessege = ErrorMessage;
-			sb.Append(expectationMessege).Append(' ');
-			sb.Append("Expected #");
-			sb.Append(Expected.ToString()).Append(", ");
-			sb.Append("Actual #").Append(ActualCallsCount).Append('.');
-			return sb.ToString();
-    	}
+        /// <summary>
+        /// Builds the verification failure message.
+        /// </summary>
+        /// <returns></returns>
+        public string BuildVerificationFailureMessage()
+        {
+            StringBuilder sb = new StringBuilder();
+            string expectationMessege = ErrorMessage;
+            sb.Append(expectationMessege).Append(' ');
+            sb.Append("Expected #");
+            sb.Append(Expected.ToString()).Append(", ");
+            sb.Append("Actual #").Append(ActualCallsCount).Append('.');
+            return sb.ToString();
+        }
 
-		/// <summary>
-		/// Occurs when the exceptation is match on a method call
-		/// </summary>
-    	public event Action<MethodInvocation> WhenCalled =delegate { };
+        /// <summary>
+        /// Occurs when the exceptation is match on a method call
+        /// </summary>
+        public event Action<MethodInvocation> WhenCalled = delegate { };
 
-    	/// <summary>
+        /// <summary>
         /// Returns the return value or throw the exception and setup output / ref parameters
         /// </summary>
         public object ReturnOrThrow(IInvocation invocation, object[] args)
@@ -344,21 +344,21 @@ namespace Rhino.Mocks.Expectations
             SetupOutputAndRefParameters(args);
             if (actionToExecute != null)
             {
-            	object action = ExecuteAction();
-				WhenCalled(new MethodInvocation(invocation));
-            	return action;
+                object action = ExecuteAction();
+                WhenCalled(new MethodInvocation(invocation));
+                return action;
             }
-    		if (exceptionToThrow != null)
+            if (exceptionToThrow != null)
                 throw exceptionToThrow;
             if (RepeatableOption == RepeatableOption.OriginalCall)
             {
                 invocation.Proceed();
-				WhenCalled(new MethodInvocation(invocation));
-				return invocation.ReturnValue;
+                WhenCalled(new MethodInvocation(invocation));
+                return invocation.ReturnValue;
             }
-    		invocation.ReturnValue = returnValue;
-			WhenCalled(new MethodInvocation(invocation));
-			return invocation.ReturnValue;
+            invocation.ReturnValue = returnValue;
+            WhenCalled(new MethodInvocation(invocation));
+            return invocation.ReturnValue;
         }
 
         /// <summary>
@@ -409,8 +409,8 @@ namespace Rhino.Mocks.Expectations
             repeatableOption = expectation.RepeatableOption;
             exceptionToThrow = expectation.ExceptionToThrow;
             message = expectation.Message;
-        	actionToExecute = expectation.ActionToExecute;
-        	outRefParams = expectation.OutRefParams;
+            actionToExecute = expectation.ActionToExecute;
+            outRefParams = expectation.OutRefParams;
             allowTentativeReturn = expectation.AllowTentativeReturn;
         }
 
@@ -485,7 +485,7 @@ namespace Rhino.Mocks.Expectations
 
         private void ActionOnMethodNotSpesified()
         {
-            if(allowTentativeReturn)
+            if (allowTentativeReturn)
                 return;
             if (returnValueSet == false && exceptionToThrow == null && actionToExecute == null)
                 return;

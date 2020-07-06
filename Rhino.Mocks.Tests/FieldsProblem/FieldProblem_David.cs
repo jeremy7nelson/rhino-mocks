@@ -34,7 +34,7 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_David
     {
 #if NETFRAMEWORK

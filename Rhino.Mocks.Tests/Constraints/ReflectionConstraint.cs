@@ -27,46 +27,46 @@
 #endregion
 
 
+using Rhino.Mocks.Constraints;
 using System;
 using System.Collections;
 using System.Reflection;
 using Xunit;
-using Rhino.Mocks.Constraints;
 
 namespace Rhino.Mocks.Tests.Constraints
 {
-	
-	public class ReflectionConstraint
-	{
-		[Fact]
-		public void IsTypeOf()
-		{
-			AbstractConstraint typeOf = Is.TypeOf(typeof (int));
-			Assert.True(typeOf.Eval(3));
-			Assert.False(typeOf.Eval(""));
-			Assert.False(typeOf.Eval(null));
-			Assert.Equal("type of {System.Int32}", typeOf.Message);
-		}
 
-		[Fact]
-		public void PropertyValue()
-		{
-			AbstractConstraint constraint = Property.Value("Length", 6);
-			Assert.True(constraint.Eval("Ayende"));
-			Assert.False(constraint.Eval(new ArrayList()));
-			Assert.Equal("property 'Length' equal to 6", constraint.Message);
-		}
+    public class ReflectionConstraint
+    {
+        [Fact]
+        public void IsTypeOf()
+        {
+            AbstractConstraint typeOf = Is.TypeOf(typeof(int));
+            Assert.True(typeOf.Eval(3));
+            Assert.False(typeOf.Eval(""));
+            Assert.False(typeOf.Eval(null));
+            Assert.Equal("type of {System.Int32}", typeOf.Message);
+        }
+
+        [Fact]
+        public void PropertyValue()
+        {
+            AbstractConstraint constraint = Property.Value("Length", 6);
+            Assert.True(constraint.Eval("Ayende"));
+            Assert.False(constraint.Eval(new ArrayList()));
+            Assert.Equal("property 'Length' equal to 6", constraint.Message);
+        }
 
 
-		[Fact]
-		public void PropertyNull()
-		{
-			Exception withoutInner = new Exception(), withInner = new Exception("", withoutInner);
-			AbstractConstraint constraint = Property.IsNull("InnerException");
-			Assert.True(constraint.Eval(withoutInner));
-			Assert.False(constraint.Eval(withInner));
-			Assert.Equal("property 'InnerException' equal to null", constraint.Message);
-		}
+        [Fact]
+        public void PropertyNull()
+        {
+            Exception withoutInner = new Exception(), withInner = new Exception("", withoutInner);
+            AbstractConstraint constraint = Property.IsNull("InnerException");
+            Assert.True(constraint.Eval(withoutInner));
+            Assert.False(constraint.Eval(withInner));
+            Assert.Equal("property 'InnerException' equal to null", constraint.Message);
+        }
 
         [Fact]
         public void PropertyConstraint()
@@ -90,15 +90,15 @@ namespace Rhino.Mocks.Tests.Constraints
             );
         }
 
-		[Fact]
-		public void PropertyNotNull()
-		{
-			Exception withoutInner = new Exception(), withInner = new Exception("", withoutInner);
-			AbstractConstraint constraint = Property.IsNotNull("InnerException");
-			Assert.False(constraint.Eval(withoutInner));
-			Assert.True(constraint.Eval(withInner));
-			Assert.Equal("not property 'InnerException' equal to null", constraint.Message);
-		}
+        [Fact]
+        public void PropertyNotNull()
+        {
+            Exception withoutInner = new Exception(), withInner = new Exception("", withoutInner);
+            AbstractConstraint constraint = Property.IsNotNull("InnerException");
+            Assert.False(constraint.Eval(withoutInner));
+            Assert.True(constraint.Eval(withInner));
+            Assert.Equal("not property 'InnerException' equal to null", constraint.Message);
+        }
 
         [Fact]
         public void AmbiguousPropertyAccess()
@@ -109,7 +109,7 @@ namespace Rhino.Mocks.Tests.Constraints
 
             // This will fail with an AmbiguousMatchException because 'Property' is not
             // unique: there are two public Property properties.
-        	Assert.Throws<AmbiguousMatchException>(() => Assert.True(constraint.Eval(o)));
+            Assert.Throws<AmbiguousMatchException>(() => Assert.True(constraint.Eval(o)));
         }
 
         [Fact]
@@ -118,7 +118,7 @@ namespace Rhino.Mocks.Tests.Constraints
             DerivedPropertyAccessFodder o = new DerivedPropertyAccessFodder();
 
             AbstractConstraint constraint;
-            
+
             constraint = Property.Value(typeof(BasePropertyAccessFodder), "Property", 1);
             Assert.True(constraint.Eval(o), "Base True");
             constraint = Property.Value(typeof(BasePropertyAccessFodder), "Property", 0);
@@ -190,8 +190,8 @@ namespace Rhino.Mocks.Tests.Constraints
             Assert.False(constraint.Eval(o), "DerivedPrivate False");
         }
 
-		[Fact]
-		public void DisambiguatedPropertyIsNullAccess()
+        [Fact]
+        public void DisambiguatedPropertyIsNullAccess()
         {
             DerivedPropertyAccessFodder o = new DerivedPropertyAccessFodder();
 
@@ -204,8 +204,8 @@ namespace Rhino.Mocks.Tests.Constraints
             Assert.True(constraint.Eval(o), "Interface2 True");
         }
 
-		[Fact]
-		public void DisambiguatedPropertyIsNotNullAccess()
+        [Fact]
+        public void DisambiguatedPropertyIsNotNullAccess()
         {
             DerivedPropertyAccessFodder o = new DerivedPropertyAccessFodder();
 
@@ -246,8 +246,8 @@ namespace Rhino.Mocks.Tests.Constraints
 
         #region PublicFieldConstraints
 
-		[Fact]
-		public void PublicFieldValue()
+        [Fact]
+        public void PublicFieldValue()
         {
             string barTestValue = "my bar";
 
@@ -256,8 +256,8 @@ namespace Rhino.Mocks.Tests.Constraints
             Assert.False(constraint.Eval(new FooMessage(string.Empty, "your bar")), "Returned true when field was incorrect");
         }
 
-		[Fact]
-		public void PublicFieldValueDoesNotVerifyProperties()
+        [Fact]
+        public void PublicFieldValueDoesNotVerifyProperties()
         {
             string fooTestValue = "my foo";
 
@@ -265,8 +265,8 @@ namespace Rhino.Mocks.Tests.Constraints
             Assert.False(constraint.Eval(new FooMessage(fooTestValue, string.Empty)), "Returned false when trying to validate a property rather than a field.");
         }
 
-		[Fact]
-		public void PublicFieldValueOnImplementedInterfaceType()
+        [Fact]
+        public void PublicFieldValueOnImplementedInterfaceType()
         {
             string barTestValue = "my bar";
             BarMessage message = new BarMessage(string.Empty, barTestValue);
@@ -278,17 +278,17 @@ namespace Rhino.Mocks.Tests.Constraints
             Assert.False(constraint.Eval(message), "Returned true when field was correct but type was not declared on the suppleid type.");
         }
 
-		[Fact]
-		public void PublicFieldValueConstraint()
+        [Fact]
+        public void PublicFieldValueConstraint()
         {
             FooMessage message = new FooMessage("my foo", "my bar");
-            
+
             Assert.True(PublicField.ValueConstraint("BarField", Text.Contains("bar")).Eval(message), "Returned false when supplied constraint was valid.");
             Assert.False(PublicField.ValueConstraint("BarField", Text.Contains("foo")).Eval(message), "Returned true when supplied constraint was invalid.");
         }
 
-		[Fact]
-		public void PublicFieldNull()
+        [Fact]
+        public void PublicFieldNull()
         {
             string barTestValue = "my bar";
 
@@ -297,8 +297,8 @@ namespace Rhino.Mocks.Tests.Constraints
             Assert.False(constraint.Eval(new FooMessage(string.Empty, barTestValue)), "Returned true when field was not null");
         }
 
-		[Fact]
-		public void PublicFieldNotNull()
+        [Fact]
+        public void PublicFieldNotNull()
         {
             string barTestValue = "my bar";
 

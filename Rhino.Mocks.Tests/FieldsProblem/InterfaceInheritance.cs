@@ -33,7 +33,7 @@ using Xunit;
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
     //Bug 46
-    
+
     public class InterfaceInheritance
     {
         [Fact]

@@ -31,7 +31,7 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_Blaz
     {
         [Fact]
@@ -40,7 +40,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
             MockRepository mocks = new MockRepository();
             IDemo demo1 = (IDemo)mocks.StrictMock(typeof(IDemo));
             Other.IDemo demo2 = (Other.IDemo)mocks.StrictMock(typeof(Other.IDemo));
-            
+
             Assert.NotEqual(demo1.GetType(), demo2.GetType());
         }
     }

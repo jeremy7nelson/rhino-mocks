@@ -1,10 +1,10 @@
+using Rhino.Mocks.Constraints;
 using System;
 using Xunit;
-using Rhino.Mocks.Constraints;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_Roy
     {
         [Fact]
@@ -36,7 +36,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 
             int result = resultGetter.GetSomeNumber("a");
             Assert.Equal(1, result);
-            repository.VerifyAll(); 
+            repository.VerifyAll();
         }
 
         [Fact]
@@ -44,17 +44,17 @@ namespace Rhino.Mocks.Tests.FieldsProblem
         {
             MockRepository repository = new MockRepository();
             IGetResults resultGetter = repository.Stub<IGetResults>();
-        	Assert.Throws<InvalidOperationException>(
-        		"You have already specified constraints for this method. (IGetResults.GetSomeNumber(contains \"b\");)",
-        		() =>
-        		{
-        			using (repository.Record())
-        			{
-        				resultGetter.GetSomeNumber("a");
-        				LastCall.Constraints(Text.Contains("b"));
-        				LastCall.Constraints(Text.Contains("a"));
-        			}
-        		});
+            Assert.Throws<InvalidOperationException>(
+                "You have already specified constraints for this method. (IGetResults.GetSomeNumber(contains \"b\");)",
+                () =>
+                {
+                    using (repository.Record())
+                    {
+                        resultGetter.GetSomeNumber("a");
+                        LastCall.Constraints(Text.Contains("b"));
+                        LastCall.Constraints(Text.Contains("a"));
+                    }
+                });
         }
     }
 

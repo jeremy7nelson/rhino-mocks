@@ -1,10 +1,8 @@
-using System;
-using System.Data;
-using System.Text;
-using System.Collections.Generic;
-using Xunit;
-
 using Rhino.Mocks.Constraints;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using Xunit;
 
 #region TestObjects
 namespace Rhino.Mocks.Tests.AllPropertiesMatchConstraint
@@ -104,25 +102,25 @@ namespace Rhino.Mocks.Tests.AllPropertiesMatchConstraint
 
 namespace Rhino.Mocks.Tests.Constraints
 {
-	using System.Globalization;
-	using System.Threading;
-	using Rhino.Mocks.Tests.AllPropertiesMatchConstraint;
+    using Rhino.Mocks.Tests.AllPropertiesMatchConstraint;
+    using System.Globalization;
+    using System.Threading;
 
-    
+
     public class AllPropertiesMatchConstraintTest : IDisposable
     {
-    	private CultureInfo old;
+        private CultureInfo old;
 
-		public AllPropertiesMatchConstraintTest()
-    	{
-    		old = Thread.CurrentThread.CurrentCulture;
-    		Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-    	}
+        public AllPropertiesMatchConstraintTest()
+        {
+            old = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        }
 
-    	public void Dispose()
-    	{
-    		Thread.CurrentThread.CurrentCulture = old;
-    	}
+        public void Dispose()
+        {
+            Thread.CurrentThread.CurrentCulture = old;
+        }
 
         [Fact]
         public void SuccessTest()
@@ -156,7 +154,7 @@ namespace Rhino.Mocks.Tests.Constraints
             Assert.False(sut.Eval(order));
             Assert.Equal("Expected value of Order.Quantity is '10', actual value is '4'", sut.Message);
         }
-        
+
         [Fact]
         public void NestedPropertyNotEqual()
         {
@@ -352,7 +350,7 @@ namespace Rhino.Mocks.Tests.Constraints
 
             AbstractConstraint sut = Property.AllPropertiesMatch(expected);
             Assert.False(sut.Eval(actual));
-			Assert.Equal("Expected value of ShippingList._shippingDate is '09/27/1978 00:00:00', actual value is '09/27/2007 00:00:00'", sut.Message);
+            Assert.Equal("Expected value of ShippingList._shippingDate is '09/27/1978 00:00:00', actual value is '09/27/2007 00:00:00'", sut.Message);
         }
 
         [Fact]

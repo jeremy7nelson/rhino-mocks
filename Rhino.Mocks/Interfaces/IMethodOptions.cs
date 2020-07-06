@@ -28,38 +28,36 @@
 
 #endregion
 
-using System;
-using Castle.Core.Interceptor;
 using Rhino.Mocks.Constraints;
-using System.Reflection;
+using System;
 
 namespace Rhino.Mocks.Interfaces
 {
-	/*
+    /*
 	 * Interface: IMethodOptions
 	 * 
 	 * Allows to define what would happen when a method is called.
 	 * 
 	 */
 
-	/// <summary>
-	/// Allows to define what would happen when a method 
-	/// is called.
-	/// </summary>
-	public interface IMethodOptions<T>
-	{
-		/*
+    /// <summary>
+    /// Allows to define what would happen when a method 
+    /// is called.
+    /// </summary>
+    public interface IMethodOptions<T>
+    {
+        /*
 		 * Method: Return
 		 * 
 		 * Sets the return value when the method is called.
 		 */
 
-		/// <summary>
-		/// Set the return value for the method.
-		/// </summary>
-		/// <param name="objToReturn">The object the method will return</param>
-		/// <returns>IRepeat that defines how many times the method will return this value</returns>
-		IMethodOptions<T> Return(T objToReturn);
+        /// <summary>
+        /// Set the return value for the method.
+        /// </summary>
+        /// <param name="objToReturn">The object the method will return</param>
+        /// <returns>IRepeat that defines how many times the method will return this value</returns>
+        IMethodOptions<T> Return(T objToReturn);
 
         /// <summary>
         /// Allow to override this return value in the future
@@ -67,56 +65,56 @@ namespace Rhino.Mocks.Interfaces
         /// <returns>IRepeat that defines how many times the method will return this value</returns>
         IMethodOptions<T> TentativeReturn();
 
-		/*
+        /*
 		 * Method: Throw
 		 * 
 		 * Throws the specified exception when the method is called.
 		 */
 
-		/// <summary>
-		/// Throws the specified exception when the method is called.
-		/// </summary>
-		/// <param name="exception">Exception to throw</param>
-		IMethodOptions<T> Throw(Exception exception);
+        /// <summary>
+        /// Throws the specified exception when the method is called.
+        /// </summary>
+        /// <param name="exception">Exception to throw</param>
+        IMethodOptions<T> Throw(Exception exception);
 
-		/*
+        /*
 		 * Method: IgnoreArguments
 		 * 
 		 * Ignores the arguments for this method. Any arguments are considered fine for this
 		 * method.
 		 */
 
-		/// <summary>
-		/// Ignores the arguments for this method. Any argument will be matched
-		/// againt this method.
-		/// </summary>
-		IMethodOptions<T> IgnoreArguments();
+        /// <summary>
+        /// Ignores the arguments for this method. Any argument will be matched
+        /// againt this method.
+        /// </summary>
+        IMethodOptions<T> IgnoreArguments();
 
-		/*
+        /*
 		 * Property: Repeat
 		 * 
 		 * Allows to get the <Interfaces.IRepeat> instance that would allow to 
 		 * set the expected number of times that this method will occur.
 		 */
 
-		/// <summary>
-		/// Better syntax to define repeats. 
-		/// </summary>
-		IRepeat<T> Repeat { get; }
+        /// <summary>
+        /// Better syntax to define repeats. 
+        /// </summary>
+        IRepeat<T> Repeat { get; }
 
-		/*
+        /*
 		 * Method: Constraints
 		 * 
 		 * Sets the contraints on this method parameters.
 		 * The number of the constraints *must* be equal to the number of method arguments.
 		 */
 
-		/// <summary>
-		/// Add constraints for the method's arguments.
-		/// </summary>
-		IMethodOptions<T> Constraints(params AbstractConstraint[] constraints);
+        /// <summary>
+        /// Add constraints for the method's arguments.
+        /// </summary>
+        IMethodOptions<T> Constraints(params AbstractConstraint[] constraints);
 
-		/*
+        /*
 		 * Method: Callback
 		 * 
 		 * Sets a callback delegate to be called when this method is called.
@@ -131,79 +129,79 @@ namespace Rhino.Mocks.Interfaces
 		 * 
 		 */
 
-		/// <summary>
-		/// Set a callback method for the last call
-		/// </summary>
-		IMethodOptions<T> Callback(Delegate callback);
+        /// <summary>
+        /// Set a callback method for the last call
+        /// </summary>
+        IMethodOptions<T> Callback(Delegate callback);
 
-		/// <summary>
-		/// Set a delegate to be called when the expectation is matched.
-		/// The delegate return value will be returned from the expectation.
-		/// </summary>
-		IMethodOptions<T> Callback(Delegates.Function<bool> callback);
+        /// <summary>
+        /// Set a delegate to be called when the expectation is matched.
+        /// The delegate return value will be returned from the expectation.
+        /// </summary>
+        IMethodOptions<T> Callback(Delegates.Function<bool> callback);
 
-		/// <summary>
-		/// Set a delegate to be called when the expectation is matched.
-		/// The delegate return value will be returned from the expectation.
-		/// </summary>
-		IMethodOptions<T> Callback<TArg0>(Delegates.Function<bool, TArg0> callback);
+        /// <summary>
+        /// Set a delegate to be called when the expectation is matched.
+        /// The delegate return value will be returned from the expectation.
+        /// </summary>
+        IMethodOptions<T> Callback<TArg0>(Delegates.Function<bool, TArg0> callback);
 
-		/// <summary>
-		/// Set a delegate to be called when the expectation is matched.
-		/// The delegate return value will be returned from the expectation.
-		/// </summary>
-		IMethodOptions<T> Callback<TArg0, TArg1>(Delegates.Function<bool, TArg0, TArg1> callback);
+        /// <summary>
+        /// Set a delegate to be called when the expectation is matched.
+        /// The delegate return value will be returned from the expectation.
+        /// </summary>
+        IMethodOptions<T> Callback<TArg0, TArg1>(Delegates.Function<bool, TArg0, TArg1> callback);
 
-		/// <summary>
-		/// Set a delegate to be called when the expectation is matched.
-		/// The delegate return value will be returned from the expectation.
-		/// </summary>
-		IMethodOptions<T> Callback<TArg0, TArg1, TArg2>(Delegates.Function<bool, TArg0, TArg1, TArg2> callback);
+        /// <summary>
+        /// Set a delegate to be called when the expectation is matched.
+        /// The delegate return value will be returned from the expectation.
+        /// </summary>
+        IMethodOptions<T> Callback<TArg0, TArg1, TArg2>(Delegates.Function<bool, TArg0, TArg1, TArg2> callback);
 
-		/// <summary>
-		/// Set a delegate to be called when the expectation is matched.
-		/// The delegate return value will be returned from the expectation.
-		/// </summary>
-		IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3> callback);
+        /// <summary>
+        /// Set a delegate to be called when the expectation is matched.
+        /// The delegate return value will be returned from the expectation.
+        /// </summary>
+        IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3> callback);
 
-		/// <summary>
-		/// Set a delegate to be called when the expectation is matched.
-		/// The delegate return value will be returned from the expectation.
-		/// </summary>
-		IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3, TArg4>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3, TArg4> callback);
+        /// <summary>
+        /// Set a delegate to be called when the expectation is matched.
+        /// The delegate return value will be returned from the expectation.
+        /// </summary>
+        IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3, TArg4>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3, TArg4> callback);
 
-		/// <summary>
-		/// Set a delegate to be called when the expectation is matched.
-		/// The delegate return value will be returned from the expectation.
-		/// </summary>
-		IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5> callback);
+        /// <summary>
+        /// Set a delegate to be called when the expectation is matched.
+        /// The delegate return value will be returned from the expectation.
+        /// </summary>
+        IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5> callback);
 
-		/// <summary>
-		/// Set a delegate to be called when the expectation is matched.
-		/// The delegate return value will be returned from the expectation.
-		/// </summary>
-		IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6> callback);
+        /// <summary>
+        /// Set a delegate to be called when the expectation is matched.
+        /// The delegate return value will be returned from the expectation.
+        /// </summary>
+        IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6> callback);
 
-		/// <summary>
-		/// Set a delegate to be called when the expectation is matched.
-		/// The delegate return value will be returned from the expectation.
-		/// </summary>
-		IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7> callback);
+        /// <summary>
+        /// Set a delegate to be called when the expectation is matched.
+        /// The delegate return value will be returned from the expectation.
+        /// </summary>
+        IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7> callback);
 
-		/// <summary>
-		/// Set a delegate to be called when the expectation is matched.
-		/// The delegate return value will be returned from the expectation.
-		/// </summary>
-		IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8> callback);
+        /// <summary>
+        /// Set a delegate to be called when the expectation is matched.
+        /// The delegate return value will be returned from the expectation.
+        /// </summary>
+        IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8> callback);
 
-		/// <summary>
-		/// Set a delegate to be called when the expectation is matched.
-		/// The delegate return value will be returned from the expectation.
-		/// </summary>
-		IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9> callback);
+        /// <summary>
+        /// Set a delegate to be called when the expectation is matched.
+        /// The delegate return value will be returned from the expectation.
+        /// </summary>
+        IMethodOptions<T> Callback<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9>(Delegates.Function<bool, TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9> callback);
 
-	
-		/*
+
+        /*
          * Method: Do
          * 
          * Set an action to run when the expectation is matched.
@@ -218,19 +216,19 @@ namespace Rhino.Mocks.Interfaces
          * 
          */
 
-		/// <summary>
-		/// Set a delegate to be called when the expectation is matched.
-		/// The delegate return value will be returned from the expectation.
-		/// </summary>
-		IMethodOptions<T> Do(Delegate action);
+        /// <summary>
+        /// Set a delegate to be called when the expectation is matched.
+        /// The delegate return value will be returned from the expectation.
+        /// </summary>
+        IMethodOptions<T> Do(Delegate action);
 
-		/// <summary>
-		/// Set a delegate to be called when the expectation is matched
-		/// and allow to optionally modify the invocation as needed
-		/// </summary>
-		IMethodOptions<T> WhenCalled(Action<MethodInvocation> action);
+        /// <summary>
+        /// Set a delegate to be called when the expectation is matched
+        /// and allow to optionally modify the invocation as needed
+        /// </summary>
+        IMethodOptions<T> WhenCalled(Action<MethodInvocation> action);
 
-		/*
+        /*
 			 * Method: CallOriginalMethod
 			 * 
 			 * Call the original method on the class, bypassing the mocking layers.
@@ -242,14 +240,14 @@ namespace Rhino.Mocks.Interfaces
 			 * 
 			 */
 
-		/// <summary>
-		/// Call the original method on the class, bypassing the mocking layers.
-		/// </summary>
-		/// <returns></returns>
-		[Obsolete("Use CallOriginalMethod(OriginalCallOptions options) overload to explicitly specify the call options")]
-		void CallOriginalMethod();
+        /// <summary>
+        /// Call the original method on the class, bypassing the mocking layers.
+        /// </summary>
+        /// <returns></returns>
+        [Obsolete("Use CallOriginalMethod(OriginalCallOptions options) overload to explicitly specify the call options")]
+        void CallOriginalMethod();
 
-		/*
+        /*
 		 * Method: CallOriginalMethod
 		 * 
 		 * Call the original method on the class, optionally bypassing the mocking layers.
@@ -261,13 +259,13 @@ namespace Rhino.Mocks.Interfaces
 		 * 
 		 */
 
-		/// <summary>
-		/// Call the original method on the class, optionally bypassing the mocking layers.
-		/// </summary>
-		/// <returns></returns>
-		IMethodOptions<T> CallOriginalMethod(OriginalCallOptions options);
+        /// <summary>
+        /// Call the original method on the class, optionally bypassing the mocking layers.
+        /// </summary>
+        /// <returns></returns>
+        IMethodOptions<T> CallOriginalMethod(OriginalCallOptions options);
 
-		/* Method: PropertyBehavior
+        /* Method: PropertyBehavior
          * 
          * Use the property as a normal property, so you can use it to save/load values
          * without having to specify expectations for it.
@@ -276,11 +274,11 @@ namespace Rhino.Mocks.Interfaces
          * This can be called only when the last call is a getter or setter.
          */
 
-		/// <summary>
-		/// Use the property as a simple property, getting/setting the values without
-		/// causing mock expectations.
-		/// </summary>
-		IMethodOptions<T> PropertyBehavior();
+        /// <summary>
+        /// Use the property as a simple property, getting/setting the values without
+        /// causing mock expectations.
+        /// </summary>
+        IMethodOptions<T> PropertyBehavior();
 
         /// <summary>
         /// Expect last (property) call as property setting, ignore the argument given
@@ -295,21 +293,21 @@ namespace Rhino.Mocks.Interfaces
         /// <returns></returns>
 	    IMethodOptions<T> SetPropertyWithArgument(T argument);
 
-		/// <summary>
-		/// Get an event raiser for the last subscribed event.
-		/// </summary>
-		IEventRaiser GetEventRaiser();
+        /// <summary>
+        /// Get an event raiser for the last subscribed event.
+        /// </summary>
+        IEventRaiser GetEventRaiser();
 
-		/// <summary>
-		/// Set the parameter values for out and ref parameters.
-		/// This is done using zero based indexing, and _ignoring_ any non out/ref parameter.
-		/// </summary>
-		IMethodOptions<T> OutRef(params object[] parameters);
+        /// <summary>
+        /// Set the parameter values for out and ref parameters.
+        /// This is done using zero based indexing, and _ignoring_ any non out/ref parameter.
+        /// </summary>
+        IMethodOptions<T> OutRef(params object[] parameters);
 
-		/// <summary>
-		/// Documentation message for the expectation
-		/// </summary>
-		/// <param name="documentationMessage">Message</param>
-		IMethodOptions<T> Message(string documentationMessage);
-	}
+        /// <summary>
+        /// Documentation message for the expectation
+        /// </summary>
+        /// <param name="documentationMessage">Message</param>
+        IMethodOptions<T> Message(string documentationMessage);
+    }
 }

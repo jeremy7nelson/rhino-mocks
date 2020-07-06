@@ -27,36 +27,35 @@
 #endregion
 
 
-using System;
-using Xunit;
 using Rhino.Mocks.Constraints;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.Constraints
 {
 
-	
-	public class ContraintsErrorConditions
-	{
-		[Fact]
-		public void ComparingConstraintsWhenParameterIsNotIComparable()
-		{
-			Assert.False(Is.GreaterThan(4).Eval(new object()));
-		}
 
-		[Fact]
-		public void TextWhenParameterIsNotString()
-		{
-			Assert.False(Text.Contains("one").Eval(1));
-			Assert.False(Text.EndsWith("one").Eval(1));
-			Assert.False(Text.StartsWith("one").Eval(1));
-			Assert.False(Text.Like("one").Eval(1));
-		}
+    public class ContraintsErrorConditions
+    {
+        [Fact]
+        public void ComparingConstraintsWhenParameterIsNotIComparable()
+        {
+            Assert.False(Is.GreaterThan(4).Eval(new object()));
+        }
+
+        [Fact]
+        public void TextWhenParameterIsNotString()
+        {
+            Assert.False(Text.Contains("one").Eval(1));
+            Assert.False(Text.EndsWith("one").Eval(1));
+            Assert.False(Text.StartsWith("one").Eval(1));
+            Assert.False(Text.Like("one").Eval(1));
+        }
 
 
-		[Fact]
-		public void PropertyIsWhenParameterIsNull()
-		{
-			Assert.False(Property.Value("Capacity",500).Eval(null));
-		}
-	}
+        [Fact]
+        public void PropertyIsWhenParameterIsNull()
+        {
+            Assert.False(Property.Value("Capacity", 500).Eval(null));
+        }
+    }
 }

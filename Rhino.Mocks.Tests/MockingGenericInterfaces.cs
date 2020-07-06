@@ -29,17 +29,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Rhino.Mocks.Tests
 {
-    
+
     public class MockingGenericInterfaces : IDisposable
     {
         MockRepository mocks;
 
-		public MockingGenericInterfaces()
+        public MockingGenericInterfaces()
         {
             mocks = new MockRepository();
         }

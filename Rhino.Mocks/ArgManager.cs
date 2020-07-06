@@ -26,186 +26,184 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+//using System.Linq;
+using Rhino.Mocks.Constraints;
 using System;
 using System.Collections.Generic;
-//using System.Linq;
-using System.Text;
-using System.Collections;
-using Rhino.Mocks.Constraints;
 using System.Reflection;
 
 namespace Rhino.Mocks
 {
 
-	/// <summary>
-	/// Used to manage the static state of the Arg&lt;T&gt; class"/>
-	/// </summary>
-	internal class ArgManager
-	{
-		[ThreadStatic]
-		private static List<ArgumentDefinition> args;
+    /// <summary>
+    /// Used to manage the static state of the Arg&lt;T&gt; class"/>
+    /// </summary>
+    internal class ArgManager
+    {
+        [ThreadStatic]
+        private static List<ArgumentDefinition> args;
 
 
-		internal static bool HasBeenUsed 
-		{ 
-			get 
-			{
-				if (args == null) return false;
-				return args.Count > 0; 
-			} 
-		}
+        internal static bool HasBeenUsed
+        {
+            get
+            {
+                if (args == null) return false;
+                return args.Count > 0;
+            }
+        }
 
-		/// <summary>
-		/// Resets the static state
-		/// </summary>
-		internal static void Clear()
-		{
-			args = new List<ArgumentDefinition>();
-		}
+        /// <summary>
+        /// Resets the static state
+        /// </summary>
+        internal static void Clear()
+        {
+            args = new List<ArgumentDefinition>();
+        }
 
-		internal static void AddInArgument(AbstractConstraint constraint)
-		{
-			InitializeThreadStatic();
-			args.Add(new ArgumentDefinition(constraint));
-		}
+        internal static void AddInArgument(AbstractConstraint constraint)
+        {
+            InitializeThreadStatic();
+            args.Add(new ArgumentDefinition(constraint));
+        }
 
-		internal static void AddOutArgument(object returnValue)
-		{
-			InitializeThreadStatic();
-			args.Add(new ArgumentDefinition(returnValue));
-		}
+        internal static void AddOutArgument(object returnValue)
+        {
+            InitializeThreadStatic();
+            args.Add(new ArgumentDefinition(returnValue));
+        }
 
-		internal static void AddRefArgument(AbstractConstraint constraint, object returnValue)
-		{
-			InitializeThreadStatic();
-			args.Add(new ArgumentDefinition(constraint, returnValue));
-		}
+        internal static void AddRefArgument(AbstractConstraint constraint, object returnValue)
+        {
+            InitializeThreadStatic();
+            args.Add(new ArgumentDefinition(constraint, returnValue));
+        }
 
 
-		/// <summary>
-		/// Returns return values for the out and ref parameters
-		/// Note: the array returned has the size of the number of out and ref 
-		/// argument definitions
-		/// </summary>
-		/// <returns></returns>
-		internal static object[] GetAllReturnValues()
-		{
-			InitializeThreadStatic();
-			List<object> returnValues = new List<object>();
-			foreach (ArgumentDefinition arg in args)
-			{
-				if (arg.InOutRef == InOutRefArgument.OutArg || arg.InOutRef == InOutRefArgument.RefArg)
-				{
-					returnValues.Add(arg.returnValue);
-				}
-			}
-			return returnValues.ToArray();
-		}
+        /// <summary>
+        /// Returns return values for the out and ref parameters
+        /// Note: the array returned has the size of the number of out and ref 
+        /// argument definitions
+        /// </summary>
+        /// <returns></returns>
+        internal static object[] GetAllReturnValues()
+        {
+            InitializeThreadStatic();
+            List<object> returnValues = new List<object>();
+            foreach (ArgumentDefinition arg in args)
+            {
+                if (arg.InOutRef == InOutRefArgument.OutArg || arg.InOutRef == InOutRefArgument.RefArg)
+                {
+                    returnValues.Add(arg.returnValue);
+                }
+            }
+            return returnValues.ToArray();
+        }
 
-		/// <summary>
-		/// Returns the constraints for all arguments.
-		/// Out arguments have an Is.Anything constraint and are also in the list.
-		/// </summary>
-		/// <returns></returns>
-		internal static AbstractConstraint[] GetAllConstraints()
-		{
-			InitializeThreadStatic();
-			List<AbstractConstraint> constraints = new List<AbstractConstraint>();
-			foreach (ArgumentDefinition arg in args)
-			{
-				constraints.Add(arg.constraint);
-			}
-			return constraints.ToArray();
-		}
+        /// <summary>
+        /// Returns the constraints for all arguments.
+        /// Out arguments have an Is.Anything constraint and are also in the list.
+        /// </summary>
+        /// <returns></returns>
+        internal static AbstractConstraint[] GetAllConstraints()
+        {
+            InitializeThreadStatic();
+            List<AbstractConstraint> constraints = new List<AbstractConstraint>();
+            foreach (ArgumentDefinition arg in args)
+            {
+                constraints.Add(arg.constraint);
+            }
+            return constraints.ToArray();
+        }
 
-		internal static void CheckMethodSignature(MethodInfo method)
-		{
-			InitializeThreadStatic();
-			ParameterInfo[] parameters = method.GetParameters();
-			AbstractConstraint[] constraints = new AbstractConstraint[parameters.Length];
+        internal static void CheckMethodSignature(MethodInfo method)
+        {
+            InitializeThreadStatic();
+            ParameterInfo[] parameters = method.GetParameters();
+            AbstractConstraint[] constraints = new AbstractConstraint[parameters.Length];
 
-			if (args.Count < parameters.Length)
-			{
-				throw new InvalidOperationException(
-					string.Format("When using Arg<T>, all arguments must be defined using Arg<T>.Is, Arg<T>.Text, Arg<T>.List, Arg<T>.Ref or Arg<T>.Out. {0} arguments expected, {1} have been defined.",
-						parameters.Length, args.Count));
-			}
-			if (args.Count > parameters.Length)
-			{
-				throw new InvalidOperationException(
-					string.Format("Use Arg<T> ONLY within a mock method call while recording. {0} arguments expected, {1} have been defined.",
-						parameters.Length, args.Count));
-			}
+            if (args.Count < parameters.Length)
+            {
+                throw new InvalidOperationException(
+                    string.Format("When using Arg<T>, all arguments must be defined using Arg<T>.Is, Arg<T>.Text, Arg<T>.List, Arg<T>.Ref or Arg<T>.Out. {0} arguments expected, {1} have been defined.",
+                        parameters.Length, args.Count));
+            }
+            if (args.Count > parameters.Length)
+            {
+                throw new InvalidOperationException(
+                    string.Format("Use Arg<T> ONLY within a mock method call while recording. {0} arguments expected, {1} have been defined.",
+                        parameters.Length, args.Count));
+            }
 
-			for (int i = 0; i < parameters.Length; i++)
-			{
-				if (parameters[i].IsOut)
-				{
-					if (args[i].InOutRef != InOutRefArgument.OutArg)
-					{
-						throw new InvalidOperationException(
-							string.Format("Argument {0} must be defined as: out Arg<T>.Out(returnvalue).Dummy",
-								i));
-					}
-				}
-				else if (parameters[i].ParameterType.IsByRef)
-				{
-					if (args[i].InOutRef != InOutRefArgument.RefArg)
-					{
-						throw new InvalidOperationException(
-							string.Format("Argument {0} must be defined as: ref Arg<T>.Ref(constraint, returnvalue).Dummy",
-								i));
-					}
-				}
-				else if (args[i].InOutRef != InOutRefArgument.InArg)
-				{
-					throw new InvalidOperationException(
-						string.Format("Argument {0} must be defined using: Arg<T>.Is, Arg<T>.Text or Arg<T>.List",
-							i));
-				}
-			}
-		}
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].IsOut)
+                {
+                    if (args[i].InOutRef != InOutRefArgument.OutArg)
+                    {
+                        throw new InvalidOperationException(
+                            string.Format("Argument {0} must be defined as: out Arg<T>.Out(returnvalue).Dummy",
+                                i));
+                    }
+                }
+                else if (parameters[i].ParameterType.IsByRef)
+                {
+                    if (args[i].InOutRef != InOutRefArgument.RefArg)
+                    {
+                        throw new InvalidOperationException(
+                            string.Format("Argument {0} must be defined as: ref Arg<T>.Ref(constraint, returnvalue).Dummy",
+                                i));
+                    }
+                }
+                else if (args[i].InOutRef != InOutRefArgument.InArg)
+                {
+                    throw new InvalidOperationException(
+                        string.Format("Argument {0} must be defined using: Arg<T>.Is, Arg<T>.Text or Arg<T>.List",
+                            i));
+                }
+            }
+        }
 
-		private static void InitializeThreadStatic()
-		{
-			if (args == null)
-			{
-				args = new List<ArgumentDefinition>();
-			}
-		}
+        private static void InitializeThreadStatic()
+        {
+            if (args == null)
+            {
+                args = new List<ArgumentDefinition>();
+            }
+        }
 
-		private struct ArgumentDefinition
-		{
-			public InOutRefArgument InOutRef;
-			public AbstractConstraint constraint;
-			public object returnValue;
-			public ArgumentDefinition(AbstractConstraint constraint)
-			{
-				this.InOutRef = InOutRefArgument.InArg;
-				this.constraint = constraint;
-				this.returnValue = null;
-			}
-			public ArgumentDefinition(AbstractConstraint constraint, object returnValue)
-			{
-				this.InOutRef = InOutRefArgument.RefArg;
-				this.constraint = constraint;
-				this.returnValue = returnValue;
-			}
-			public ArgumentDefinition(object returnValue)
-			{
-				this.InOutRef = InOutRefArgument.OutArg;
-				this.returnValue = returnValue;
-				this.constraint = Is.Anything();
-			}
+        private struct ArgumentDefinition
+        {
+            public InOutRefArgument InOutRef;
+            public AbstractConstraint constraint;
+            public object returnValue;
+            public ArgumentDefinition(AbstractConstraint constraint)
+            {
+                this.InOutRef = InOutRefArgument.InArg;
+                this.constraint = constraint;
+                this.returnValue = null;
+            }
+            public ArgumentDefinition(AbstractConstraint constraint, object returnValue)
+            {
+                this.InOutRef = InOutRefArgument.RefArg;
+                this.constraint = constraint;
+                this.returnValue = returnValue;
+            }
+            public ArgumentDefinition(object returnValue)
+            {
+                this.InOutRef = InOutRefArgument.OutArg;
+                this.returnValue = returnValue;
+                this.constraint = Is.Anything();
+            }
 
-		}
+        }
 
-		private enum InOutRefArgument
-		{
-			InArg,
-			OutArg,
-			RefArg
-		}
+        private enum InOutRefArgument
+        {
+            InArg,
+            OutArg,
+            RefArg
+        }
 
-	}
+    }
 }

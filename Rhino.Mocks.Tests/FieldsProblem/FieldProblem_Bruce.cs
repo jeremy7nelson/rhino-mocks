@@ -27,14 +27,12 @@
 #endregion
 
 
-using System;
-using System.Text;
-using Xunit;
 using Rhino.Mocks.Impl;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_Bruce
     {
         [Fact]
@@ -54,7 +52,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
         public class ClassWithDefaultCtor
         {
             public ClassWithDefaultCtor()
-            {}
+            { }
         }
     }
 }

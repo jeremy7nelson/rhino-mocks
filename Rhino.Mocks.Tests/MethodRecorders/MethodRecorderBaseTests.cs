@@ -41,179 +41,179 @@ using Range = Rhino.Mocks.Impl.Range;
 
 namespace Rhino.Mocks.Tests.MethodRecorders
 {
-	
-	public class MethodRecorderBaseTests
-	{
-		private IMethodRecorder recorder;
-		private TestMethodRecorder testRecorder;
-		private object proxy;
-		private MethodInfo method;
-		private IExpectation expectation;
-		private object[] args;
 
-		public MethodRecorderBaseTests()
-		{
-			recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-			testRecorder = new TestMethodRecorder();
-			recorder.AddRecorder(testRecorder);
+    public class MethodRecorderBaseTests
+    {
+        private IMethodRecorder recorder;
+        private TestMethodRecorder testRecorder;
+        private object proxy;
+        private MethodInfo method;
+        private IExpectation expectation;
+        private object[] args;
 
-			proxy = new object();
-			method = typeof (object).GetMethod("ToString");
-			expectation = new AnyArgsExpectation(new FakeInvocation(method), new Range(1, 1));
-			args = new object[0];
-		}
+        public MethodRecorderBaseTests()
+        {
+            recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+            testRecorder = new TestMethodRecorder();
+            recorder.AddRecorder(testRecorder);
 
-		[Fact]
-		public void DoRecordCalled()
-		{
-			recorder.Record(proxy, method, expectation);
-			Assert.True(testRecorder.DoRecordCalled);
-		}
+            proxy = new object();
+            method = typeof(object).GetMethod("ToString");
+            expectation = new AnyArgsExpectation(new FakeInvocation(method), new Range(1, 1));
+            args = new object[0];
+        }
 
-		[Fact]
-		public void DoGetRecordedExpectationCalled()
-		{
-			BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
-			typeof (MethodRecorderBase).
-				GetField("replayerToCall", bindingFlags).
-				SetValue(recorder, testRecorder);
-			recorder.GetRecordedExpectation(new FakeInvocation(method), proxy, method, args);
-			Assert.True(testRecorder.DoGetRecordedExpectationCalled);
-		}
+        [Fact]
+        public void DoRecordCalled()
+        {
+            recorder.Record(proxy, method, expectation);
+            Assert.True(testRecorder.DoRecordCalled);
+        }
 
-		[Fact]
-		public void DoGetAllExpectationsForProxyAndMethodCalled()
-		{
-			recorder.GetAllExpectationsForProxyAndMethod(proxy, method);
-			Assert.True(testRecorder.DoGetAllExpectationsForProxyAndMethodCalled);
-		}
+        [Fact]
+        public void DoGetRecordedExpectationCalled()
+        {
+            BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
+            typeof(MethodRecorderBase).
+                GetField("replayerToCall", bindingFlags).
+                SetValue(recorder, testRecorder);
+            recorder.GetRecordedExpectation(new FakeInvocation(method), proxy, method, args);
+            Assert.True(testRecorder.DoGetRecordedExpectationCalled);
+        }
 
-		[Fact]
-		public void DoGetAllExpectationsForProxyCalled()
-		{
-			recorder.GetAllExpectationsForProxy(proxy);
-			Assert.True(testRecorder.DoGetAllExpectationsForProxyCalled);
-		}
+        [Fact]
+        public void DoGetAllExpectationsForProxyAndMethodCalled()
+        {
+            recorder.GetAllExpectationsForProxyAndMethod(proxy, method);
+            Assert.True(testRecorder.DoGetAllExpectationsForProxyAndMethodCalled);
+        }
 
-		[Fact]
-		public void DoReplaceExpectationCalled()
-		{
-			recorder.ReplaceExpectation(proxy, method, expectation, expectation);
-			Assert.True(testRecorder.DoReplaceExpectationCalled);
-		}
+        [Fact]
+        public void DoGetAllExpectationsForProxyCalled()
+        {
+            recorder.GetAllExpectationsForProxy(proxy);
+            Assert.True(testRecorder.DoGetAllExpectationsForProxyCalled);
+        }
 
-		[Fact]
-		public void DoHasExpectationsCalled()
-		{
-			bool dummy = recorder.HasExpectations;
-			Assert.True(testRecorder.DoHasExpectationsCalled);
-		}
+        [Fact]
+        public void DoReplaceExpectationCalled()
+        {
+            recorder.ReplaceExpectation(proxy, method, expectation, expectation);
+            Assert.True(testRecorder.DoReplaceExpectationCalled);
+        }
 
-		[Fact]
-		public void DoAddRecorderCalled()
-		{
-			recorder.AddRecorder(recorder);
-			Assert.True(testRecorder.DoAddRecorderCalled);
-		}
+        [Fact]
+        public void DoHasExpectationsCalled()
+        {
+            bool dummy = recorder.HasExpectations;
+            Assert.True(testRecorder.DoHasExpectationsCalled);
+        }
 
-		[Fact]
-		public void DoGetRecordedExpectationOrNullCalled()
-		{
-			recorder.GetRecordedExpectationOrNull(proxy, method, args);
-			Assert.True(testRecorder.DoGetRecordedExpectationOrNullCalled);
-		}
+        [Fact]
+        public void DoAddRecorderCalled()
+        {
+            recorder.AddRecorder(recorder);
+            Assert.True(testRecorder.DoAddRecorderCalled);
+        }
 
-		[Fact]
-		public void DoRemoveExpectationCalled()
-		{
-			recorder.RemoveExpectation(new AnyArgsExpectation(new FakeInvocation(method), new Range(1, 1)));
-			Assert.True(testRecorder.DoRemoveExpectationCalled);
-		}
+        [Fact]
+        public void DoGetRecordedExpectationOrNullCalled()
+        {
+            recorder.GetRecordedExpectationOrNull(proxy, method, args);
+            Assert.True(testRecorder.DoGetRecordedExpectationOrNullCalled);
+        }
 
-		internal class TestMethodRecorder : MethodRecorderBase
-		{
-			public bool DoRecordCalled,
-				DoGetRecordedExpectationCalled,
-				DoGetAllExpectationsForProxyAndMethodCalled,
-				DoGetAllExpectationsForProxyCalled,
-				DoReplaceExpectationCalled,
-				DoHasExpectationsCalled,
-				DoAddRecorderCalled,
-				DoGetRecordedExpectationOrNullCalled,
-				DoExpectedCallsCalled,
-				DoRemoveExpectationCalled;
+        [Fact]
+        public void DoRemoveExpectationCalled()
+        {
+            recorder.RemoveExpectation(new AnyArgsExpectation(new FakeInvocation(method), new Range(1, 1)));
+            Assert.True(testRecorder.DoRemoveExpectationCalled);
+        }
 
-			public TestMethodRecorder()
-				: base(new ProxyMethodExpectationsDictionary())
-			{
-			}
+        internal class TestMethodRecorder : MethodRecorderBase
+        {
+            public bool DoRecordCalled,
+                DoGetRecordedExpectationCalled,
+                DoGetAllExpectationsForProxyAndMethodCalled,
+                DoGetAllExpectationsForProxyCalled,
+                DoReplaceExpectationCalled,
+                DoHasExpectationsCalled,
+                DoAddRecorderCalled,
+                DoGetRecordedExpectationOrNullCalled,
+                DoExpectedCallsCalled,
+                DoRemoveExpectationCalled;
 
-			protected override void DoRecord(object proxy, MethodInfo method, IExpectation expectation)
-			{
-				DoRecordCalled = true;
-			}
+            public TestMethodRecorder()
+                : base(new ProxyMethodExpectationsDictionary())
+            {
+            }
 
-			protected override IExpectation DoGetRecordedExpectation(IInvocation invocation, object proxy, MethodInfo method, object[] args)
-			{
-				DoGetRecordedExpectationCalled = true;
-				return null;
-			}
+            protected override void DoRecord(object proxy, MethodInfo method, IExpectation expectation)
+            {
+                DoRecordCalled = true;
+            }
 
-			public override ExpectationsList GetAllExpectationsForProxyAndMethod(object proxy, MethodInfo method)
-			{
-				DoGetAllExpectationsForProxyAndMethodCalled = true;
-				return new ExpectationsList();
-			}
+            protected override IExpectation DoGetRecordedExpectation(IInvocation invocation, object proxy, MethodInfo method, object[] args)
+            {
+                DoGetRecordedExpectationCalled = true;
+                return null;
+            }
 
-			protected override ExpectationsList DoGetAllExpectationsForProxy(object proxy)
-			{
-				DoGetAllExpectationsForProxyCalled = true;
-				return new ExpectationsList();
-			}
+            public override ExpectationsList GetAllExpectationsForProxyAndMethod(object proxy, MethodInfo method)
+            {
+                DoGetAllExpectationsForProxyAndMethodCalled = true;
+                return new ExpectationsList();
+            }
 
-			protected override void DoReplaceExpectation(object proxy, MethodInfo method, IExpectation oldExpectation, IExpectation newExpectation)
-			{
-				DoReplaceExpectationCalled = true;
-			}
+            protected override ExpectationsList DoGetAllExpectationsForProxy(object proxy)
+            {
+                DoGetAllExpectationsForProxyCalled = true;
+                return new ExpectationsList();
+            }
 
-			protected override bool DoHasExpectations
-			{
-				get
-				{
-					DoHasExpectationsCalled = true;
-					return false;
-				}
-			}
+            protected override void DoReplaceExpectation(object proxy, MethodInfo method, IExpectation oldExpectation, IExpectation newExpectation)
+            {
+                DoReplaceExpectationCalled = true;
+            }
 
-			protected override void DoRemoveExpectation(IExpectation expectation)
-			{
-				DoRemoveExpectationCalled = true;
-			}
+            protected override bool DoHasExpectations
+            {
+                get
+                {
+                    DoHasExpectationsCalled = true;
+                    return false;
+                }
+            }
 
-			protected override IExpectation DoGetRecordedExpectationOrNull(object proxy, MethodInfo method, object[] args)
-			{
-				DoGetRecordedExpectationOrNullCalled = true;
-				return null;
-			}
+            protected override void DoRemoveExpectation(IExpectation expectation)
+            {
+                DoRemoveExpectationCalled = true;
+            }
 
-			protected override void DoAddRecorder(IMethodRecorder recorder)
-			{
-				DoAddRecorderCalled = true;
-			}
+            protected override IExpectation DoGetRecordedExpectationOrNull(object proxy, MethodInfo method, object[] args)
+            {
+                DoGetRecordedExpectationOrNullCalled = true;
+                return null;
+            }
 
-			public override string GetExpectedCallsMessage()
-			{
-				DoExpectedCallsCalled = true;
-				return null;
-			}
+            protected override void DoAddRecorder(IMethodRecorder recorder)
+            {
+                DoAddRecorderCalled = true;
+            }
 
-			/// <summary>
-			/// Get the expectation for this method on this object with this arguments 
-			/// </summary>
-			public override ExpectationViolationException UnexpectedMethodCall(IInvocation invoication,object proxy, MethodInfo method, object[] args)
-			{
-				throw new NotImplementedException();
-			}
-		}
-	}
+            public override string GetExpectedCallsMessage()
+            {
+                DoExpectedCallsCalled = true;
+                return null;
+            }
+
+            /// <summary>
+            /// Get the expectation for this method on this object with this arguments 
+            /// </summary>
+            public override ExpectationViolationException UnexpectedMethodCall(IInvocation invoication, object proxy, MethodInfo method, object[] args)
+            {
+                throw new NotImplementedException();
+            }
+        }
+    }
 }

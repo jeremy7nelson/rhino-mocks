@@ -27,20 +27,19 @@
 #endregion
 
 
+using Rhino.Mocks.Exceptions;
+using Rhino.Mocks.Interfaces;
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Xml;
-
 using Xunit;
-using Rhino.Mocks.Exceptions;
-using Rhino.Mocks.Interfaces;
 
 namespace Rhino.Mocks.Tests
 {
-    
+
     public class MultiMocks
     {
         #region CanCreateAStrictMultiMockFromTwoInterfaces
@@ -110,7 +109,7 @@ namespace Rhino.Mocks.Tests
         {
             collection.Clear();
             IDisposable disposable = collection as IDisposable;
-            if(disposable!=null)
+            if (disposable != null)
                 disposable.Dispose();
         }
         #endregion
@@ -136,25 +135,25 @@ namespace Rhino.Mocks.Tests
 
         private static void CanCreateAStrictMultiMockFromClassAndTwoInterfacesCommon(MockRepository mocks, XmlReader reader)
         {
-            Expect.Call( reader.AttributeCount ).Return( 3 );
+            Expect.Call(reader.AttributeCount).Return(3);
 
             ICloneable cloneable = reader as ICloneable;
-            Assert.NotNull( cloneable );
+            Assert.NotNull(cloneable);
 
-            Expect.Call( cloneable.Clone() ).Return( reader );
+            Expect.Call(cloneable.Clone()).Return(reader);
 
             IHasXmlNode hasXmlNode = reader as IHasXmlNode;
-            Assert.NotNull( hasXmlNode );
+            Assert.NotNull(hasXmlNode);
 
             XmlNode node = new XmlDocument();
-            Expect.Call( hasXmlNode.GetNode() ).Return( node );
+            Expect.Call(hasXmlNode.GetNode()).Return(node);
 
             mocks.ReplayAll();
 
-            Assert.Equal( 3, reader.AttributeCount );
-            Assert.Equal( node, hasXmlNode.GetNode() );
+            Assert.Equal(3, reader.AttributeCount);
+            Assert.Equal(node, hasXmlNode.GetNode());
 
-            Assert.Same( cloneable, cloneable.Clone() );
+            Assert.Same(cloneable, cloneable.Clone());
 
             mocks.VerifyAll();
         }
@@ -358,7 +357,7 @@ namespace Rhino.Mocks.Tests
                 stringBuilder,
                 formatProvider
             );
-            
+
             CommonConstructorArgsTest(mocks, stringBuilder, formatProvider, mockedWriter, MockType.Partial);
         }
         #endregion
@@ -368,7 +367,7 @@ namespace Rhino.Mocks.Tests
         public void CannotMultiMockUsingClassesAsExtras()
         {
             MockRepository mocks = new MockRepository();
-        	Assert.Throws<ArgumentException>(() => mocks.StrictMultiMock(typeof (XmlReader), typeof (XmlWriter)));
+            Assert.Throws<ArgumentException>(() => mocks.StrictMultiMock(typeof(XmlReader), typeof(XmlWriter)));
         }
         #endregion
 
@@ -420,10 +419,10 @@ namespace Rhino.Mocks.Tests
             // Configure expectations for mocked writer
             SetupResult.For(mockedWriter.FormatProvider).CallOriginalMethod(OriginalCallOptions.CreateExpectation);
             mockedWriter.Write((string)null);
-						LastCall.IgnoreArguments().CallOriginalMethod(OriginalCallOptions.CreateExpectation);
+            LastCall.IgnoreArguments().CallOriginalMethod(OriginalCallOptions.CreateExpectation);
 
             mockedWriter.Flush();
-						LastCall.Repeat.Any().CallOriginalMethod(OriginalCallOptions.CreateExpectation);
+            LastCall.Repeat.Any().CallOriginalMethod(OriginalCallOptions.CreateExpectation);
 
             mockedWriter.Close();
 
@@ -476,8 +475,8 @@ namespace Rhino.Mocks.Tests
             Assert.Null(errorInfo.Error);
             Assert.Equal("error!!!", errorInfo.Error);
 
-        	if(MockType.Strict != mockType)
-				mocks.VerifyAll();
+            if (MockType.Strict != mockType)
+                mocks.VerifyAll();
         }
         #endregion
     }

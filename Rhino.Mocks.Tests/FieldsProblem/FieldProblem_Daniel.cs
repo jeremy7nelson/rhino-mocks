@@ -27,13 +27,11 @@
 #endregion
 
 
-using System;
-using System.Text;
 using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_Daniel
     {
         public class ClassThatOverrideEquals
@@ -43,10 +41,10 @@ namespace Rhino.Mocks.Tests.FieldsProblem
                 return base.Equals(obj);
             }
 
-        	public override int GetHashCode()
-        	{
-        		return base.GetHashCode();
-        	}
+            public override int GetHashCode()
+            {
+                return base.GetHashCode();
+            }
         }
 
         [Fact]

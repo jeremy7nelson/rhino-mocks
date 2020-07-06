@@ -9,7 +9,7 @@ namespace Rhino.Mocks.GettingStarted
         public void Demonstrate_Stub_Implements_the_passed_type()
         {
             // Arrange
-            
+
             // Act
             var stub = MockRepository.GenerateStub<IFoo>();
 

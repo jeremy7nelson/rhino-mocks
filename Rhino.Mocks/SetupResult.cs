@@ -32,12 +32,12 @@ using Rhino.Mocks.Interfaces;
 
 namespace Rhino.Mocks
 {
-	/// <summary>
-	/// Setup method calls to repeat any number of times.
-	/// </summary>
-	public static class SetupResult
-	{
-		/*
+    /// <summary>
+    /// Setup method calls to repeat any number of times.
+    /// </summary>
+    public static class SetupResult
+    {
+        /*
 		 * Method: For
 		 * Sets the last method call to repeat any number of times and return the method options 
 		 * for the last method call, which usually will be a method call
@@ -55,18 +55,18 @@ namespace Rhino.Mocks
 		 * If you need to record in a multi threading environment, use the <On> method, which _can_
 		 * handle multi threading scenarios.
 		 * 
-		 */ 
-		/// <summary>
-		/// Get the method options and set the last method call to repeat 
-		/// any number of times.
-		/// This also means that the method would transcend ordering
-		/// </summary>
-		public static IMethodOptions<T> For<T>(T ignored)
-		{
-			return LastCall.GetOptions<T>().Repeat.Any();
-		}
+		 */
+        /// <summary>
+        /// Get the method options and set the last method call to repeat 
+        /// any number of times.
+        /// This also means that the method would transcend ordering
+        /// </summary>
+        public static IMethodOptions<T> For<T>(T ignored)
+        {
+            return LastCall.GetOptions<T>().Repeat.Any();
+        }
 
-		/*
+        /*
 		 * Method: On
 		 * Sets the last method call to repeat any number of times and return the method options 
 		 * for the last method call on the mockInstance.
@@ -79,15 +79,15 @@ namespace Rhino.Mocks
 		 * Thread safety:
 		 * This method can be used in mutli threading scenarios.
 		 */
-		/// <summary>
-		/// Get the method options for the last method call on the mockInstance and set it
-		/// to repeat any number of times.
-		/// This also means that the method would transcend ordering
-		/// </summary>
-		public static ICreateMethodExpectation On(object mockedInstace)
-		{
-			IMockedObject mockedObject = MockRepository.GetMockedObject(mockedInstace);
-			return new CreateMethodExpectationForSetupResult(mockedObject, mockedInstace);
-		}
-	}
+        /// <summary>
+        /// Get the method options for the last method call on the mockInstance and set it
+        /// to repeat any number of times.
+        /// This also means that the method would transcend ordering
+        /// </summary>
+        public static ICreateMethodExpectation On(object mockedInstace)
+        {
+            IMockedObject mockedObject = MockRepository.GetMockedObject(mockedInstace);
+            return new CreateMethodExpectationForSetupResult(mockedObject, mockedInstace);
+        }
+    }
 }

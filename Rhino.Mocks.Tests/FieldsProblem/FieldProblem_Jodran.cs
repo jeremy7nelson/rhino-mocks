@@ -32,90 +32,90 @@ using Xunit.Extensions;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	public class FieldProblem_Jodran
-	{
-		[Theory]
+    public class FieldProblem_Jodran
+    {
+        [Theory]
         [InlineData(true)]
-		[InlineData(false)]
-		public void CanUseExpectSyntax_OnStubWithOrderedExpectations(bool shouldSwitchToReplyImmediately)
-		{
-			MockRepository mocks = new MockRepository();
+        [InlineData(false)]
+        public void CanUseExpectSyntax_OnStubWithOrderedExpectations(bool shouldSwitchToReplyImmediately)
+        {
+            MockRepository mocks = new MockRepository();
 
-			var foo54 = mocks.Stub<IFoo54>();
+            var foo54 = mocks.Stub<IFoo54>();
             if (shouldSwitchToReplyImmediately)
                 mocks.ReplayAll();
 
-			using (mocks.Ordered())
-			{
-				foo54
-					.Expect(x => x.DoSomething())
-					.Return(0);
+            using (mocks.Ordered())
+            {
+                foo54
+                    .Expect(x => x.DoSomething())
+                    .Return(0);
 
-				foo54
-					.Expect(x => x.DoSomethingElse());
-			}
+                foo54
+                    .Expect(x => x.DoSomethingElse());
+            }
 
             if (!shouldSwitchToReplyImmediately)
                 mocks.Replay(foo54);
-			
-			foo54.DoSomething();
-			foo54.DoSomethingElse();
-		}
+
+            foo54.DoSomething();
+            foo54.DoSomethingElse();
+        }
 
         [Theory, InlineData(true), InlineData(false)]
         public void CanUseExpectSyntax_OnMockWithOrderedExpectations(bool shouldSwitchToReplyImmediately)
-		{
-			MockRepository mocks = new MockRepository();
+        {
+            MockRepository mocks = new MockRepository();
 
-			var foo54 = mocks.StrictMock<IFoo54>();
+            var foo54 = mocks.StrictMock<IFoo54>();
             if (shouldSwitchToReplyImmediately)
                 mocks.ReplayAll();
 
-			using (mocks.Ordered())
-			{
-				foo54
-					.Expect(x => x.DoSomething())
-					.Return(0);
+            using (mocks.Ordered())
+            {
+                foo54
+                    .Expect(x => x.DoSomething())
+                    .Return(0);
 
-				foo54
-					.Expect(x => x.DoSomethingElse());
-			}
+                foo54
+                    .Expect(x => x.DoSomethingElse());
+            }
 
             if (!shouldSwitchToReplyImmediately)
                 mocks.Replay(foo54);
-			
-			foo54.DoSomething();
-			foo54.DoSomethingElse();
 
-			foo54.VerifyAllExpectations();
-		}
+            foo54.DoSomething();
+            foo54.DoSomethingElse();
+
+            foo54.VerifyAllExpectations();
+        }
 
         [Theory]
-		[InlineData(true)]
-		[InlineData(false)]
+        [InlineData(true)]
+        [InlineData(false)]
         public void CanUseExpectSyntax_OnMockWithOrderedExpectations2(bool shouldSwitchToReplyImmediately)
-		{
-			MockRepository mocks = new MockRepository();
+        {
+            MockRepository mocks = new MockRepository();
 
-			var foo54 = mocks.StrictMock<IFoo54>();
+            var foo54 = mocks.StrictMock<IFoo54>();
             if (shouldSwitchToReplyImmediately)
                 mocks.ReplayAll();
 
-			using (mocks.Ordered())
-			{
-				foo54
-					.Expect(x => x.DoSomething())
-					.Return(0);
+            using (mocks.Ordered())
+            {
+                foo54
+                    .Expect(x => x.DoSomething())
+                    .Return(0);
 
-				foo54
-					.Expect(x => x.DoSomethingElse());
-			}
+                foo54
+                    .Expect(x => x.DoSomethingElse());
+            }
 
             if (!shouldSwitchToReplyImmediately)
                 mocks.Replay(foo54);
 
-			Assert.Throws<ExpectationViolationException>(() => foo54.DoSomethingElse());
-		}
+            Assert.Throws<ExpectationViolationException>(() => foo54.DoSomethingElse());
+        }
 
         [Fact]
         public void ExtensionMethodsTransistionStateCorrectly()
@@ -146,5 +146,5 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 
             foo54.VerifyAllExpectations();
         }
-	}
+    }
 }

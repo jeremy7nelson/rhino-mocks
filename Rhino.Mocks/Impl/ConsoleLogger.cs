@@ -1,7 +1,7 @@
-using System;
 using Castle.Core.Interceptor;
 using Rhino.Mocks.Interfaces;
 using Rhino.Mocks.Utilities;
+using System;
 
 namespace Rhino.Mocks.Impl
 {

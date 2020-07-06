@@ -27,149 +27,147 @@
 #endregion
 
 
+using Castle.Core.Interceptor;
+using Rhino.Mocks.Interfaces;
 using System;
 using System.Collections;
 using System.Reflection;
-using Castle.Core.Interceptor;
 using Xunit;
-using Rhino.Mocks.Exceptions;
-using Rhino.Mocks.Impl;
-using Rhino.Mocks.Interfaces;
 
 namespace Rhino.Mocks.Tests
 {
-	
-	public class ExtendingRhinoMocksFixture
-	{
-		[Fact]
-		public void CanUseCustomMocks()
-		{
-			CarRepository carRepository = new CarRepository();
-			carRepository.Add(new Car("Volvo"));
-			MyMockRepository mocks = new MyMockRepository();
-			IView view = (IView)mocks.QueryableMock(typeof(IView));
-			Presenter presenter = new Presenter(carRepository, view);
-			presenter.Render();
-			Car car = (Car)mocks.Query(view);
-			Assert.Equal("Volvo", car.Make);
-		}
-	}
 
-	public interface IView
-	{
-		void SetCar(Car c);
-	}
+    public class ExtendingRhinoMocksFixture
+    {
+        [Fact]
+        public void CanUseCustomMocks()
+        {
+            CarRepository carRepository = new CarRepository();
+            carRepository.Add(new Car("Volvo"));
+            MyMockRepository mocks = new MyMockRepository();
+            IView view = (IView)mocks.QueryableMock(typeof(IView));
+            Presenter presenter = new Presenter(carRepository, view);
+            presenter.Render();
+            Car car = (Car)mocks.Query(view);
+            Assert.Equal("Volvo", car.Make);
+        }
+    }
 
-	public class CarRepository : ArrayList
-	{
-	}
+    public interface IView
+    {
+        void SetCar(Car c);
+    }
 
-	public class Presenter
-	{
-		private readonly CarRepository repository;
-		private readonly IView view;
+    public class CarRepository : ArrayList
+    {
+    }
 
-		public Presenter(CarRepository repository, IView view)
-		{
-			this.repository = repository;
-			this.view = view;
-		}
+    public class Presenter
+    {
+        private readonly CarRepository repository;
+        private readonly IView view;
 
-		public void Render()
-		{
-			view.SetCar((Car)repository[0]);
-		}
-	}
+        public Presenter(CarRepository repository, IView view)
+        {
+            this.repository = repository;
+            this.view = view;
+        }
 
-	public class Car
-	{
-		private string name;
+        public void Render()
+        {
+            view.SetCar((Car)repository[0]);
+        }
+    }
 
-		public string Make
-		{
-			get { return name; }
-		}
+    public class Car
+    {
+        private string name;
 
-		public Car(string name)
-		{
-			this.name = name;
-		}
-	}
+        public string Make
+        {
+            get { return name; }
+        }
 
-	public class MyMockRepository : MockRepository
-	{
-		public object QueryableMock(Type type)
-		{
+        public Car(string name)
+        {
+            this.name = name;
+        }
+    }
+
+    public class MyMockRepository : MockRepository
+    {
+        public object QueryableMock(Type type)
+        {
             return CreateMockObject(type, new CreateMockState(CreateQueryMockState), new Type[0]);
-		}
+        }
 
-		private IMockState CreateQueryMockState(IMockedObject mockedObject)
-		{
-			return new QueryMockState(mockedObject);
-		}
+        private IMockState CreateQueryMockState(IMockedObject mockedObject)
+        {
+            return new QueryMockState(mockedObject);
+        }
 
-		internal class QueryMockState : IMockState
-		{
-			private readonly IMockedObject mockedObject;
-			public object LastCallFirstParam;
+        internal class QueryMockState : IMockState
+        {
+            private readonly IMockedObject mockedObject;
+            public object LastCallFirstParam;
 
-			public QueryMockState(IMockedObject mockedObject)
-			{
-				this.mockedObject = mockedObject;
-			}
+            public QueryMockState(IMockedObject mockedObject)
+            {
+                this.mockedObject = mockedObject;
+            }
 
 
-			public object MethodCall(IInvocation invocation, MethodInfo method, params object[] args)
-			{
-				if (args.Length != 1)
-					throw new NotSupportedException("Expected only a single argument");
-				LastCallFirstParam = args[0];
-				return null;
-			}
+            public object MethodCall(IInvocation invocation, MethodInfo method, params object[] args)
+            {
+                if (args.Length != 1)
+                    throw new NotSupportedException("Expected only a single argument");
+                LastCallFirstParam = args[0];
+                return null;
+            }
 
-			public void Verify()
-			{
-			}
+            public void Verify()
+            {
+            }
 
-			public IMockState VerifyState
-			{
-				get { return this; }
-			}
+            public IMockState VerifyState
+            {
+                get { return this; }
+            }
 
-			public IMockState Replay()
-			{
-				return this;
-			}
+            public IMockState Replay()
+            {
+                return this;
+            }
 
-			public IMockState BackToRecord()
-			{
-				return this;
-			}
+            public IMockState BackToRecord()
+            {
+                return this;
+            }
 
-			public IMethodOptions<T> GetLastMethodOptions<T>()
-			{
-				throw new NotImplementedException();
-			}
+            public IMethodOptions<T> GetLastMethodOptions<T>()
+            {
+                throw new NotImplementedException();
+            }
 
-			public IMethodOptions<object> LastMethodOptions
-			{
-				get { throw new NotImplementedException(); }
-			}
+            public IMethodOptions<object> LastMethodOptions
+            {
+                get { throw new NotImplementedException(); }
+            }
 
-			public void SetExceptionToThrowOnVerify(Exception ex)
-			{
-			}
+            public void SetExceptionToThrowOnVerify(Exception ex)
+            {
+            }
 
-		    public void NotifyCallOnPropertyBehavior()
-		    {
-		        
-		    }
-		}
+            public void NotifyCallOnPropertyBehavior()
+            {
 
-		public object Query(object mock)
-		{
-			QueryMockState query = (QueryMockState)base.proxies[mock];
-			return query.LastCallFirstParam;
-		}
-	}
+            }
+        }
+
+        public object Query(object mock)
+        {
+            QueryMockState query = (QueryMockState)base.proxies[mock];
+            return query.LastCallFirstParam;
+        }
+    }
 }

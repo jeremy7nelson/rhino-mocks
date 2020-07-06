@@ -118,7 +118,7 @@ namespace Rhino.Mocks
         /// </summary>
         protected delegate IMockState CreateMockState(IMockedObject mockedObject);
 
-#region Variables
+        #region Variables
 
         /*
          * Variable: generatorMap
@@ -180,9 +180,9 @@ namespace Rhino.Mocks
         private ProxyGenerationOptions proxyGenerationOptions;
         private InvocationVisitorsFactory invocationVisitorsFactory;
 
-#endregion
+        #endregion
 
-#region Properties
+        #region Properties
 
         /*
          * Property: Recorder
@@ -198,9 +198,9 @@ namespace Rhino.Mocks
             get { return recorders.Peek() as IMethodRecorder; }
         }
 
-#endregion
+        #endregion
 
-#region c'tors
+        #region c'tors
 
         /* function: MockRepository
          * Create a new instance of MockRepository
@@ -213,7 +213,7 @@ namespace Rhino.Mocks
         {
             proxyGenerationOptions = new ProxyGenerationOptions
             {
-                AttributesToAddToGeneratedTypes = 
+                AttributesToAddToGeneratedTypes =
                     {
                         new __ProtectAttribute()
                     }
@@ -232,9 +232,9 @@ namespace Rhino.Mocks
         }
 
 
-#endregion
+        #endregion
 
-#region Methods
+        #region Methods
 
         /*
          * Method: Ordered
@@ -663,9 +663,9 @@ namespace Rhino.Mocks
             return proxies[mock].GetLastMethodOptions<T>();
         }
 
-#endregion
+        #endregion
 
-#region Implementation Details
+        #region Implementation Details
 
         /*
          * Method: MethodCall
@@ -742,7 +742,7 @@ namespace Rhino.Mocks
             List<Type> implementedTypesForGenericInvocationDiscoverability = new List<Type>(extras);
             implementedTypesForGenericInvocationDiscoverability.Add(type);
             ProxyInstance proxyInstance = new ProxyInstance(this, implementedTypesForGenericInvocationDiscoverability.ToArray());
-            RhinoInterceptor interceptor = new RhinoInterceptor(this, proxyInstance,invocationVisitorsFactory.CreateStandardInvocationVisitors(proxyInstance, this));
+            RhinoInterceptor interceptor = new RhinoInterceptor(this, proxyInstance, invocationVisitorsFactory.CreateStandardInvocationVisitors(proxyInstance, this));
             ArrayList types = new ArrayList();
             types.AddRange(extras);
             types.Add(typeof(IMockedObject));
@@ -778,7 +778,7 @@ namespace Rhino.Mocks
             ProxyInstance proxyInstance = new ProxyInstance(this,
                                                              implementedTypesForGenericInvocationDiscoverability
                                                                  .ToArray());
-            RhinoInterceptor interceptor = new RhinoInterceptor(this, proxyInstance,invocationVisitorsFactory.CreateStandardInvocationVisitors(proxyInstance, this));
+            RhinoInterceptor interceptor = new RhinoInterceptor(this, proxyInstance, invocationVisitorsFactory.CreateStandardInvocationVisitors(proxyInstance, this));
 
             List<Type> types = new List<Type>();
             types.AddRange(extras);
@@ -798,7 +798,7 @@ namespace Rhino.Mocks
             object proxy;
 
             ProxyInstance proxyInstance = new ProxyInstance(this);
-            RhinoInterceptor interceptor = new RhinoInterceptor(this, proxyInstance,invocationVisitorsFactory.CreateStandardInvocationVisitors(proxyInstance, this));
+            RhinoInterceptor interceptor = new RhinoInterceptor(this, proxyInstance, invocationVisitorsFactory.CreateStandardInvocationVisitors(proxyInstance, this));
 
             Type[] types = new Type[] { typeof(IMockedObject) };
             var delegateTargetInterface = delegateTargetInterfaceCreator.GetDelegateTargetInterface(type);
@@ -806,7 +806,7 @@ namespace Rhino.Mocks
                 delegateTargetInterface,
                 types, proxyGenerationOptions, interceptor);
 
-            proxy = Delegate.CreateDelegate(type, target, delegateTargetInterface.Name+ ".Invoke");
+            proxy = Delegate.CreateDelegate(type, target, delegateTargetInterface.Name + ".Invoke");
             delegateProxies.Add(target, proxy);
 
             IMockState value = mockStateFactory(GetMockedObject(proxy));
@@ -894,9 +894,9 @@ namespace Rhino.Mocks
             recorders.Push(newRecorder);
         }
 
-#endregion
+        #endregion
 
-#region Convenience Methods
+        #region Convenience Methods
 
         /// <summary>
         /// All the mock objects in this repository will be moved
@@ -1059,15 +1059,15 @@ namespace Rhino.Mocks
             repository.proxies[proxy].SetExceptionToThrowOnVerify(expectationViolationException);
         }
 
-#endregion
+        #endregion
 
-#region AAA Methods (formerly MockRepositoryAAA.cs)
+        #region AAA Methods (formerly MockRepositoryAAA.cs)
         /* MockRepositoryAAA.cs contains further definitions on MockRepository.  MockRepository right now is too large of a class and allowing
          * to exist as partials "masks" the problems of this growing class".  The items in this reagion are transplants from the other file location
          */
 
         // Static methods for working with RhinoMocks using AAA syntax
-        
+
         /// <summary>Generates a stub without needing a <see cref="MockRepository"/></summary>
         /// <param name="argumentsForConstructor">Arguments for <typeparamref name="T"/>'s constructor</param>
         /// <typeparam name="T">The <see cref="Type"/> of stub to create.</typeparam>
@@ -1252,11 +1252,11 @@ namespace Rhino.Mocks
             repository.Replay(mockObject);
             return mockObject;
         }
-       
 
-#endregion
 
-#region Mock Repository using (formerly part of MockRepositoryRecordPlayback.cs)
+        #endregion
+
+        #region Mock Repository using (formerly part of MockRepositoryRecordPlayback.cs)
         /* Much like the "AAA Methods ..." region block above, the code in this region was in it's own file
          * which masked the problem of the growing file"
          */
@@ -1272,7 +1272,7 @@ namespace Rhino.Mocks
         // N.B. mockRepository.ReplayAll() and mockRepository.VerifyAll()
         //      calls are taken care of by Record/Playback
         //</summary>
-        
+
         ///<summary>
         ///</summary>
         ///<returns></returns>
@@ -1289,7 +1289,7 @@ namespace Rhino.Mocks
             return new PlaybackModeChanger(this);
         }
 
-#endregion
+        #endregion
 
         /// <summary>
         /// Creates a mock for the spesified type with strict mocking semantics.

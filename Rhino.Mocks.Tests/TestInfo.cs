@@ -27,8 +27,8 @@
 #endregion
 
 
-using System.Runtime.CompilerServices;
 using Rhino.Mocks;
+using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo(RhinoMocks.StrongName)]
 //[assembly: InternalsVisibleTo(RhinoMocks.NormalName)]

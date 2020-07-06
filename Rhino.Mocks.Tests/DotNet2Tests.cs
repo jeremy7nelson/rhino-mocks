@@ -29,20 +29,19 @@
 
 using System;
 using Xunit;
-using Rhino.Mocks.Exceptions;
 
 namespace Rhino.Mocks.Tests
 {
-	
-	public class DotNet2Tests : IDisposable
-	{
-		MockRepository mocks;
+
+    public class DotNet2Tests : IDisposable
+    {
+        MockRepository mocks;
         IDotNet2Features demo;
-		public DotNet2Tests()
-		{
-			mocks = new MockRepository();
+        public DotNet2Tests()
+        {
+            mocks = new MockRepository();
             demo = mocks.DynamicMock<IDotNet2Features>();
-		}
+        }
 
         public void Dispose()
         {
@@ -72,34 +71,34 @@ namespace Rhino.Mocks.Tests
             Assert.Equal(5, demo.NullableInt(53));
         }
 
-		[Fact]
-		public void CanStrictMockOnClassWithInternalMethod()
-		{
-			WithInternalMethod withInternalMethod = mocks.StrictMock<WithInternalMethod>();
-			withInternalMethod.Foo();
-			LastCall.Throw(new Exception("foo"));
-			mocks.ReplayAll();
-			try
-			{
-				withInternalMethod.Foo();
-				Assert.False(true, "Should have thrown");
-			}
-			catch (Exception e)
-			{
-				Assert.Equal("foo", e.Message);
-			}
-		}
+        [Fact]
+        public void CanStrictMockOnClassWithInternalMethod()
+        {
+            WithInternalMethod withInternalMethod = mocks.StrictMock<WithInternalMethod>();
+            withInternalMethod.Foo();
+            LastCall.Throw(new Exception("foo"));
+            mocks.ReplayAll();
+            try
+            {
+                withInternalMethod.Foo();
+                Assert.False(true, "Should have thrown");
+            }
+            catch (Exception e)
+            {
+                Assert.Equal("foo", e.Message);
+            }
+        }
 
-		internal interface IDotNet2Features
+        internal interface IDotNet2Features
         {
             int? NullableInt(int i);
         }
 
-		public class WithInternalMethod
-		{
-			internal virtual void Foo()
-			{
-			}
-		}
-	}
+        public class WithInternalMethod
+        {
+            internal virtual void Foo()
+            {
+            }
+        }
+    }
 }

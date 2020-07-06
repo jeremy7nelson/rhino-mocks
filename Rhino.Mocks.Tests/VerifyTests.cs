@@ -30,35 +30,35 @@ using Rhino.Mocks.Exceptions;
 
 namespace Rhino.Mocks.Tests
 {
-	using System;
-	using Xunit;
+    using System;
+    using Xunit;
 
-	
-	public class VerifyTests : IDisposable
-	{
-		private MockRepository mocks;
-		private ConcreteDemo demoParam;
-		private IDemo demo;
 
-		public  VerifyTests()
-		{
-			mocks = new MockRepository();
-			demoParam = mocks.StrictMock(typeof(ConcreteDemo)) as ConcreteDemo;
-			demo = mocks.StrictMock(typeof(IDemo)) as IDemo;
-		}
+    public class VerifyTests : IDisposable
+    {
+        private MockRepository mocks;
+        private ConcreteDemo demoParam;
+        private IDemo demo;
 
-		public void Dispose()
-		{
-			mocks.VerifyAll();
-		}
+        public VerifyTests()
+        {
+            mocks = new MockRepository();
+            demoParam = mocks.StrictMock(typeof(ConcreteDemo)) as ConcreteDemo;
+            demo = mocks.StrictMock(typeof(IDemo)) as IDemo;
+        }
 
-		[Fact]
-		public void MockParameterToStringShouldBeIgnoredIfItIsInVerifyState()
-		{
-			demo.VoidConcreteDemo(demoParam);
-			mocks.ReplayAll();
-			mocks.Verify(demoParam);
-			Assert.Throws<ExpectationViolationException>(() => mocks.Verify(demo));
-		}
-	}
+        public void Dispose()
+        {
+            mocks.VerifyAll();
+        }
+
+        [Fact]
+        public void MockParameterToStringShouldBeIgnoredIfItIsInVerifyState()
+        {
+            demo.VoidConcreteDemo(demoParam);
+            mocks.ReplayAll();
+            mocks.Verify(demoParam);
+            Assert.Throws<ExpectationViolationException>(() => mocks.Verify(demo));
+        }
+    }
 }

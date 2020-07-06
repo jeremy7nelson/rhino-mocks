@@ -28,37 +28,36 @@
 
 
 using System;
-using Rhino.Mocks.Constraints;
 
 namespace Rhino.Mocks.Constraints
 {
-	/*
+    /*
 	 * Class: Property
 	 * 
 	 * Constraints for dealing with object's properties
-	 */ 
-	/// <summary>
-	/// Central location for constraints for object's properties
-	/// </summary>
-	public static class Property
-	{
-		/*
+	 */
+    /// <summary>
+    /// Central location for constraints for object's properties
+    /// </summary>
+    public static class Property
+    {
+        /*
 		 * Method: Value
 		 * 
 		 * Determines that the parameter has property with the specified value
 		 * 
-		 */ 
+		 */
 
         /// <summary>
-		/// Constrains the parameter to have property with the specified value
-		/// </summary>
-		/// <param name="propertyName">Name of the property.</param>
-		/// <param name="expectedValue">Expected value.</param>
-		/// <returns></returns>
-		public static AbstractConstraint Value(string propertyName, object expectedValue)
-		{
-			return new PropertyIs(propertyName, expectedValue);
-		}
+        /// Constrains the parameter to have property with the specified value
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="expectedValue">Expected value.</param>
+        /// <returns></returns>
+        public static AbstractConstraint Value(string propertyName, object expectedValue)
+        {
+            return new PropertyIs(propertyName, expectedValue);
+        }
 
         /// <summary>
         /// Constrains the parameter to have property with the specified value.
@@ -93,21 +92,21 @@ namespace Rhino.Mocks.Constraints
             return new PropertyConstraint(declaringType, propertyName, propertyConstraint);
         }
 
-		/*
+        /*
 		 * Method: IsNull
 		 * 
 		 * Determines that the parameter has property with null value
 		 * 
-		 */ 
-		/// <summary>
-		/// Determines whether the parameter has the specified property and that it is null.
-		/// </summary>
-		/// <param name="propertyName">Name of the property.</param>
-		/// <returns></returns>
-		public static AbstractConstraint IsNull(string propertyName)
-		{
-			return new PropertyIs(propertyName, null);
-		}
+		 */
+        /// <summary>
+        /// Determines whether the parameter has the specified property and that it is null.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
+        public static AbstractConstraint IsNull(string propertyName)
+        {
+            return new PropertyIs(propertyName, null);
+        }
 
         /// <summary>
         /// Determines whether the parameter has the specified property and that it is null.
@@ -120,21 +119,21 @@ namespace Rhino.Mocks.Constraints
             return new PropertyIs(declaringType, propertyName, null);
         }
 
-		/*
+        /*
 		 * Method: IsNotNull
 		 * 
 		 * Determines that the parameter has property with non-null value
 		 * 
-		 */ 
-		/// <summary>
-		/// Determines whether the parameter has the specified property and that it is not null.
-		/// </summary>
-		/// <param name="propertyName">Name of the property.</param>
-		/// <returns></returns>
-		public static AbstractConstraint IsNotNull(string propertyName)
-		{
-			return !new PropertyIs(propertyName, null);
-		}
+		 */
+        /// <summary>
+        /// Determines whether the parameter has the specified property and that it is not null.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
+        public static AbstractConstraint IsNotNull(string propertyName)
+        {
+            return !new PropertyIs(propertyName, null);
+        }
 
         /// <summary>
         /// Determines whether the parameter has the specified property and that it is not null.
@@ -164,5 +163,5 @@ namespace Rhino.Mocks.Constraints
         {
             return new AllPropertiesMatchConstraint(expected);
         }
-	}
+    }
 }

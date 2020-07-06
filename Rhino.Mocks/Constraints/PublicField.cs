@@ -1,5 +1,4 @@
 using System;
-using Rhino.Mocks.Constraints;
 
 namespace Rhino.Mocks.Constraints
 {
@@ -12,7 +11,7 @@ namespace Rhino.Mocks.Constraints
     /// Central location for constraints for object's public fields
 	/// </summary>
 	public static class PublicField
-	{
+    {
         /*
          * Method: Value
          * 
@@ -27,9 +26,9 @@ namespace Rhino.Mocks.Constraints
 		/// <param name="expectedValue">Expected value.</param>
 		/// <returns></returns>
 		public static AbstractConstraint Value(string publicFieldName, object expectedValue)
-		{
+        {
             return new PublicFieldIs(publicFieldName, expectedValue);
-		}
+        }
 
         /// <summary>
         /// Constrains the parameter to have a public field with the specified value.
@@ -76,9 +75,9 @@ namespace Rhino.Mocks.Constraints
         /// <param name="publicFieldName">Name of the public field.</param>
 		/// <returns></returns>
         public static AbstractConstraint IsNull(string publicFieldName)
-		{
+        {
             return new PublicFieldIs(publicFieldName, null);
-		}
+        }
 
         /// <summary>
         /// Determines whether the parameter has the specified public field and that it is null.
@@ -103,9 +102,9 @@ namespace Rhino.Mocks.Constraints
         /// <param name="publicFieldName">Name of the public field.</param>
 		/// <returns></returns>
         public static AbstractConstraint IsNotNull(string publicFieldName)
-		{
+        {
             return !new PublicFieldIs(publicFieldName, null);
-		}
+        }
 
         /// <summary>
         /// Determines whether the parameter has the specified public field and that it is not null.
@@ -117,5 +116,5 @@ namespace Rhino.Mocks.Constraints
         {
             return !new PublicFieldIs(declaringType, publicFieldName, null);
         }
-	}
+    }
 }

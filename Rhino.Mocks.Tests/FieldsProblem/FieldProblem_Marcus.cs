@@ -32,12 +32,12 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_ByMarcus : IDisposable
     {
         MockRepository mocks;
 
-		public  FieldProblem_ByMarcus()
+        public FieldProblem_ByMarcus()
         {
             mocks = new MockRepository();
         }
@@ -66,7 +66,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
             catch (Exception e)
             {
                 string expectedExceptionStartsWith = @"Exception in constructor: System.Exception: I'm a ctor that throws";
-                string actualExceptionStartString = e.Message.Substring(0,expectedExceptionStartsWith.Length);
+                string actualExceptionStartString = e.Message.Substring(0, expectedExceptionStartsWith.Length);
                 Assert.Equal(expectedExceptionStartsWith, actualExceptionStartString);
 
             }

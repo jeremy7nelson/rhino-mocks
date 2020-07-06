@@ -27,116 +27,116 @@
 #endregion
 
 
-using System;
-using Xunit;
 using Rhino.Mocks.Constraints;
 using Rhino.Mocks.Interfaces;
+using System;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	
-	public class FieldProblem_Ernst
-	{
-		[Fact]
-		public void CallOriginalMethodProblem2()
-		{
-			MockRepository mockRepository = new MockRepository();
-			MockedClass mock = mockRepository.StrictMock<MockedClass>();
 
-			mock.Method(null);
-			LastCall.Constraints(Is.Equal("parameter")).CallOriginalMethod
-				(OriginalCallOptions.CreateExpectation);
+    public class FieldProblem_Ernst
+    {
+        [Fact]
+        public void CallOriginalMethodProblem2()
+        {
+            MockRepository mockRepository = new MockRepository();
+            MockedClass mock = mockRepository.StrictMock<MockedClass>();
 
-			mockRepository.ReplayAll();
+            mock.Method(null);
+            LastCall.Constraints(Is.Equal("parameter")).CallOriginalMethod
+                (OriginalCallOptions.CreateExpectation);
 
-			mock.Method("parameter");
+            mockRepository.ReplayAll();
 
-			mockRepository.VerifyAll();
-		}
+            mock.Method("parameter");
 
-		[Fact]
-		public void CanUseBackToRecordOnMethodsThatCallToCallOriginalMethod()
-		{
-			MockRepository repository = new MockRepository();
-			TestClass mock = repository.StrictMock<TestClass>();
+            mockRepository.VerifyAll();
+        }
 
-			mock.Method();
-			LastCall.CallOriginalMethod
-				(OriginalCallOptions.NoExpectation);
+        [Fact]
+        public void CanUseBackToRecordOnMethodsThatCallToCallOriginalMethod()
+        {
+            MockRepository repository = new MockRepository();
+            TestClass mock = repository.StrictMock<TestClass>();
 
-			repository.ReplayAll();
-			mock.Method();
-			repository.VerifyAll();
+            mock.Method();
+            LastCall.CallOriginalMethod
+                (OriginalCallOptions.NoExpectation);
 
-			repository.BackToRecordAll();
+            repository.ReplayAll();
+            mock.Method();
+            repository.VerifyAll();
 
-			mock.Method();
-			LastCall.Throw(new ApplicationException());
+            repository.BackToRecordAll();
 
-			repository.ReplayAll();
+            mock.Method();
+            LastCall.Throw(new ApplicationException());
 
-			try
-			{
-				mock.Method();
-				Assert.False(true);
-			}
-			catch
-			{
-			}
-			repository.VerifyAll();
-		}
+            repository.ReplayAll();
 
-
-		[Fact]
-		public void CanUseBackToRecordOnMethodsThatCallPropertyBehavior()
-		{
-			MockRepository repository = new MockRepository();
-			TestClass mock = repository.StrictMock<TestClass>();
-
-			Expect.Call(mock.Id).PropertyBehavior();
-
-			repository.ReplayAll();
-			mock.Id = 4;
-			int d = mock.Id;
-			Assert.Equal(4,d );
-			repository.VerifyAll();
-
-			repository.BackToRecordAll();
-
-			Expect.Call(mock.Id).Return(5);
-
-			repository.ReplayAll();
-
-			Assert.Equal(5, mock.Id);
-
-			repository.VerifyAll();
-		}
-	}
-
-	public class TestClass
-	{
-		private int id;
+            try
+            {
+                mock.Method();
+                Assert.False(true);
+            }
+            catch
+            {
+            }
+            repository.VerifyAll();
+        }
 
 
-		public virtual int Id
-		{
-			get { return id; }
-			set { id = value; }
-		}
+        [Fact]
+        public void CanUseBackToRecordOnMethodsThatCallPropertyBehavior()
+        {
+            MockRepository repository = new MockRepository();
+            TestClass mock = repository.StrictMock<TestClass>();
 
-		public virtual void Method()
-		{
-		}
-	}
+            Expect.Call(mock.Id).PropertyBehavior();
 
-	public class MockedClass
-	{
-		public virtual void Method(string parameter)
-		{
-			if (parameter == null)
-				throw new ArgumentNullException();
+            repository.ReplayAll();
+            mock.Id = 4;
+            int d = mock.Id;
+            Assert.Equal(4, d);
+            repository.VerifyAll();
 
-			//Something in this method must be executed
-		}
-	}
+            repository.BackToRecordAll();
+
+            Expect.Call(mock.Id).Return(5);
+
+            repository.ReplayAll();
+
+            Assert.Equal(5, mock.Id);
+
+            repository.VerifyAll();
+        }
+    }
+
+    public class TestClass
+    {
+        private int id;
+
+
+        public virtual int Id
+        {
+            get { return id; }
+            set { id = value; }
+        }
+
+        public virtual void Method()
+        {
+        }
+    }
+
+    public class MockedClass
+    {
+        public virtual void Method(string parameter)
+        {
+            if (parameter == null)
+                throw new ArgumentNullException();
+
+            //Something in this method must be executed
+        }
+    }
 }

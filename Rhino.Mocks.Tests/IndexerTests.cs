@@ -31,24 +31,24 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests
 {
-	
-	public class IndexerTests
-	{
-		public interface IndexerInterface
-		{
-			string this[string idname] { get; }
-			string this[int id] { get; }
-		}
 
-		[Fact]
-		public void SettingExpectationOnIndexer()
-		{
-			MockRepository mocks = new MockRepository();
-			IndexerInterface indexer = (IndexerInterface) mocks.StrictMock(typeof (IndexerInterface));
-			Expect.On(indexer).Call(indexer["1"]).Return("First");
-			mocks.ReplayAll();
-			Assert.Equal("First", indexer["1"]);
-			mocks.VerifyAll();
-		}
-	}
+    public class IndexerTests
+    {
+        public interface IndexerInterface
+        {
+            string this[string idname] { get; }
+            string this[int id] { get; }
+        }
+
+        [Fact]
+        public void SettingExpectationOnIndexer()
+        {
+            MockRepository mocks = new MockRepository();
+            IndexerInterface indexer = (IndexerInterface)mocks.StrictMock(typeof(IndexerInterface));
+            Expect.On(indexer).Call(indexer["1"]).Return("First");
+            mocks.ReplayAll();
+            Assert.Equal("First", indexer["1"]);
+            mocks.VerifyAll();
+        }
+    }
 }

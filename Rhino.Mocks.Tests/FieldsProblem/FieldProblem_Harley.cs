@@ -23,7 +23,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 
             repository.ReplayAll();
 
-			Assert.Throws<ArgumentOutOfRangeException>(() => fireChangeTestProperty.Raise(true));
+            Assert.Throws<ArgumentOutOfRangeException>(() => fireChangeTestProperty.Raise(true));
         }
     }
 

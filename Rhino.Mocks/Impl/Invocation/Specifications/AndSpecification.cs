@@ -6,7 +6,8 @@ namespace Rhino.Mocks.Impl.Invocation.Specifications
     ///Summary for AndSpecification
     ///</summary>
     ///<typeparam name="T"></typeparam>
-    public class AndSpecification<T> : ISpecification<T> {
+    public class AndSpecification<T> : ISpecification<T>
+    {
         ISpecification<T> left_side;
         ISpecification<T> right_side;
 

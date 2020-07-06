@@ -28,19 +28,18 @@
 
 
 using System;
-using System.Text;
 using Xunit;
 
 namespace Rhino.Mocks.Tests
 {
-    
+
     public class UsingComObject
     {
         public interface IMockTest
         {
             Scripting.FileSystemObject GetFileSystemObject();
         }
-        
+
         [Fact]
         public void UsingScriptingFileSystem()
         {

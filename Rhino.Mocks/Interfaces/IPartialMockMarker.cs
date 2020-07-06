@@ -28,11 +28,11 @@
 
 namespace Rhino.Mocks.Interfaces
 {
-	/// <summary>
-	/// Marker interface used to indicate that this is a partial mock.
-	/// </summary>
-	public interface IPartialMockMarker
-	{
-		
-	}
+    /// <summary>
+    /// Marker interface used to indicate that this is a partial mock.
+    /// </summary>
+    public interface IPartialMockMarker
+    {
+
+    }
 }

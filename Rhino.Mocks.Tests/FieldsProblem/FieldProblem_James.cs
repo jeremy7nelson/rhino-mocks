@@ -33,85 +33,82 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	using Castle.Core.Interceptor;
-	using Castle.DynamicProxy;
 
-	
-	public class FieldProblem_James
-	{
-		private MockRepository m_mockery;
+    public class FieldProblem_James
+    {
+        private MockRepository m_mockery;
 
-		public FieldProblem_James()
-		{
-			m_mockery = new MockRepository();
-		}
+        public FieldProblem_James()
+        {
+            m_mockery = new MockRepository();
+        }
 
-		[Fact]
-		public void ShouldBeAbleToMockGenericMethod()
-		{
-			ILookupMapper<int> mapper = m_mockery.StrictMock<ILookupMapper<int>>();
-			List<Foo<int>> retval = new List<Foo<int>>();
-			retval.Add(new Foo<int>());
-			Expect.Call(mapper.FindAllFoo()).Return(retval);
-			m_mockery.ReplayAll();
-			IList<Foo<int>> listOfFoo = mapper.FindAllFoo();
-			m_mockery.VerifyAll();
-		}
+        [Fact]
+        public void ShouldBeAbleToMockGenericMethod()
+        {
+            ILookupMapper<int> mapper = m_mockery.StrictMock<ILookupMapper<int>>();
+            List<Foo<int>> retval = new List<Foo<int>>();
+            retval.Add(new Foo<int>());
+            Expect.Call(mapper.FindAllFoo()).Return(retval);
+            m_mockery.ReplayAll();
+            IList<Foo<int>> listOfFoo = mapper.FindAllFoo();
+            m_mockery.VerifyAll();
+        }
 
-		[Fact]
-		public void ShouldBeAbleToMockGenericMethod2()
-		{
-			ILookupMapper<int> mapper = m_mockery.StrictMock<ILookupMapper<int>>();
-			Foo<int> retval = new Foo<int>();
-			Expect.Call(mapper.FindOneFoo()).Return(retval);
-			m_mockery.ReplayAll();
-			Foo<int> oneFoo = mapper.FindOneFoo();
-			m_mockery.VerifyAll();
-		}
+        [Fact]
+        public void ShouldBeAbleToMockGenericMethod2()
+        {
+            ILookupMapper<int> mapper = m_mockery.StrictMock<ILookupMapper<int>>();
+            Foo<int> retval = new Foo<int>();
+            Expect.Call(mapper.FindOneFoo()).Return(retval);
+            m_mockery.ReplayAll();
+            Foo<int> oneFoo = mapper.FindOneFoo();
+            m_mockery.VerifyAll();
+        }
 
-		[Fact]
-		public void CanMockMethodsReturnIntPtr()
-		{
-			IFooWithIntPtr mock = m_mockery.StrictMock<IFooWithIntPtr>();
-			using(m_mockery.Record())
-			{
-				Expect.Call(mock.Buffer(15)).Return(IntPtr.Zero);
-			}
+        [Fact]
+        public void CanMockMethodsReturnIntPtr()
+        {
+            IFooWithIntPtr mock = m_mockery.StrictMock<IFooWithIntPtr>();
+            using (m_mockery.Record())
+            {
+                Expect.Call(mock.Buffer(15)).Return(IntPtr.Zero);
+            }
 
-			using(m_mockery.Playback())
-			{
-				IntPtr buffer = mock.Buffer(15);
-				Assert.Equal(IntPtr.Zero, buffer);
-			}
-		}
+            using (m_mockery.Playback())
+            {
+                IntPtr buffer = mock.Buffer(15);
+                Assert.Equal(IntPtr.Zero, buffer);
+            }
+        }
 
-		[Fact]
-		public void ShouldGetValidErrorWhenGenericTypeMismatchOccurs()
-		{
-			ILookupMapper<int> mapper = m_mockery.StrictMock<ILookupMapper<int>>();
-			Foo<string> retval = new Foo<string>();
-			Assert.Throws<InvalidOperationException>(
-				"Type 'Rhino.Mocks.Tests.FieldsProblem.Foo`1[[System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]' doesn't match the return type 'Rhino.Mocks.Tests.FieldsProblem.Foo`1[System.Int32]' for method 'ILookupMapper`1.FindOneFoo();'",
-				() => Expect.Call<object>(mapper.FindOneFoo()).Return(retval));
-		}
-	}
+        [Fact]
+        public void ShouldGetValidErrorWhenGenericTypeMismatchOccurs()
+        {
+            ILookupMapper<int> mapper = m_mockery.StrictMock<ILookupMapper<int>>();
+            Foo<string> retval = new Foo<string>();
+            Assert.Throws<InvalidOperationException>(
+                "Type 'Rhino.Mocks.Tests.FieldsProblem.Foo`1[[System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]' doesn't match the return type 'Rhino.Mocks.Tests.FieldsProblem.Foo`1[System.Int32]' for method 'ILookupMapper`1.FindOneFoo();'",
+                () => Expect.Call<object>(mapper.FindOneFoo()).Return(retval));
+        }
+    }
 
-	public interface ILookupMapper<T>
-	{
-		IList<Foo<T>> FindAllFoo();
-		Foo<T> FindOneFoo();
-	}
+    public interface ILookupMapper<T>
+    {
+        IList<Foo<T>> FindAllFoo();
+        Foo<T> FindOneFoo();
+    }
 
-	public class Foo<T>
-	{
-		public T GetOne()
-		{
-			return default(T);
-		}
-	}
+    public class Foo<T>
+    {
+        public T GetOne()
+        {
+            return default(T);
+        }
+    }
 
-	public interface IFooWithIntPtr
-	{
-		IntPtr Buffer(UInt32 index);
-	}
+    public interface IFooWithIntPtr
+    {
+        IntPtr Buffer(UInt32 index);
+    }
 }

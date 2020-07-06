@@ -37,65 +37,65 @@ using Range = Rhino.Mocks.Impl.Range;
 
 namespace Rhino.Mocks.Tests.Expectations
 {
-	public class AnyArgsExpectationTests : AbstractExpectationTests
-	{
-		private ArgsEqualExpectation equal;
-		private AnyArgsExpectation any;
-		private MethodInfo method;
+    public class AnyArgsExpectationTests : AbstractExpectationTests
+    {
+        private ArgsEqualExpectation equal;
+        private AnyArgsExpectation any;
+        private MethodInfo method;
 
-		protected override IExpectation GetExpectation(MethodInfo m, Range r, int actual)
-		{
-			AnyArgsExpectation expectation = new AnyArgsExpectation(new FakeInvocation(m), new Range(1, 1));
-			SetupExpectation(expectation, r, actual);
-			return expectation;
-		}
+        protected override IExpectation GetExpectation(MethodInfo m, Range r, int actual)
+        {
+            AnyArgsExpectation expectation = new AnyArgsExpectation(new FakeInvocation(m), new Range(1, 1));
+            SetupExpectation(expectation, r, actual);
+            return expectation;
+        }
 
 
-		public AnyArgsExpectationTests()
-		{
+        public AnyArgsExpectationTests()
+        {
             method = typeof(int).GetMethod("CompareTo", new Type[] { typeof(object) });
-			equal = new ArgsEqualExpectation(new FakeInvocation(this.method), new object[] {1}, new Range(1, 1));
-			any = new AnyArgsExpectation(this.equal);
-		}
+            equal = new ArgsEqualExpectation(new FakeInvocation(this.method), new object[] { 1 }, new Range(1, 1));
+            any = new AnyArgsExpectation(this.equal);
+        }
 
-		[Fact]
-		public void AnyArgsExpectationReturnTrueForDifferentArgs()
-		{
-			Assert.False(equal.IsExpected(new object[0]));
-			Assert.True(any.IsExpected(new object[0]));
-		}
+        [Fact]
+        public void AnyArgsExpectationReturnTrueForDifferentArgs()
+        {
+            Assert.False(equal.IsExpected(new object[0]));
+            Assert.True(any.IsExpected(new object[0]));
+        }
 
-		[Fact]
-		public void ErrorMessageContainsAnyForParameters()
-		{
-			string IsExpected = "Int32.CompareTo(any);";
-			Assert.Equal(IsExpected, any.ErrorMessage);
-		}
+        [Fact]
+        public void ErrorMessageContainsAnyForParameters()
+        {
+            string IsExpected = "Int32.CompareTo(any);";
+            Assert.Equal(IsExpected, any.ErrorMessage);
+        }
 
-		[Fact]
-		public void AnyArgsIsNotEqualsToNonAnyArgsExpectation()
-		{
-			IExpectation other = new ArgsEqualExpectation(new FakeInvocation(method), new object[0], new Range(1, 1));
-			Assert.NotEqual(any, other );
-		}
+        [Fact]
+        public void AnyArgsIsNotEqualsToNonAnyArgsExpectation()
+        {
+            IExpectation other = new ArgsEqualExpectation(new FakeInvocation(method), new object[0], new Range(1, 1));
+            Assert.NotEqual(any, other);
+        }
 
-		[Fact]
-		public void AnyArgsEqualToAnyOtherAnyArgs()
-		{
-			Assert.Equal(any, new AnyArgsExpectation(new FakeInvocation(method), new Range(1, 1)));
-		}
-	}
+        [Fact]
+        public void AnyArgsEqualToAnyOtherAnyArgs()
+        {
+            Assert.Equal(any, new AnyArgsExpectation(new FakeInvocation(method), new Range(1, 1)));
+        }
+    }
 
-	internal class FakeInvocation : AbstractInvocation
-	{
-		public FakeInvocation(MethodInfo targetMethod) 
-			: base(null, null, null, null, targetMethod, null, new object[0])
-		{
-		}
+    internal class FakeInvocation : AbstractInvocation
+    {
+        public FakeInvocation(MethodInfo targetMethod)
+            : base(null, null, null, null, targetMethod, null, new object[0])
+        {
+        }
 
-		protected override void InvokeMethodOnTarget()
-		{
-			throw new NotImplementedException();
-		}
-	}
+        protected override void InvokeMethodOnTarget()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

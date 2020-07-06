@@ -35,12 +35,12 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_SpookyET : IDisposable
     {
         MockRepository mocks;
 
-		public FieldProblem_SpookyET()
+        public FieldProblem_SpookyET()
         {
             mocks = new MockRepository();
         }

@@ -27,13 +27,11 @@
 #endregion
 
 
-using System;
-using System.Text;
 using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_BackToRecordWithDynamicMocks
     {
         [Fact]

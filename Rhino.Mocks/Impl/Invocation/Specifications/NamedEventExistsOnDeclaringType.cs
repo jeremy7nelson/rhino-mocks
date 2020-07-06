@@ -6,7 +6,8 @@ namespace Rhino.Mocks.Impl.Invocation.Specifications
     ///<summary>
     ///Summary descritpion for NamedEventExistsOnDeclaringType
     ///</summary>
-    public class NamedEventExistsOnDeclaringType : ISpecification<IInvocation> {
+    public class NamedEventExistsOnDeclaringType : ISpecification<IInvocation>
+    {
 
         ///<summary>
         ///</summary>

@@ -27,7 +27,6 @@
 #endregion
 
 
-using Xunit;
 using Rhino.Mocks.Exceptions;
 using Rhino.Mocks.Expectations;
 using Rhino.Mocks.Generated;
@@ -35,123 +34,124 @@ using Rhino.Mocks.Impl;
 using Rhino.Mocks.Interfaces;
 using Rhino.Mocks.MethodRecorders;
 using Rhino.Mocks.Tests.Expectations;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.MethodRecorders
 {
-	
-	public class OrderedMethodRecorderTests : UnorderedMethodRecorderTests
-	{
-		[Fact]
-		public void RecordMethodsAndReplayThemInSameOrder()
-		{
-			OrderedMethodRecorder recorder = new OrderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-			recorder.Record(this.demo, this.voidNoArgs, expectationOne);
-			recorder.Record(this.demo, voidThreeArgs, new AnyArgsExpectation(new FakeInvocation(voidThreeArgs), new Range(1, 1)));
 
-			Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
-			Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), this.demo, this.voidThreeArgs, new object[0]));
-		}
+    public class OrderedMethodRecorderTests : UnorderedMethodRecorderTests
+    {
+        [Fact]
+        public void RecordMethodsAndReplayThemInSameOrder()
+        {
+            OrderedMethodRecorder recorder = new OrderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+            recorder.Record(this.demo, this.voidNoArgs, expectationOne);
+            recorder.Record(this.demo, voidThreeArgs, new AnyArgsExpectation(new FakeInvocation(voidThreeArgs), new Range(1, 1)));
 
-		[Fact]
-		public void GetAllExpectationsForProxyWithNestedOrdering()
-		{
-			recorder.AddRecorder(this.CreateRecorder());
-			recorder.Record(this.demo, this.voidNoArgs, expectationTwo);
-			recorder.Record(this.demo, this.voidThreeArgs, expectationOne);
-			//move to replayer
-			recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), demo, voidNoArgs, new object[0]);
-			ExpectationsList expectations = recorder.GetAllExpectationsForProxy(demo);
-			Assert.Equal(1, expectations.Count);
-		}
+            Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
+            Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), this.demo, this.voidThreeArgs, new object[0]));
+        }
 
-		[Fact]
-		public void RemoveExpectationWhenNestedOrdering()
-		{
-			IExpectation newExpectation = new ArgsEqualExpectation(new FakeInvocation(voidThreeArgs), new object[]{1,null,1f}, new Range(1, 1));
-			recorder.Record(this.demo, this.voidNoArgs, expectationOne);
-			recorder.AddRecorder(CreateRecorder());
-			recorder.Record(this.demo, this.voidThreeArgs, expectationTwo);
-			recorder.Record(this.demo, this.voidNoArgs, newExpectation);
-			recorder.RemoveExpectation(expectationTwo);
+        [Fact]
+        public void GetAllExpectationsForProxyWithNestedOrdering()
+        {
+            recorder.AddRecorder(this.CreateRecorder());
+            recorder.Record(this.demo, this.voidNoArgs, expectationTwo);
+            recorder.Record(this.demo, this.voidThreeArgs, expectationOne);
+            //move to replayer
+            recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), demo, voidNoArgs, new object[0]);
+            ExpectationsList expectations = recorder.GetAllExpectationsForProxy(demo);
+            Assert.Equal(1, expectations.Count);
+        }
 
-			//move to replayer, but also remove one expectation from consideration
-			recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), demo, voidNoArgs, new object[0]);
-			
-			ExpectationsList expectations = recorder.GetAllExpectationsForProxy(demo);
-			Assert.Equal(1, expectations.Count);
-			Assert.Equal(expectations[0],newExpectation);
-		}
+        [Fact]
+        public void RemoveExpectationWhenNestedOrdering()
+        {
+            IExpectation newExpectation = new ArgsEqualExpectation(new FakeInvocation(voidThreeArgs), new object[] { 1, null, 1f }, new Range(1, 1));
+            recorder.Record(this.demo, this.voidNoArgs, expectationOne);
+            recorder.AddRecorder(CreateRecorder());
+            recorder.Record(this.demo, this.voidThreeArgs, expectationTwo);
+            recorder.Record(this.demo, this.voidNoArgs, newExpectation);
+            recorder.RemoveExpectation(expectationTwo);
 
-		[Fact]
-		public void GetAllExpectationForProxyAndMethodWithNestedOrdering()
-		{
-			recorder.Record(this.demo, this.voidNoArgs, expectationOne);
-			recorder.AddRecorder(CreateRecorder());
-			recorder.Record(this.demo, this.voidThreeArgs, expectationOne);
-			recorder.Record(this.demo, this.voidNoArgs, expectationOne);
-			//move to replayer
-			recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), demo, voidNoArgs, new object[0]);
-			
-			ExpectationsList expectations = recorder.GetAllExpectationsForProxyAndMethod(demo, voidNoArgs);
-			Assert.Equal(1, expectations.Count);
-			expectations = recorder.GetAllExpectationsForProxyAndMethod(demo, voidThreeArgs);
-			Assert.Equal(1, expectations.Count);
-		}
+            //move to replayer, but also remove one expectation from consideration
+            recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), demo, voidNoArgs, new object[0]);
 
-		[Fact]
-		public void RecordMethodsAndReplayThemOutOfOrder()
-		{
-			OrderedMethodRecorder recorder = new OrderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-			recorder.Record(this.demo, this.voidNoArgs, expectationOne);
-			recorder.Record(this.demo, this.voidThreeArgs, expectationOne);
+            ExpectationsList expectations = recorder.GetAllExpectationsForProxy(demo);
+            Assert.Equal(1, expectations.Count);
+            Assert.Equal(expectations[0], newExpectation);
+        }
 
-			Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(this.voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
-			Assert.Throws<ExpectationViolationException>(
-				"Unordered method call! The expected call is: 'Ordered: { IDemo.VoidNoArgs(); }' but was: 'IDemo.VoidNoArgs();'",
-				() =>
-				recorder.GetRecordedExpectation(new FakeInvocation(this.voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
-		}
+        [Fact]
+        public void GetAllExpectationForProxyAndMethodWithNestedOrdering()
+        {
+            recorder.Record(this.demo, this.voidNoArgs, expectationOne);
+            recorder.AddRecorder(CreateRecorder());
+            recorder.Record(this.demo, this.voidThreeArgs, expectationOne);
+            recorder.Record(this.demo, this.voidNoArgs, expectationOne);
+            //move to replayer
+            recorder.GetRecordedExpectation(new FakeInvocation(voidNoArgs), demo, voidNoArgs, new object[0]);
 
-		
-		[Fact]
-		public void RecordMethodsAndReplayThemOutOfOrder_WillUseMessage()
-		{
-			OrderedMethodRecorder recorder = new OrderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-			expectationOne.Message = "Test Message";
-			recorder.Record(this.demo, this.voidNoArgs, expectationOne);
-			recorder.Record(this.demo, this.voidThreeArgs, expectationOne);
+            ExpectationsList expectations = recorder.GetAllExpectationsForProxyAndMethod(demo, voidNoArgs);
+            Assert.Equal(1, expectations.Count);
+            expectations = recorder.GetAllExpectationsForProxyAndMethod(demo, voidThreeArgs);
+            Assert.Equal(1, expectations.Count);
+        }
 
-			Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(this.voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
-			Assert.Throws<ExpectationViolationException>(
-				"Unordered method call! The expected call is: 'Ordered: { Message: Test Message\nIDemo.VoidNoArgs(); }' but was: 'IDemo.VoidNoArgs();'",
-				() =>
-				recorder.GetRecordedExpectation(new FakeInvocation(this.voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
-		}
+        [Fact]
+        public void RecordMethodsAndReplayThemOutOfOrder()
+        {
+            OrderedMethodRecorder recorder = new OrderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+            recorder.Record(this.demo, this.voidNoArgs, expectationOne);
+            recorder.Record(this.demo, this.voidThreeArgs, expectationOne);
 
-		[Fact]
-		public void ReplayWhenNoMethodIsExpected()
-		{
-			OrderedMethodRecorder recorder = new OrderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-			Assert.Throws<ExpectationViolationException>(
-				"Unordered method call! The expected call is: 'Ordered: { No method call is expected }' but was: 'IDemo.VoidNoArgs();'",
-				() =>
-				recorder.GetRecordedExpectation(new FakeInvocation(this.voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
-		}
+            Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(this.voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
+            Assert.Throws<ExpectationViolationException>(
+                "Unordered method call! The expected call is: 'Ordered: { IDemo.VoidNoArgs(); }' but was: 'IDemo.VoidNoArgs();'",
+                () =>
+                recorder.GetRecordedExpectation(new FakeInvocation(this.voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
+        }
 
-		[Fact]
-		public void ReplayErrorWhenInOtherReplayer()
-		{
-			OrderedMethodRecorder recorder = new OrderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-			recorder.AddRecorder(new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary()));
-			Assert.Throws<ExpectationViolationException>(
-				"IDemo.VoidNoArgs(); Expected #0, Actual #1.",
-				() =>
-				recorder.GetRecordedExpectation(new FakeInvocation(this.voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
-		}
 
-		protected override IMethodRecorder CreateRecorder()
-		{
-			return new OrderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-		}
-	}
+        [Fact]
+        public void RecordMethodsAndReplayThemOutOfOrder_WillUseMessage()
+        {
+            OrderedMethodRecorder recorder = new OrderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+            expectationOne.Message = "Test Message";
+            recorder.Record(this.demo, this.voidNoArgs, expectationOne);
+            recorder.Record(this.demo, this.voidThreeArgs, expectationOne);
+
+            Assert.NotNull(recorder.GetRecordedExpectation(new FakeInvocation(this.voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
+            Assert.Throws<ExpectationViolationException>(
+                "Unordered method call! The expected call is: 'Ordered: { Message: Test Message\nIDemo.VoidNoArgs(); }' but was: 'IDemo.VoidNoArgs();'",
+                () =>
+                recorder.GetRecordedExpectation(new FakeInvocation(this.voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
+        }
+
+        [Fact]
+        public void ReplayWhenNoMethodIsExpected()
+        {
+            OrderedMethodRecorder recorder = new OrderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+            Assert.Throws<ExpectationViolationException>(
+                "Unordered method call! The expected call is: 'Ordered: { No method call is expected }' but was: 'IDemo.VoidNoArgs();'",
+                () =>
+                recorder.GetRecordedExpectation(new FakeInvocation(this.voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
+        }
+
+        [Fact]
+        public void ReplayErrorWhenInOtherReplayer()
+        {
+            OrderedMethodRecorder recorder = new OrderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+            recorder.AddRecorder(new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary()));
+            Assert.Throws<ExpectationViolationException>(
+                "IDemo.VoidNoArgs(); Expected #0, Actual #1.",
+                () =>
+                recorder.GetRecordedExpectation(new FakeInvocation(this.voidNoArgs), this.demo, this.voidNoArgs, new object[0]));
+        }
+
+        protected override IMethodRecorder CreateRecorder()
+        {
+            return new OrderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+        }
+    }
 }

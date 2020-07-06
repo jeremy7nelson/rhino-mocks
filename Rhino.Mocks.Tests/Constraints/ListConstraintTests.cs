@@ -33,38 +33,38 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.Constraints
 {
-	
-	public class ListConstraintTests
-	{
-		[Fact]
-		public void InIs()
-		{
-			AbstractConstraint list = List.IsIn('a');
-			Assert.True(list.Eval("ayende"));
-			Assert.False(list.Eval("sheep"));
-			Assert.Equal("list contains [a]", list.Message);
-		}
 
-		[Fact]
-		public void OneOf()
-		{
-			AbstractConstraint list = List.OneOf(new string[] {"Ayende", "Rahien", "Hello", "World"});
-			Assert.True(list.Eval("Ayende"));
+    public class ListConstraintTests
+    {
+        [Fact]
+        public void InIs()
+        {
+            AbstractConstraint list = List.IsIn('a');
+            Assert.True(list.Eval("ayende"));
             Assert.False(list.Eval("sheep"));
-			Assert.Equal("one of [Ayende, Rahien, Hello, World]", list.Message);
-		}
-        
-		[Fact]
-		public void Equal()
-		{
-			AbstractConstraint list = List.Equal(new string[] {"Ayende", "Rahien", "Hello", "World"});
-			Assert.True(list.Eval(new string[] {"Ayende", "Rahien", "Hello", "World"}));
-			Assert.False(list.Eval(new string[] {"Ayende", "Rahien", "World", "Hello"}));
-			Assert.False(list.Eval(new string[] {"Ayende", "Rahien", "World"}));
-			Assert.False(list.Eval(5));
-			Assert.Equal("equal to collection [Ayende, Rahien, Hello, World]", list.Message);
+            Assert.Equal("list contains [a]", list.Message);
+        }
 
-		}
+        [Fact]
+        public void OneOf()
+        {
+            AbstractConstraint list = List.OneOf(new string[] { "Ayende", "Rahien", "Hello", "World" });
+            Assert.True(list.Eval("Ayende"));
+            Assert.False(list.Eval("sheep"));
+            Assert.Equal("one of [Ayende, Rahien, Hello, World]", list.Message);
+        }
+
+        [Fact]
+        public void Equal()
+        {
+            AbstractConstraint list = List.Equal(new string[] { "Ayende", "Rahien", "Hello", "World" });
+            Assert.True(list.Eval(new string[] { "Ayende", "Rahien", "Hello", "World" }));
+            Assert.False(list.Eval(new string[] { "Ayende", "Rahien", "World", "Hello" }));
+            Assert.False(list.Eval(new string[] { "Ayende", "Rahien", "World" }));
+            Assert.False(list.Eval(5));
+            Assert.Equal("equal to collection [Ayende, Rahien, Hello, World]", list.Message);
+
+        }
 
         [Fact]
         public void Count()
@@ -100,9 +100,9 @@ namespace Rhino.Mocks.Tests.Constraints
         [Fact]
         public void ContainsAll()
         {
-            AbstractConstraint list = List.ContainsAll(new string[] {"Ayende", "Rahien", "Hello", "World"});
-            Assert.True(list.Eval(new string[] {"Ayende", "Rahien", "Hello", "World"}));
-            Assert.False(list.Eval(new string[] { "Baaaah"}));
+            AbstractConstraint list = List.ContainsAll(new string[] { "Ayende", "Rahien", "Hello", "World" });
+            Assert.True(list.Eval(new string[] { "Ayende", "Rahien", "Hello", "World" }));
+            Assert.False(list.Eval(new string[] { "Baaaah" }));
             Assert.False(list.Eval(5));
             list = List.ContainsAll(new string[] { "Ayende", "Rahien", "Hello", "World" });
             Assert.False(list.Eval(new string[] { "Ayende", "Rahien" }));
@@ -127,7 +127,7 @@ namespace Rhino.Mocks.Tests.Constraints
         {
             AbstractConstraint list = List.Equal(new FailsOnEqual[] {new FailsOnEqual(),
              new FailsOnEqual()});
-            Assert.False(list.Eval(new FailsOnEqual[]{new FailsOnEqual()}));
+            Assert.False(list.Eval(new FailsOnEqual[] { new FailsOnEqual() }));
         }
 
         private IEnumerable NameList()
@@ -144,12 +144,12 @@ namespace Rhino.Mocks.Tests.Constraints
             AbstractConstraint list = List.Equal(NameList());
             Assert.True(list.Eval(new string[] { "doron", "hi", "there" }));
             Assert.True(list.Eval(NameList()));
-            
-            Assert.False(list.Eval(new string[]{"doron","there", "hi"}));
+
+            Assert.False(list.Eval(new string[] { "doron", "there", "hi" }));
             Assert.False(list.Eval(new string[] { "doron", "hi" }));
             Assert.False(list.Eval(6));
 
             Assert.Equal("equal to collection [doron, hi, there]", list.Message);
         }
-	}
+    }
 }

@@ -27,69 +27,69 @@
 #endregion
 
 
+using Rhino.Mocks.Exceptions;
 using System;
 using System.Runtime.InteropServices;
 using Xunit;
-using Rhino.Mocks.Exceptions;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	
-	public class FieldProblem_Aharon
-	{
-		[Fact]
-		public void CanCreateInterfaceWithGuid()
-		{
-			MockRepository mocks = new MockRepository();
-			IUniqueID bridgeRemote = mocks.StrictMock<IUniqueID>();
-			Assert.NotNull(bridgeRemote);
-		}
+
+    public class FieldProblem_Aharon
+    {
+        [Fact]
+        public void CanCreateInterfaceWithGuid()
+        {
+            MockRepository mocks = new MockRepository();
+            IUniqueID bridgeRemote = mocks.StrictMock<IUniqueID>();
+            Assert.NotNull(bridgeRemote);
+        }
 
 
-		[Fact]
-		public void MockingDataset()
-		{
-			MockRepository mocks = new MockRepository();
-			MyDataSet controller = mocks.StrictMock<MyDataSet>();
-			Assert.NotNull(controller);
-		}
+        [Fact]
+        public void MockingDataset()
+        {
+            MockRepository mocks = new MockRepository();
+            MyDataSet controller = mocks.StrictMock<MyDataSet>();
+            Assert.NotNull(controller);
+        }
 
-		[Fact]
-		public void PassingMockToMock_WhenErrorOccurs()
-		{
-			MockRepository mocks = new MockRepository();
-			Accepter accepter = mocks.StrictMock<Accepter>();
-			mocks.ReplayAll();
-			Assert.Throws<ExpectationViolationException>(
-				"Accepter.Accept(Rhino.Mocks.Tests.FieldsProblem.Accepter); Expected #0, Actual #1.",
-				() => accepter.Accept(accepter));
+        [Fact]
+        public void PassingMockToMock_WhenErrorOccurs()
+        {
+            MockRepository mocks = new MockRepository();
+            Accepter accepter = mocks.StrictMock<Accepter>();
+            mocks.ReplayAll();
+            Assert.Throws<ExpectationViolationException>(
+                "Accepter.Accept(Rhino.Mocks.Tests.FieldsProblem.Accepter); Expected #0, Actual #1.",
+                () => accepter.Accept(accepter));
 
-		}
-	}
+        }
+    }
 
-	public abstract class Accepter
-	{
-		public abstract void Accept(Accepter demo);
+    public abstract class Accepter
+    {
+        public abstract void Accept(Accepter demo);
 
-		public override string ToString()
-		{
-			return base.ToString();
-		}
-	}
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+    }
 
-	[Guid("AFCF8240-61AF-4089-BD98-3CD4D719EDBA")]
-	public interface IUniqueID
-	{
-	}
+    [Guid("AFCF8240-61AF-4089-BD98-3CD4D719EDBA")]
+    public interface IUniqueID
+    {
+    }
 
 
-	public class MyDataSet : System.Data.DataSet, IClearable
-	{
-		
-	}
+    public class MyDataSet : System.Data.DataSet, IClearable
+    {
 
-	public interface IClearable
-	{
-		void Clear();
-	}
+    }
+
+    public interface IClearable
+    {
+        void Clear();
+    }
 }

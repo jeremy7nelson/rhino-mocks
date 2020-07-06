@@ -28,12 +28,11 @@
 
 
 using System;
-using System.Text;
 using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_Avi
     {
         [Fact]
@@ -64,7 +63,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
         }
     }
 
-    
+
     public class RhinoDynamicMockOfGeneric
     {
         [Fact]

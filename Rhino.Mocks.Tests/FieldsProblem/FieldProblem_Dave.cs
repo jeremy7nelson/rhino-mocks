@@ -34,7 +34,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
             // this throws in RTM, did not in the RC
             // also tried Repeat.Any but that throws a different exception
             // saying that it is not supported on AssertWasCalled
-            mock.AssertWasCalled(x => x.GetFormat(typeof(string)), o=>o.Repeat.Twice());
+            mock.AssertWasCalled(x => x.GetFormat(typeof(string)), o => o.Repeat.Twice());
         }
     }
 }

@@ -42,136 +42,136 @@ using Range = Rhino.Mocks.Impl.Range;
 
 namespace Rhino.Mocks.Tests
 {
-	/// <summary>
-	/// Tests needed to get full coverage
-	/// They won't test meaningful stuff neccesarily
-	/// </summary>
-	
-	public class Coverage
-	{
-			
-		[Fact]
-		public void CanSerializeObjectNotMockObjectFromThisRepostiory()
-		{
-			ObjectNotMockFromThisRepositoryException e = new ObjectNotMockFromThisRepositoryException("ff");
-			ObjectNotMockFromThisRepositoryException other = (ObjectNotMockFromThisRepositoryException)SerializeAndDeserialize(e);
-			Assert.Equal("ff", other.Message );
-		}
+    /// <summary>
+    /// Tests needed to get full coverage
+    /// They won't test meaningful stuff neccesarily
+    /// </summary>
 
-		[Fact]
-		public void CanTestConstaintForTruth()
-		{
-			if (Is.Null())
-				return;
-		}
+    public class Coverage
+    {
 
-		[Fact]
-		public void TryingToGetEventRaiserFromNonEvenTrhows()
-		{
-			MockRepository mocks = new MockRepository();
-			IDemo demo = mocks.StrictMock<IDemo>();
-			demo.EnumNoArgs();
-			Assert.Throws<InvalidOperationException>(
-				"The last method call EnumNoArgs was not an event add / remove method",
-				() => LastCall.GetEventRaiser());
-		}
+        [Fact]
+        public void CanSerializeObjectNotMockObjectFromThisRepostiory()
+        {
+            ObjectNotMockFromThisRepositoryException e = new ObjectNotMockFromThisRepositoryException("ff");
+            ObjectNotMockFromThisRepositoryException other = (ObjectNotMockFromThisRepositoryException)SerializeAndDeserialize(e);
+            Assert.Equal("ff", other.Message);
+        }
 
-		[Fact]
-		public void UsingCallOriginalWithSetter()
-		{
-			MockRepository mocks = new MockRepository();
-			WithParameters withParameters = mocks.StrictMock<WithParameters>(1);
-			withParameters.Int = 5;
-			LastCall.PropertyBehavior();
-			mocks.ReplayAll();
-			withParameters.Int = 12;
-			withParameters.Int = 15;
-			Assert.Equal(15, withParameters.Int);
-			mocks.VerifyAll();
-		}
+        [Fact]
+        public void CanTestConstaintForTruth()
+        {
+            if (Is.Null())
+                return;
+        }
 
-		[Fact]
-		public void MockObjCanHandleGetEventSubscribersCallsWithoutEventsRegistered()
-		{
-			MockRepository mocks = new MockRepository();
-			WithParameters withParameters = mocks.StrictMock<WithParameters>(1);
-			IMockedObject mocked = (IMockedObject) withParameters;
-			Delegate eventSubscribers = mocked.GetEventSubscribers("ff");
-			Assert.Null(eventSubscribers);
-		}
+        [Fact]
+        public void TryingToGetEventRaiserFromNonEvenTrhows()
+        {
+            MockRepository mocks = new MockRepository();
+            IDemo demo = mocks.StrictMock<IDemo>();
+            demo.EnumNoArgs();
+            Assert.Throws<InvalidOperationException>(
+                "The last method call EnumNoArgs was not an event add / remove method",
+                () => LastCall.GetEventRaiser());
+        }
 
-		[Fact]
-		public void MockObjEqualityCanHandleNonMockObjects()
-		{
-			int i = MockedObjectsEquality.Instance.GetHashCode("");
-			Assert.NotEqual(0, i);
-		}
+        [Fact]
+        public void UsingCallOriginalWithSetter()
+        {
+            MockRepository mocks = new MockRepository();
+            WithParameters withParameters = mocks.StrictMock<WithParameters>(1);
+            withParameters.Int = 5;
+            LastCall.PropertyBehavior();
+            mocks.ReplayAll();
+            withParameters.Int = 12;
+            withParameters.Int = 15;
+            Assert.Equal(15, withParameters.Int);
+            mocks.VerifyAll();
+        }
 
-		[Fact]
-		public void WillDisplayMethodUsingArraysCorrectly()
-		{
-			string result = MethodCallUtil.StringPresentation(null, GetType().GetMethod("MethodUsingArray"), new object[] { 1, new string[] { "a", "b" } });
-			Assert.Equal("Coverage.MethodUsingArray(1, [\"a\", \"b\"]);",result );
-		}
+        [Fact]
+        public void MockObjCanHandleGetEventSubscribersCallsWithoutEventsRegistered()
+        {
+            MockRepository mocks = new MockRepository();
+            WithParameters withParameters = mocks.StrictMock<WithParameters>(1);
+            IMockedObject mocked = (IMockedObject)withParameters;
+            Delegate eventSubscribers = mocked.GetEventSubscribers("ff");
+            Assert.Null(eventSubscribers);
+        }
 
-		public void MethodUsingArray(int i, string[] foo)
-		{
-		}
+        [Fact]
+        public void MockObjEqualityCanHandleNonMockObjects()
+        {
+            int i = MockedObjectsEquality.Instance.GetHashCode("");
+            Assert.NotEqual(0, i);
+        }
 
-		private delegate string ToStringDelegate();
+        [Fact]
+        public void WillDisplayMethodUsingArraysCorrectly()
+        {
+            string result = MethodCallUtil.StringPresentation(null, GetType().GetMethod("MethodUsingArray"), new object[] { 1, new string[] { "a", "b" } });
+            Assert.Equal("Coverage.MethodUsingArray(1, [\"a\", \"b\"]);", result);
+        }
 
-		[Fact]
-		public void TryingToPassNullToReturnOrThrowWithActionWillThrow()
-		{
-			AnyArgsExpectation expectation = new AnyArgsExpectation(new FakeInvocation(typeof(object).GetMethod("ToString")), new Range(1, 1));
-			expectation.ActionToExecute = (ToStringDelegate)delegate { return "fpp"; };
-			Assert.Throws<InvalidOperationException>(
-				"Trying to run a Do() delegate when no arguments were matched to the expectation.",
-				() => expectation.ReturnOrThrow(null, null));
-		}
+        public void MethodUsingArray(int i, string[] foo)
+        {
+        }
 
-		[Fact]
-		public void CanCallSetExceptionToThrowOnVerifyOnVerifiedMockState()
-		{
-			new VerifiedMockState(null).SetExceptionToThrowOnVerify(null);
-		}
+        private delegate string ToStringDelegate();
 
-		[Fact]
-		public void WillGetPartialRecordFromPartialRecord()
-		{
-			MockRepository mocks = new MockRepository();
-			IDemo demo = mocks.StrictMock<IDemo>();
-			IMockState mockState = new RecordPartialMockState((IMockedObject)demo, mocks).BackToRecord();
-			Assert.Equal(typeof(RecordPartialMockState), mockState.GetType());
-		}
+        [Fact]
+        public void TryingToPassNullToReturnOrThrowWithActionWillThrow()
+        {
+            AnyArgsExpectation expectation = new AnyArgsExpectation(new FakeInvocation(typeof(object).GetMethod("ToString")), new Range(1, 1));
+            expectation.ActionToExecute = (ToStringDelegate)delegate { return "fpp"; };
+            Assert.Throws<InvalidOperationException>(
+                "Trying to run a Do() delegate when no arguments were matched to the expectation.",
+                () => expectation.ReturnOrThrow(null, null));
+        }
 
-		[Fact]
-		public void WillGetPartialRecordFromPartialReplay()
-		{
-			MockRepository mocks = new MockRepository();
-			IDemo demo = mocks.StrictMock<IDemo>();
-			IMockState mockState = new ReplayPartialMockState(new RecordPartialMockState((IMockedObject)demo, mocks)).BackToRecord();
-			Assert.Equal(typeof(RecordPartialMockState), mockState.GetType());
-		}
+        [Fact]
+        public void CanCallSetExceptionToThrowOnVerifyOnVerifiedMockState()
+        {
+            new VerifiedMockState(null).SetExceptionToThrowOnVerify(null);
+        }
 
-		[Fact]
-		public void WillGetDynamicRecordFromDynamicReplay()
-		{
-			MockRepository mocks = new MockRepository();
-			IDemo demo = mocks.StrictMock<IDemo>();
-			IMockState mockState = new ReplayDynamicMockState(new RecordDynamicMockState((IMockedObject)demo, mocks)).BackToRecord();
-			Assert.Equal(typeof(RecordDynamicMockState), mockState.GetType());
-		}
+        [Fact]
+        public void WillGetPartialRecordFromPartialRecord()
+        {
+            MockRepository mocks = new MockRepository();
+            IDemo demo = mocks.StrictMock<IDemo>();
+            IMockState mockState = new RecordPartialMockState((IMockedObject)demo, mocks).BackToRecord();
+            Assert.Equal(typeof(RecordPartialMockState), mockState.GetType());
+        }
+
+        [Fact]
+        public void WillGetPartialRecordFromPartialReplay()
+        {
+            MockRepository mocks = new MockRepository();
+            IDemo demo = mocks.StrictMock<IDemo>();
+            IMockState mockState = new ReplayPartialMockState(new RecordPartialMockState((IMockedObject)demo, mocks)).BackToRecord();
+            Assert.Equal(typeof(RecordPartialMockState), mockState.GetType());
+        }
+
+        [Fact]
+        public void WillGetDynamicRecordFromDynamicReplay()
+        {
+            MockRepository mocks = new MockRepository();
+            IDemo demo = mocks.StrictMock<IDemo>();
+            IMockState mockState = new ReplayDynamicMockState(new RecordDynamicMockState((IMockedObject)demo, mocks)).BackToRecord();
+            Assert.Equal(typeof(RecordDynamicMockState), mockState.GetType());
+        }
 
 
-		public static object SerializeAndDeserialize(object proxy)
-		{
-			MemoryStream stream = new MemoryStream();
-			BinaryFormatter formatter = new BinaryFormatter();
-			formatter.Serialize(stream, proxy);
-			stream.Position = 0;
-			return formatter.Deserialize(stream);
-		}
+        public static object SerializeAndDeserialize(object proxy)
+        {
+            MemoryStream stream = new MemoryStream();
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(stream, proxy);
+            stream.Position = 0;
+            return formatter.Deserialize(stream);
+        }
 
-	}
+    }
 }

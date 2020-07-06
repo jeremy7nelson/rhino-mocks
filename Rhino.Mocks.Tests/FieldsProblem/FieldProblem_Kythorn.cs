@@ -32,71 +32,71 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	public class FieldProblem_Kythorn
-	{
-		[Fact]
-		public void CallingAssertWasCalledOnAnObjectThatIsInRecordModeShouldResultInFailure()
-		{
-			var service = MockRepository.GenerateStub<IService>();
-			var view = new MockRepository().Stub<IView>();
-			service.Stub(x => x.GetString()).Return("Test");
-			var presenter = new Presenter(view, service);
-			presenter.OnViewLoaded();
-			Assert.Throws<InvalidOperationException>(
-				"Cannot assert on an object that is not in replay mode. Did you forget to call ReplayAll() ?",
-				() => view.AssertWasCalled(x => x.Message = "Test"));
-		}
+    public class FieldProblem_Kythorn
+    {
+        [Fact]
+        public void CallingAssertWasCalledOnAnObjectThatIsInRecordModeShouldResultInFailure()
+        {
+            var service = MockRepository.GenerateStub<IService>();
+            var view = new MockRepository().Stub<IView>();
+            service.Stub(x => x.GetString()).Return("Test");
+            var presenter = new Presenter(view, service);
+            presenter.OnViewLoaded();
+            Assert.Throws<InvalidOperationException>(
+                "Cannot assert on an object that is not in replay mode. Did you forget to call ReplayAll() ?",
+                () => view.AssertWasCalled(x => x.Message = "Test"));
+        }
 
-		[Fact]
-		public void CanUseStubSyntaxOnMocksInRecordMode()
-		{
-			MockRepository mocks = new MockRepository();
-			var service = mocks.Stub<IService>();
-			var view = mocks.Stub<IView>();
-			service.Stub(x => x.GetString()).Return("Test");
-			var presenter = new Presenter(view, service);
-			mocks.ReplayAll();
-			presenter.OnViewLoaded();
-			view.AssertWasCalled(x => x.Message = "Test");
-		}
+        [Fact]
+        public void CanUseStubSyntaxOnMocksInRecordMode()
+        {
+            MockRepository mocks = new MockRepository();
+            var service = mocks.Stub<IService>();
+            var view = mocks.Stub<IView>();
+            service.Stub(x => x.GetString()).Return("Test");
+            var presenter = new Presenter(view, service);
+            mocks.ReplayAll();
+            presenter.OnViewLoaded();
+            view.AssertWasCalled(x => x.Message = "Test");
+        }
 
-		[Fact]
-		public void Success()
-		{
-			var service = MockRepository.GenerateStub<IService>();
-			var view = MockRepository.GenerateStub<IView>();
-			service.Stub(x => x.GetString()).Return("Test");
-			view.Expect(x => x.Message = "Test");
-			var presenter = new Presenter(view, service);
-			presenter.OnViewLoaded();
-			view.VerifyAllExpectations();
-		}
+        [Fact]
+        public void Success()
+        {
+            var service = MockRepository.GenerateStub<IService>();
+            var view = MockRepository.GenerateStub<IView>();
+            service.Stub(x => x.GetString()).Return("Test");
+            view.Expect(x => x.Message = "Test");
+            var presenter = new Presenter(view, service);
+            presenter.OnViewLoaded();
+            view.VerifyAllExpectations();
+        }
 
-		public interface IService
-		{
-			string GetString();
-		}
+        public interface IService
+        {
+            string GetString();
+        }
 
-		public interface IView
-		{
-			string Message { set; }
-		}
+        public interface IView
+        {
+            string Message { set; }
+        }
 
-		public class Presenter
-		{
-			private readonly IService service;
-			private readonly IView view;
+        public class Presenter
+        {
+            private readonly IService service;
+            private readonly IView view;
 
-			public Presenter(IView view, IService service)
-			{
-				this.view = view;
-				this.service = service;
-			}
+            public Presenter(IView view, IService service)
+            {
+                this.view = view;
+                this.service = service;
+            }
 
-			public void OnViewLoaded()
-			{
-				view.Message = service.GetString();
-			}
-		}
-	}
+            public void OnViewLoaded()
+            {
+                view.Message = service.GetString();
+            }
+        }
+    }
 }

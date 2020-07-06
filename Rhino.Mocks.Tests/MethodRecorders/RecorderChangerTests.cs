@@ -27,89 +27,89 @@
 #endregion
 
 
-using System.Reflection;
-using Xunit;
 using Rhino.Mocks.Expectations;
 using Rhino.Mocks.Impl;
 using Rhino.Mocks.Interfaces;
 using Rhino.Mocks.MethodRecorders;
 using Rhino.Mocks.Tests.Expectations;
 using Rhino.Mocks.Tests.Impl;
+using System.Reflection;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.MethodRecorders
 {
-	using Generated;
+    using Generated;
 
-	
-	public class RecorderChangerTests
-	{
-		private object proxy;
-		private MethodInfo method;
-		private IExpectation expectation;
-		private object[] args;
-		private MockRepository mocks;
 
-		public RecorderChangerTests()
-		{
-			proxy = new object();
-			method = typeof (object).GetMethod("ToString");
-			expectation = new AnyArgsExpectation(new FakeInvocation(method), new Range(1, 1));
-			args = new object[0];
-			mocks = new MockRepository();
-		}
+    public class RecorderChangerTests
+    {
+        private object proxy;
+        private MethodInfo method;
+        private IExpectation expectation;
+        private object[] args;
+        private MockRepository mocks;
 
-		[Fact]
-		public void ChangeRecorderOnCtor()
-		{
-			IMethodRecorder recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-			MethodRecorderBaseTests.TestMethodRecorder testRecorder = new MethodRecorderBaseTests.TestMethodRecorder();
-			new RecorderChanger(mocks, recorder, testRecorder);
-			recorder.GetAllExpectationsForProxy(new object());
-			Assert.True(testRecorder.DoGetAllExpectationsForProxyCalled);
-			Assert.Same(testRecorder, Get.Recorder(mocks));
-		}
+        public RecorderChangerTests()
+        {
+            proxy = new object();
+            method = typeof(object).GetMethod("ToString");
+            expectation = new AnyArgsExpectation(new FakeInvocation(method), new Range(1, 1));
+            args = new object[0];
+            mocks = new MockRepository();
+        }
 
-		[Fact]
-		public void ChangeBackOnDispose()
-		{
-			IMethodRecorder recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-			MethodRecorderBaseTests.TestMethodRecorder testRecorder = new MethodRecorderBaseTests.TestMethodRecorder();
-			using (new RecorderChanger(mocks, recorder, testRecorder))
-			{
-				Assert.Same(testRecorder, Get.Recorder(mocks));
-			}
-			Assert.NotSame(testRecorder, Get.Recorder(mocks));
-			testRecorder.DoRecordCalled = false;
-			recorder.Record(proxy, method, expectation);
-			Assert.False(testRecorder.DoRecordCalled);
+        [Fact]
+        public void ChangeRecorderOnCtor()
+        {
+            IMethodRecorder recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+            MethodRecorderBaseTests.TestMethodRecorder testRecorder = new MethodRecorderBaseTests.TestMethodRecorder();
+            new RecorderChanger(mocks, recorder, testRecorder);
+            recorder.GetAllExpectationsForProxy(new object());
+            Assert.True(testRecorder.DoGetAllExpectationsForProxyCalled);
+            Assert.Same(testRecorder, Get.Recorder(mocks));
+        }
 
-		}
+        [Fact]
+        public void ChangeBackOnDispose()
+        {
+            IMethodRecorder recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+            MethodRecorderBaseTests.TestMethodRecorder testRecorder = new MethodRecorderBaseTests.TestMethodRecorder();
+            using (new RecorderChanger(mocks, recorder, testRecorder))
+            {
+                Assert.Same(testRecorder, Get.Recorder(mocks));
+            }
+            Assert.NotSame(testRecorder, Get.Recorder(mocks));
+            testRecorder.DoRecordCalled = false;
+            recorder.Record(proxy, method, expectation);
+            Assert.False(testRecorder.DoRecordCalled);
 
-		[Fact]
-		public void ChangeRecorderTwice()
-		{
-			IMethodRecorder recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
-			MethodRecorderBaseTests.TestMethodRecorder testRecorder = new MethodRecorderBaseTests.TestMethodRecorder();
-			using (new RecorderChanger(mocks, recorder, testRecorder))
-			{
-				Assert.Same(testRecorder, Get.Recorder(mocks));
-				MethodRecorderBaseTests.TestMethodRecorder testRecorder2 = new MethodRecorderBaseTests.TestMethodRecorder();
-				using (new RecorderChanger(mocks, recorder, testRecorder2))
-				{
-					Assert.Same(testRecorder2, Get.Recorder(mocks));
-					testRecorder2.DoRecordCalled = false;
-					recorder.Record(proxy, method, expectation);
-					Assert.True(testRecorder2.DoRecordCalled);
-				}
-				Assert.Same(testRecorder, Get.Recorder(mocks));
-				testRecorder.DoRecordCalled = false;
-				recorder.Record(proxy, method, expectation);
-				Assert.True(testRecorder.DoRecordCalled);
-			}
-			Assert.NotSame(testRecorder, Get.Recorder(mocks));
-			testRecorder.DoRecordCalled = false;
-			recorder.Record(proxy, method, expectation);
-			Assert.False(testRecorder.DoRecordCalled);
-		}
-	}
+        }
+
+        [Fact]
+        public void ChangeRecorderTwice()
+        {
+            IMethodRecorder recorder = new UnorderedMethodRecorder(new ProxyMethodExpectationsDictionary());
+            MethodRecorderBaseTests.TestMethodRecorder testRecorder = new MethodRecorderBaseTests.TestMethodRecorder();
+            using (new RecorderChanger(mocks, recorder, testRecorder))
+            {
+                Assert.Same(testRecorder, Get.Recorder(mocks));
+                MethodRecorderBaseTests.TestMethodRecorder testRecorder2 = new MethodRecorderBaseTests.TestMethodRecorder();
+                using (new RecorderChanger(mocks, recorder, testRecorder2))
+                {
+                    Assert.Same(testRecorder2, Get.Recorder(mocks));
+                    testRecorder2.DoRecordCalled = false;
+                    recorder.Record(proxy, method, expectation);
+                    Assert.True(testRecorder2.DoRecordCalled);
+                }
+                Assert.Same(testRecorder, Get.Recorder(mocks));
+                testRecorder.DoRecordCalled = false;
+                recorder.Record(proxy, method, expectation);
+                Assert.True(testRecorder.DoRecordCalled);
+            }
+            Assert.NotSame(testRecorder, Get.Recorder(mocks));
+            testRecorder.DoRecordCalled = false;
+            recorder.Record(proxy, method, expectation);
+            Assert.False(testRecorder.DoRecordCalled);
+        }
+    }
 }

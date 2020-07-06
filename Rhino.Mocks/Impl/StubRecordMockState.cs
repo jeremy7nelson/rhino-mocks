@@ -28,91 +28,91 @@
 
 #endregion
 
+using Rhino.Mocks.Interfaces;
 using System;
 using System.Reflection;
-using Rhino.Mocks.Interfaces;
 
 namespace Rhino.Mocks.Impl
 {
-	/// <summary>
-	/// Behave like a stub, all properties and events acts normally, methods calls
-	/// return default values by default (but can use expectations to set them up), etc.
-	/// </summary>
-	public class StubRecordMockState : RecordMockState
-	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="StubRecordMockState"/> class.
-		/// </summary>
-		/// <param name="mockedObject">The proxy that generates the method calls</param>
-		/// <param name="repository">Repository.</param>
-		public StubRecordMockState(IMockedObject mockedObject, MockRepository repository)
-			: base(mockedObject, repository)
-		{
-			Type[] types = mockedObject.ImplementedTypes;
-			SetPropertyBehavior(mockedObject, types);
-		}
+    /// <summary>
+    /// Behave like a stub, all properties and events acts normally, methods calls
+    /// return default values by default (but can use expectations to set them up), etc.
+    /// </summary>
+    public class StubRecordMockState : RecordMockState
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StubRecordMockState"/> class.
+        /// </summary>
+        /// <param name="mockedObject">The proxy that generates the method calls</param>
+        /// <param name="repository">Repository.</param>
+        public StubRecordMockState(IMockedObject mockedObject, MockRepository repository)
+            : base(mockedObject, repository)
+        {
+            Type[] types = mockedObject.ImplementedTypes;
+            SetPropertyBehavior(mockedObject, types);
+        }
 
-		private void SetPropertyBehavior(IMockedObject mockedObject, params Type[] types)
-		{
-			foreach (Type implementedType in types)
-			{
-				if (implementedType.BaseType != null && implementedType.BaseType != typeof(object))
-				{
-					SetPropertyBehavior(mockedObject, implementedType.BaseType);
-				}
+        private void SetPropertyBehavior(IMockedObject mockedObject, params Type[] types)
+        {
+            foreach (Type implementedType in types)
+            {
+                if (implementedType.BaseType != null && implementedType.BaseType != typeof(object))
+                {
+                    SetPropertyBehavior(mockedObject, implementedType.BaseType);
+                }
 
-				SetPropertyBehavior(mockedObject, implementedType.GetInterfaces());
+                SetPropertyBehavior(mockedObject, implementedType.GetInterfaces());
 
-				foreach (PropertyInfo property in implementedType.GetProperties())
-				{
-					if (property.CanRead && CanWriteToPropertyThroughPublicSignature(property))
-					{
-						bool alreadyHasValue = mockedObject.RegisterPropertyBehaviorFor(property);
-						if (property.PropertyType.IsValueType && alreadyHasValue == false)
-						{
-							CreateDefaultValueForValueTypeProperty(mockedObject, property);
-						}
-					}
-				}
+                foreach (PropertyInfo property in implementedType.GetProperties())
+                {
+                    if (property.CanRead && CanWriteToPropertyThroughPublicSignature(property))
+                    {
+                        bool alreadyHasValue = mockedObject.RegisterPropertyBehaviorFor(property);
+                        if (property.PropertyType.IsValueType && alreadyHasValue == false)
+                        {
+                            CreateDefaultValueForValueTypeProperty(mockedObject, property);
+                        }
+                    }
+                }
 
-			}
-		}
+            }
+        }
 
-		private static void CreateDefaultValueForValueTypeProperty(IMockedObject mockedObject, PropertyInfo property)
-	    {
-	        mockedObject.HandleProperty(property.GetSetMethod(true),
-	                                    new object[] { Activator.CreateInstance(property.PropertyType) });
-	    }
+        private static void CreateDefaultValueForValueTypeProperty(IMockedObject mockedObject, PropertyInfo property)
+        {
+            mockedObject.HandleProperty(property.GetSetMethod(true),
+                                        new object[] { Activator.CreateInstance(property.PropertyType) });
+        }
 
-		private static bool CanWriteToPropertyThroughPublicSignature(PropertyInfo property)
-	    {
+        private static bool CanWriteToPropertyThroughPublicSignature(PropertyInfo property)
+        {
             return property.CanWrite && property.GetSetMethod(false) != null;
-	    }
+        }
 
-	    /// <summary>
-		/// We don't care much about expectations here, so we will remove the expectation if
-		/// it is not closed.
-		/// </summary>
-		protected override void AssertPreviousMethodIsClose()
-		{
-			if (LastExpectation == null)
-				return;
-			if (LastExpectation.ActionsSatisfied)
-				return;
-			Repository.Recorder.RemoveExpectation(LastExpectation);
-			LastExpectation = null;
-		}
+        /// <summary>
+        /// We don't care much about expectations here, so we will remove the expectation if
+        /// it is not closed.
+        /// </summary>
+        protected override void AssertPreviousMethodIsClose()
+        {
+            if (LastExpectation == null)
+                return;
+            if (LastExpectation.ActionsSatisfied)
+                return;
+            Repository.Recorder.RemoveExpectation(LastExpectation);
+            LastExpectation = null;
+        }
 
-		/// <summary>
-		/// Verify that we can move to replay state and move
-		/// to the reply state.
-		/// </summary>
-		/// <returns></returns>
-		public override IMockState Replay()
-		{
-			AssertPreviousMethodIsClose();
-			return new StubReplayMockState(this);
-		}
+        /// <summary>
+        /// Verify that we can move to replay state and move
+        /// to the reply state.
+        /// </summary>
+        /// <returns></returns>
+        public override IMockState Replay()
+        {
+            AssertPreviousMethodIsClose();
+            return new StubReplayMockState(this);
+        }
 
         /// <summary>
         /// Get the default call count range expectation
@@ -122,5 +122,5 @@ namespace Rhino.Mocks.Impl
         {
             return new Range(1, null);
         }
-	}
+    }
 }

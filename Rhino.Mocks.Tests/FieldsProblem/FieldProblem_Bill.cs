@@ -1,9 +1,9 @@
-﻿using Xunit;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_Bill
     {
         /// <summary>

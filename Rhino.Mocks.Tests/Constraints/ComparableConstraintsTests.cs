@@ -27,86 +27,86 @@
 #endregion
 
 
+using Rhino.Mocks.Constraints;
 using System;
 using Xunit;
-using Rhino.Mocks.Constraints;
 
 namespace Rhino.Mocks.Tests.Constraints
 {
-	
-	public class ComparableConstraintsTests
-	{
-		[Fact]
-		public void GreaterThan()
-		{
-			Assert.True(Is.GreaterThan(1).Eval(3));
-			Assert.False(Is.GreaterThan(1.5).Eval(1.0));
-			Assert.Equal("greater than 5", Is.GreaterThan(5).Message);
-		}
 
-		[Fact]
-		public void LessThan()
-		{
-			Assert.False(Is.LessThan(1).Eval(3));
-			Assert.True(Is.LessThan(1.5).Eval(1.0));
-			Assert.Equal("less than 5", Is.LessThan(5).Message);
-		}
+    public class ComparableConstraintsTests
+    {
+        [Fact]
+        public void GreaterThan()
+        {
+            Assert.True(Is.GreaterThan(1).Eval(3));
+            Assert.False(Is.GreaterThan(1.5).Eval(1.0));
+            Assert.Equal("greater than 5", Is.GreaterThan(5).Message);
+        }
 
-		[Fact]
-		public void LessThanOrEqual()
-		{
-			Assert.False(Is.LessThanOrEqual(1).Eval(3));
-			Assert.True(Is.LessThanOrEqual(4.5f).Eval(4.5f));
-			Assert.True(Is.LessThanOrEqual(1.5).Eval(1.0));
-			Assert.Equal("less than or equal to 5", Is.LessThanOrEqual(5).Message);
-		}
+        [Fact]
+        public void LessThan()
+        {
+            Assert.False(Is.LessThan(1).Eval(3));
+            Assert.True(Is.LessThan(1.5).Eval(1.0));
+            Assert.Equal("less than 5", Is.LessThan(5).Message);
+        }
 
-		[Fact]
-		public void GreaterThanOrEqual()
-		{
-			Assert.True(Is.GreaterThanOrEqual(1).Eval(3));
-			Assert.True(Is.GreaterThanOrEqual(3L).Eval(3L));
-			Assert.False(Is.GreaterThanOrEqual(1.5).Eval(1.0));
-			Assert.Equal("greater than or equal to 5", Is.GreaterThanOrEqual(5).Message);
-		}
+        [Fact]
+        public void LessThanOrEqual()
+        {
+            Assert.False(Is.LessThanOrEqual(1).Eval(3));
+            Assert.True(Is.LessThanOrEqual(4.5f).Eval(4.5f));
+            Assert.True(Is.LessThanOrEqual(1.5).Eval(1.0));
+            Assert.Equal("less than or equal to 5", Is.LessThanOrEqual(5).Message);
+        }
 
-		[Fact]
-		public void Equal()
-		{
-			Assert.False(Is.Equal(1).Eval(3));
-			Assert.True(Is.Equal(3L).Eval(3L));
-			Assert.False(Is.Equal("Hi").Eval("Bye"));
-			Assert.True(Is.Equal("Bye").Eval("Bye"));
-			Assert.Equal("equal to Rahien", Is.Equal("Rahien").Message);
-		}
+        [Fact]
+        public void GreaterThanOrEqual()
+        {
+            Assert.True(Is.GreaterThanOrEqual(1).Eval(3));
+            Assert.True(Is.GreaterThanOrEqual(3L).Eval(3L));
+            Assert.False(Is.GreaterThanOrEqual(1.5).Eval(1.0));
+            Assert.Equal("greater than or equal to 5", Is.GreaterThanOrEqual(5).Message);
+        }
 
-		[Fact]
-		public void NotEqual()
-		{
-			Assert.True(Is.NotEqual(1).Eval(3));
-			Assert.False(Is.NotEqual(3L).Eval(3L));
-			Assert.True(Is.NotEqual("Hi").Eval("Bye"));
-			Assert.False(Is.NotEqual("Bye").Eval("Bye"));
-			Assert.Equal("not equal to Rahien", Is.NotEqual("Rahien").Message);
-		}
+        [Fact]
+        public void Equal()
+        {
+            Assert.False(Is.Equal(1).Eval(3));
+            Assert.True(Is.Equal(3L).Eval(3L));
+            Assert.False(Is.Equal("Hi").Eval("Bye"));
+            Assert.True(Is.Equal("Bye").Eval("Bye"));
+            Assert.Equal("equal to Rahien", Is.Equal("Rahien").Message);
+        }
 
-		[Fact]
-		public void IsNull()
-		{
-			Assert.True(Is.Null().Eval(null));
-			Assert.False(Is.Null().Eval(""));
-			Assert.Equal("equal to null", Is.Null().Message);
-		}
+        [Fact]
+        public void NotEqual()
+        {
+            Assert.True(Is.NotEqual(1).Eval(3));
+            Assert.False(Is.NotEqual(3L).Eval(3L));
+            Assert.True(Is.NotEqual("Hi").Eval("Bye"));
+            Assert.False(Is.NotEqual("Bye").Eval("Bye"));
+            Assert.Equal("not equal to Rahien", Is.NotEqual("Rahien").Message);
+        }
 
-		[Fact]
-		public void IsNotNull()
-		{
-			Assert.False(Is.NotNull().Eval(null));
-			Assert.True(Is.NotNull().Eval(""));
-			Assert.Equal("not equal to null", Is.NotNull().Message);
-		}
-	    
-	     [Fact]
+        [Fact]
+        public void IsNull()
+        {
+            Assert.True(Is.Null().Eval(null));
+            Assert.False(Is.Null().Eval(""));
+            Assert.Equal("equal to null", Is.Null().Message);
+        }
+
+        [Fact]
+        public void IsNotNull()
+        {
+            Assert.False(Is.NotNull().Eval(null));
+            Assert.True(Is.NotNull().Eval(""));
+            Assert.Equal("not equal to null", Is.NotNull().Message);
+        }
+
+        [Fact]
         public void Same()
         {
             object o1 = new object();
@@ -141,6 +141,6 @@ namespace Rhino.Mocks.Tests.Constraints
             Assert.True(Is.NotSame(o1).Eval(o2));
             Assert.False(Is.NotSame(o1).Eval(o1));
         }
-	}
+    }
 
 }

@@ -27,35 +27,34 @@
 #endregion
 
 
-using System;
 using Rhino.Mocks.Interfaces;
 
 namespace Rhino.Mocks.Impl
 {
-	/// <summary>
-	/// Records all the expectations for a mock and
-	/// return a ReplayDynamicMockState when Replay()
-	/// is called.
-	/// </summary>
-	public class RecordDynamicMockState : RecordMockState
-	{
-		/// <summary>
-		/// Creates a new <see cref="RecordDynamicMockState"/> instance.
-		/// </summary>
-		/// <param name="repository">Repository.</param>
-		/// <param name="mockedObject">The proxy that generates the method calls</param>
-		public RecordDynamicMockState(IMockedObject mockedObject, MockRepository repository) : base(mockedObject, repository)
-		{
-		}
+    /// <summary>
+    /// Records all the expectations for a mock and
+    /// return a ReplayDynamicMockState when Replay()
+    /// is called.
+    /// </summary>
+    public class RecordDynamicMockState : RecordMockState
+    {
+        /// <summary>
+        /// Creates a new <see cref="RecordDynamicMockState"/> instance.
+        /// </summary>
+        /// <param name="repository">Repository.</param>
+        /// <param name="mockedObject">The proxy that generates the method calls</param>
+        public RecordDynamicMockState(IMockedObject mockedObject, MockRepository repository) : base(mockedObject, repository)
+        {
+        }
 
-		/// <summary>
-		/// Verify that we can move to replay state and move 
-		/// to the reply state.
-		/// </summary>
-		protected override IMockState DoReplay()
-		{
-			return new ReplayDynamicMockState(this);
-		}
+        /// <summary>
+        /// Verify that we can move to replay state and move 
+        /// to the reply state.
+        /// </summary>
+        protected override IMockState DoReplay()
+        {
+            return new ReplayDynamicMockState(this);
+        }
 
         /// <summary>
         /// Get the default call count range expectation
@@ -73,5 +72,5 @@ namespace Rhino.Mocks.Impl
         {
             return new RecordDynamicMockState(this.Proxy, Repository);
         }
-	}
+    }
 }

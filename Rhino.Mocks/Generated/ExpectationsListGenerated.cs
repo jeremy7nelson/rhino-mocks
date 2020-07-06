@@ -27,17 +27,15 @@
 #endregion
 
 
-using System;
-using System.Collections;
 using Rhino.Mocks.Interfaces;
 
 namespace Rhino.Mocks.Generated
 {
 
-     /// <summary>
+    /// <summary>
     /// ExpectationsList
     /// </summary>
     public class ExpectationsList : System.Collections.Generic.List<IExpectation>
     {
-    }	
+    }
 }

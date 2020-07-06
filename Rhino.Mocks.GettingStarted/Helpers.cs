@@ -4,7 +4,7 @@ namespace Rhino.Mocks.GettingStarted
     {
         public static bool Implements<T>(this object @this)
         {
-            return typeof (T).IsAssignableFrom(@this.GetType());
+            return typeof(T).IsAssignableFrom(@this.GetType());
         }
     }
 }

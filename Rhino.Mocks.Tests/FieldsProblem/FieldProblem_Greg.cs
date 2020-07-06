@@ -2,10 +2,10 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_Greg
     {
-		private MockRepository _mockRepository = new MockRepository();
+        private MockRepository _mockRepository = new MockRepository();
 
         [Fact]
         public void IgnoreArguments()
@@ -13,7 +13,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
             IFoo myFoo = _mockRepository.StrictMock<IFoo>();
             IBar<int> myBar = _mockRepository.StrictMock<IBar<int>>();
 
-            using(_mockRepository.Record())
+            using (_mockRepository.Record())
             using (_mockRepository.Ordered())
             {
                 Expect.Call(myFoo.RunBar(myBar)).IgnoreArguments().Return(true);

@@ -27,13 +27,11 @@
 #endregion
 
 
-using System;
-using System.Text;
 using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_AviOrdering
     {
 
@@ -79,8 +77,8 @@ namespace Rhino.Mocks.Tests.FieldsProblem
         {
             //Setup a mock view and ISumbition
             MockRepository mocks = new MockRepository();
-            IView myMockView = (IView) mocks.DynamicMock(typeof (IView));
-            ISumbition myMockSubmition = (ISumbition) mocks.DynamicMock(typeof (ISumbition));
+            IView myMockView = (IView)mocks.DynamicMock(typeof(IView));
+            ISumbition myMockSubmition = (ISumbition)mocks.DynamicMock(typeof(ISumbition));
 
             //Record expectations
             SetupResult.For(myMockView.UserID).Return(3105596L);
@@ -97,13 +95,13 @@ namespace Rhino.Mocks.Tests.FieldsProblem
                 }
                 myMockSubmition.Save();
             }
-            
+
             //setup the present
             mocks.ReplayAll();
-            
+
             Presneter myPresenter = new Presneter(myMockView, myMockSubmition);
             myPresenter.Sumbit();
-            
+
             mocks.VerifyAll();
         }
     }

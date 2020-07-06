@@ -27,46 +27,44 @@
 #endregion
 
 
-using System;
-using System.Text;
-using System.Windows.Forms;
-using Xunit;
 using Rhino.Mocks.Exceptions;
+using System;
+using Xunit;
 
 namespace Rhino.Mocks.Tests
 {
-    
+
     public class PartialMockTests
     {
         MockRepository mocks;
         AbstractClass abs;
 
-		public PartialMockTests()
+        public PartialMockTests()
         {
             mocks = new MockRepository();
             abs = (AbstractClass)mocks.PartialMock(typeof(AbstractClass));
         }
 
         [Fact]
-		public void AutomaticallCallBaseMethodIfNoExpectationWasSet() 
-	    {
+        public void AutomaticallCallBaseMethodIfNoExpectationWasSet()
+        {
             mocks.ReplayAll();
             Assert.Equal(1, abs.Increment());
-			Assert.Equal(6, abs.Add(5));
-			Assert.Equal(6, abs.Count);
-			mocks.VerifyAll();
+            Assert.Equal(6, abs.Add(5));
+            Assert.Equal(6, abs.Count);
+            mocks.VerifyAll();
 
-	    }
+        }
 
         [Fact]
         public void CanMockVirtualMethods()
         {
             Expect.Call(abs.Increment()).Return(5);
-			Expect.Call(abs.Add(2)).Return(3);
-			mocks.ReplayAll();
+            Expect.Call(abs.Add(2)).Return(3);
+            mocks.ReplayAll();
             Assert.Equal(5, abs.Increment());
-			Assert.Equal(3, abs.Add(2));
-			Assert.Equal(0, abs.Count);
+            Assert.Equal(3, abs.Add(2));
+            Assert.Equal(0, abs.Count);
             mocks.VerifyAll();
         }
 
@@ -83,30 +81,30 @@ namespace Rhino.Mocks.Tests
         [Fact]
         public void CantCreatePartialMockFromInterfaces()
         {
-        	Assert.Throws<InvalidOperationException>("Can't create a partial mock from an interface",
-        	                                         () => new MockRepository().PartialMock(typeof (IDemo)));
+            Assert.Throws<InvalidOperationException>("Can't create a partial mock from an interface",
+                                                     () => new MockRepository().PartialMock(typeof(IDemo)));
         }
 
         [Fact]
         public void CallAnAbstractMethodWithoutSettingExpectation()
         {
             mocks.ReplayAll();
-			Assert.Throws<ExpectationViolationException>("AbstractClass.Decrement(); Expected #0, Actual #1.",
-												 () => abs.Decrement());
-			;
+            Assert.Throws<ExpectationViolationException>("AbstractClass.Decrement(); Expected #0, Actual #1.",
+                                                 () => abs.Decrement());
+            ;
         }
 
-    	[Fact]
-    	public void CanMockWithCtorParams()
-    	{
-    		WithParameters withParameters = mocks.PartialMock<WithParameters>(1);
-    		Expect.Call(withParameters.Int).Return(4);
-    		mocks.ReplayAll();
-    		Assert.Equal(4, withParameters.Int);
-    		mocks.VerifyAll();
-    	}
+        [Fact]
+        public void CanMockWithCtorParams()
+        {
+            WithParameters withParameters = mocks.PartialMock<WithParameters>(1);
+            Expect.Call(withParameters.Int).Return(4);
+            mocks.ReplayAll();
+            Assert.Equal(4, withParameters.Int);
+            mocks.VerifyAll();
+        }
     }
-    
+
     public abstract class AbstractClass
     {
         public int Count = 0;
@@ -117,28 +115,28 @@ namespace Rhino.Mocks.Tests
         }
 
         public virtual int Add(int n)
-		{
-			return Count += n;
-		}
+        {
+            return Count += n;
+        }
 
         public abstract int Decrement();
     }
 
-	public class WithParameters
-	{
-		private int i;
+    public class WithParameters
+    {
+        private int i;
 
 
-		public WithParameters(int i)
-		{
-			this.i = i;
-		}
+        public WithParameters(int i)
+        {
+            this.i = i;
+        }
 
 
-		public virtual int Int
-		{
-			get { return i; }
-			set { i = value; }
-		}
-	}
+        public virtual int Int
+        {
+            get { return i; }
+            set { i = value; }
+        }
+    }
 }

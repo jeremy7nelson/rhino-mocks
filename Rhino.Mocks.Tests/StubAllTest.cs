@@ -26,129 +26,129 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using Rhino.Mocks.Interfaces;
 using System;
 using Xunit;
-using Rhino.Mocks.Interfaces;
 
 namespace Rhino.Mocks.Tests
 {
-	
-	public class StubAllTest
-	{
-		[Fact]
-		public void StaticAccessorForStubAll()
-		{
-			ICat cat = MockRepository.GenerateStub<ICat>();
-			cat.Eyes = 2;
-			Assert.Equal(2, cat.Eyes );
-		}
 
-		[Fact]
-		public void StubAllHasPropertyBehaviorForAllProperties()
-		{
-			MockRepository mocks = new MockRepository();
-			ICat cat = mocks.Stub<ICat>();
-			cat.Legs = 4;
-			Assert.Equal(4, cat.Legs);
+    public class StubAllTest
+    {
+        [Fact]
+        public void StaticAccessorForStubAll()
+        {
+            ICat cat = MockRepository.GenerateStub<ICat>();
+            cat.Eyes = 2;
+            Assert.Equal(2, cat.Eyes);
+        }
 
-			cat.Name = "Esther";
-			Assert.Equal("Esther", cat.Name);
+        [Fact]
+        public void StubAllHasPropertyBehaviorForAllProperties()
+        {
+            MockRepository mocks = new MockRepository();
+            ICat cat = mocks.Stub<ICat>();
+            cat.Legs = 4;
+            Assert.Equal(4, cat.Legs);
 
-			Assert.Null(cat.Species);
-			cat.Species = "Ordinary housecat";
-			Assert.Equal("Ordinary housecat", cat.Species);
+            cat.Name = "Esther";
+            Assert.Equal("Esther", cat.Name);
 
-			cat.IsDeclawed = true;
-			Assert.True(cat.IsDeclawed);
-		}
+            Assert.Null(cat.Species);
+            cat.Species = "Ordinary housecat";
+            Assert.Equal("Ordinary housecat", cat.Species);
 
-		[Fact]
-		public void StubAllHasPropertyBehaviorForAllPropertiesWhenStubbingClasses()
-		{
-			MockRepository mocks = new MockRepository();
-			Housecat housecat = mocks.Stub<Housecat>();
+            cat.IsDeclawed = true;
+            Assert.True(cat.IsDeclawed);
+        }
 
-			housecat.FurLength = 7;
-			Assert.Equal(7, housecat.FurLength);
+        [Fact]
+        public void StubAllHasPropertyBehaviorForAllPropertiesWhenStubbingClasses()
+        {
+            MockRepository mocks = new MockRepository();
+            Housecat housecat = mocks.Stub<Housecat>();
 
-			housecat.Color = "Black";
-			Assert.Equal("Black", housecat.Color);
-		}
+            housecat.FurLength = 7;
+            Assert.Equal(7, housecat.FurLength);
 
-		[Fact]
-		public void StubAllCanRegisterToEventsAndRaiseThem()
-		{
-			MockRepository mocks = new MockRepository();
-			ICat cat = mocks.Stub<ICat>();
-			cat.Hungry += null; //Note, no expectation!
-			IEventRaiser eventRaiser = LastCall.GetEventRaiser();
+            housecat.Color = "Black";
+            Assert.Equal("Black", housecat.Color);
+        }
 
-			bool raised = false;
-			cat.Hungry += delegate
-			{
-				raised = true;
-			};
+        [Fact]
+        public void StubAllCanRegisterToEventsAndRaiseThem()
+        {
+            MockRepository mocks = new MockRepository();
+            ICat cat = mocks.Stub<ICat>();
+            cat.Hungry += null; //Note, no expectation!
+            IEventRaiser eventRaiser = LastCall.GetEventRaiser();
 
-			eventRaiser.Raise(cat, EventArgs.Empty);
-			Assert.True(raised);
-		}
+            bool raised = false;
+            cat.Hungry += delegate
+            {
+                raised = true;
+            };
 
-		[Fact]
-		public void CallingMethodOnStubAllDoesNotCreateExpectations()
-		{
-			MockRepository mocks = new MockRepository();
-			ICat cat = mocks.Stub<ICat>();
-			using (mocks.Record())
-			{
-				cat.Legs = 4;
-				cat.Name = "Esther";
-				cat.Species = "Ordinary housecat";
-				cat.IsDeclawed = true;
-				cat.GetMood();
-			}
-			mocks.VerifyAll();
-		}
+            eventRaiser.Raise(cat, EventArgs.Empty);
+            Assert.True(raised);
+        }
 
-		[Fact]
-		public void DemoStubAllLegsProperty()
-		{
-			ICat catStub = MockRepository.GenerateStub<ICat>();
+        [Fact]
+        public void CallingMethodOnStubAllDoesNotCreateExpectations()
+        {
+            MockRepository mocks = new MockRepository();
+            ICat cat = mocks.Stub<ICat>();
+            using (mocks.Record())
+            {
+                cat.Legs = 4;
+                cat.Name = "Esther";
+                cat.Species = "Ordinary housecat";
+                cat.IsDeclawed = true;
+                cat.GetMood();
+            }
+            mocks.VerifyAll();
+        }
 
-			catStub.Legs = 0;
-			Assert.Equal(0, catStub.Legs);
+        [Fact]
+        public void DemoStubAllLegsProperty()
+        {
+            ICat catStub = MockRepository.GenerateStub<ICat>();
 
-			SomeClass instance = new SomeClass(catStub);
-			instance.SetLegs(10);
-			Assert.Equal(10, catStub.Legs);
-		}
+            catStub.Legs = 0;
+            Assert.Equal(0, catStub.Legs);
 
-		[Fact]
-		public void StubAllCanCreateExpectationOnMethod()
-		{
-			MockRepository mocks = new MockRepository();
-			ICat cat = mocks.Stub<ICat>();
-			using (mocks.Record())
-			{
-				cat.Legs = 4;
-				cat.Name = "Esther";
-				cat.Species = "Ordinary housecat";
-				cat.IsDeclawed = true;
-				cat.GetMood();
-				LastCall.Return("Happy");
-			}
-			Assert.Equal("Happy", cat.GetMood());
-			mocks.VerifyAll();
-		}
+            SomeClass instance = new SomeClass(catStub);
+            instance.SetLegs(10);
+            Assert.Equal(10, catStub.Legs);
+        }
 
-		[Fact]
-		public void StubAllCanHandlePropertiesGettingRegisteredMultipleTimes()
-		{
-			MockRepository mocks = new MockRepository();
-			SpecificFish fish = mocks.Stub<SpecificFish>();
+        [Fact]
+        public void StubAllCanCreateExpectationOnMethod()
+        {
+            MockRepository mocks = new MockRepository();
+            ICat cat = mocks.Stub<ICat>();
+            using (mocks.Record())
+            {
+                cat.Legs = 4;
+                cat.Name = "Esther";
+                cat.Species = "Ordinary housecat";
+                cat.IsDeclawed = true;
+                cat.GetMood();
+                LastCall.Return("Happy");
+            }
+            Assert.Equal("Happy", cat.GetMood());
+            mocks.VerifyAll();
+        }
 
-			fish.IsFreshWater = true;
-			Assert.True(fish.IsFreshWater);
-		}
+        [Fact]
+        public void StubAllCanHandlePropertiesGettingRegisteredMultipleTimes()
+        {
+            MockRepository mocks = new MockRepository();
+            SpecificFish fish = mocks.Stub<SpecificFish>();
+
+            fish.IsFreshWater = true;
+            Assert.True(fish.IsFreshWater);
+        }
 
         [Fact]
         public void StubCanHandlePolymorphicArgConstraints()
@@ -156,56 +156,56 @@ namespace Rhino.Mocks.Tests
             IAquarium aquarium = MockRepository.GenerateStub<IAquarium>();
             aquarium.Stub(x => x.DetermineAge(Arg<MartianFish>.Matches(arg => arg.Planet == "mars"))).Return(100);
             aquarium.Stub(x => x.DetermineAge(Arg<SpecificFish>.Is.TypeOf)).Return(5);
-            
+
             Assert.False(typeof(MartianFish).IsAssignableFrom(typeof(SpecificFish)));
             Assert.Equal(5, aquarium.DetermineAge(new SpecificFish()));
         }
 
-	}
+    }
 
-	public interface ICat : IAnimal
-	{
-		bool IsDeclawed { get; set; }
-	}
+    public interface ICat : IAnimal
+    {
+        bool IsDeclawed { get; set; }
+    }
 
-	public class Feline
-	{
-		private int _furLength;
+    public class Feline
+    {
+        private int _furLength;
 
-		public virtual int FurLength
-		{
-			get { return _furLength; }
-			set { _furLength = value; }
-		}
-	}
+        public virtual int FurLength
+        {
+            get { return _furLength; }
+            set { _furLength = value; }
+        }
+    }
 
-	public class Housecat : Feline
-	{
-		private String _color;
+    public class Housecat : Feline
+    {
+        private String _color;
 
-		public virtual String Color
-		{
-			get { return _color; }
-			set { _color = value; }
-		}
-	}
+        public virtual String Color
+        {
+            get { return _color; }
+            set { _color = value; }
+        }
+    }
 
-   
+
 
     public interface IAquarium
     {
         int DetermineAge(IFish fish);
     }
 
-	public interface IFish
-	{
-		bool IsFreshWater { get; set; }
-	}
+    public interface IFish
+    {
+        bool IsFreshWater { get; set; }
+    }
 
-	public abstract class Fish : IFish
-	{
-		public abstract bool IsFreshWater { get; set; }
-	}
+    public abstract class Fish : IFish
+    {
+        public abstract bool IsFreshWater { get; set; }
+    }
 
     public class MartianFish : IFish
     {
@@ -213,15 +213,15 @@ namespace Rhino.Mocks.Tests
         public string Planet { get; set; }
     }
 
-	public class SpecificFish : Fish
-	{
-		private bool _isFreshWater;
+    public class SpecificFish : Fish
+    {
+        private bool _isFreshWater;
 
-		public override bool IsFreshWater
-		{
-			get { return _isFreshWater; }
-			set { _isFreshWater = value; }
-		}		
-	}
+        public override bool IsFreshWater
+        {
+            get { return _isFreshWater; }
+            set { _isFreshWater = value; }
+        }
+    }
 
 }

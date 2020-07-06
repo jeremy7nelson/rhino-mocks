@@ -27,76 +27,75 @@
 #endregion
 
 
-using System;
-using Xunit;
 using Rhino.Mocks.Exceptions;
+using Xunit;
 
 namespace Rhino.Mocks.Tests
 {
-	
-	public class GenericMethods
-	{
-		[Fact]
-		public void CanStrictMockOfInterfaceWithGenericMethod()
-		{
-			MockRepository mocks = new MockRepository();
-			mocks.StrictMock<IFactory>();
-		}
 
-		[Fact]
-		public void CanSetExpectationsOnInterfaceWithGenericMethod()
-		{
-			MockRepository mocks = new MockRepository();
-			IFactory factory = mocks.StrictMock<IFactory>();
-			Expect.Call(factory.Create<string>()).Return("working?");
-			mocks.ReplayAll();
-			string result = factory.Create<string>();
-			Assert.Equal("working?",result);
-			mocks.VerifyAll();
-		}
+    public class GenericMethods
+    {
+        [Fact]
+        public void CanStrictMockOfInterfaceWithGenericMethod()
+        {
+            MockRepository mocks = new MockRepository();
+            mocks.StrictMock<IFactory>();
+        }
 
-		[Fact]
-		public void WillGetErrorIfCallingMethodWithDifferentGenericArgument()
-		{
-			MockRepository mocks = new MockRepository();
-			IFactory factory = mocks.StrictMock<IFactory>();
-			Expect.Call(factory.Create<string>()).Return("working?");
-			mocks.ReplayAll();
-			Assert.Throws<ExpectationViolationException>(
-				@"IFactory.Create<System.Int32>(); Expected #1, Actual #1.
+        [Fact]
+        public void CanSetExpectationsOnInterfaceWithGenericMethod()
+        {
+            MockRepository mocks = new MockRepository();
+            IFactory factory = mocks.StrictMock<IFactory>();
+            Expect.Call(factory.Create<string>()).Return("working?");
+            mocks.ReplayAll();
+            string result = factory.Create<string>();
+            Assert.Equal("working?", result);
+            mocks.VerifyAll();
+        }
+
+        [Fact]
+        public void WillGetErrorIfCallingMethodWithDifferentGenericArgument()
+        {
+            MockRepository mocks = new MockRepository();
+            IFactory factory = mocks.StrictMock<IFactory>();
+            Expect.Call(factory.Create<string>()).Return("working?");
+            mocks.ReplayAll();
+            Assert.Throws<ExpectationViolationException>(
+                @"IFactory.Create<System.Int32>(); Expected #1, Actual #1.
 IFactory.Create<System.String>(); Expected #1, Actual #0.",
-				() => factory.Create<int>());
-		}
+                () => factory.Create<int>());
+        }
 
-//		Won't compile anymore
-//		[Fact]
-//		[ExpectedException(typeof(InvalidOperationException),"Type 'System.Int32' doesn't match the return type 'System.String' for method 'IFactory.Create<System.String>();'")]
-//		public void WillGiveErrorIfThereIsTypeMismatchInGenericParameters()
-//		{
-//			MockRepository mocks = new MockRepository();
-//			IFactory factory = mocks.StrictMock<IFactory>();
-//			Expect.Call(factory.Create<string>()).Return(1);
-//		}
+        //		Won't compile anymore
+        //		[Fact]
+        //		[ExpectedException(typeof(InvalidOperationException),"Type 'System.Int32' doesn't match the return type 'System.String' for method 'IFactory.Create<System.String>();'")]
+        //		public void WillGiveErrorIfThereIsTypeMismatchInGenericParameters()
+        //		{
+        //			MockRepository mocks = new MockRepository();
+        //			IFactory factory = mocks.StrictMock<IFactory>();
+        //			Expect.Call(factory.Create<string>()).Return(1);
+        //		}
 
-		[Fact]
-		public void WillGiveErrorIfMissingCallToGenericMethod()
-		{
-			MockRepository mocks = new MockRepository();
-			IFactory factory = mocks.StrictMock<IFactory>();
-			Expect.Call(factory.Create<string>()).Return("working?");
-			mocks.ReplayAll();
-			Assert.Throws<ExpectationViolationException>(
-				"IFactory.Create<System.String>(); Expected #1, Actual #0.",
-				() => mocks.VerifyAll());
+        [Fact]
+        public void WillGiveErrorIfMissingCallToGenericMethod()
+        {
+            MockRepository mocks = new MockRepository();
+            IFactory factory = mocks.StrictMock<IFactory>();
+            Expect.Call(factory.Create<string>()).Return("working?");
+            mocks.ReplayAll();
+            Assert.Throws<ExpectationViolationException>(
+                "IFactory.Create<System.String>(); Expected #1, Actual #0.",
+                () => mocks.VerifyAll());
 
-		}
+        }
 
-	}
+    }
 
 
 
-	public interface IFactory
-	{
-		T Create<T>();
-	}
+    public interface IFactory
+    {
+        T Create<T>();
+    }
 }

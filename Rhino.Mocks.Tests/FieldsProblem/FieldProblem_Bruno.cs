@@ -38,7 +38,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
         void SomeMethod();
     }
 
-    
+
     public class ReproFixture
     {
         [Fact]

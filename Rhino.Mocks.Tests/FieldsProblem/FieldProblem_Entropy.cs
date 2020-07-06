@@ -27,141 +27,139 @@
 #endregion
 
 
-using System;
-using System.Text;
-using Xunit;
 using Rhino.Mocks.Exceptions;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
-	public class FieldProblem_Entropy
-	{
-		public interface IMyObject
-		{
-			void DoSomething();
-			void DoSomethingElse();
-			object SomeProperty { get; set; }
-		}
 
-		[Fact]
-		public void NestedOrderedAndAtLeastOnce()
-		{
-			MockRepository mocks = new MockRepository();
-			IMyObject myObject = mocks.StrictMock(typeof(IMyObject)) as IMyObject;
+    public class FieldProblem_Entropy
+    {
+        public interface IMyObject
+        {
+            void DoSomething();
+            void DoSomethingElse();
+            object SomeProperty { get; set; }
+        }
 
-			using (mocks.Ordered())
-			{
-				using (mocks.Ordered()) // <-- Works if removed. Unordered does not work too.
-				{
-					Expect.Call(myObject.SomeProperty).Return(null).Repeat.AtLeastOnce();
-				}
-				myObject.DoSomething();
-			}
+        [Fact]
+        public void NestedOrderedAndAtLeastOnce()
+        {
+            MockRepository mocks = new MockRepository();
+            IMyObject myObject = mocks.StrictMock(typeof(IMyObject)) as IMyObject;
 
-			mocks.ReplayAll();
+            using (mocks.Ordered())
+            {
+                using (mocks.Ordered()) // <-- Works if removed. Unordered does not work too.
+                {
+                    Expect.Call(myObject.SomeProperty).Return(null).Repeat.AtLeastOnce();
+                }
+                myObject.DoSomething();
+            }
 
-			Assert.Null(myObject.SomeProperty);
-			Assert.Null(myObject.SomeProperty);
-			Assert.Null(myObject.SomeProperty);
-			myObject.DoSomething();
+            mocks.ReplayAll();
 
-			mocks.VerifyAll();
-		}
+            Assert.Null(myObject.SomeProperty);
+            Assert.Null(myObject.SomeProperty);
+            Assert.Null(myObject.SomeProperty);
+            myObject.DoSomething();
+
+            mocks.VerifyAll();
+        }
 
 
-		[Fact]
-		public void ShouldFailInNestedOrderringIfMethodWasNotCalled()
-		{
-			MockRepository mocks = new MockRepository();
-			IMyObject myObject = mocks.StrictMock(typeof(IMyObject)) as IMyObject;
+        [Fact]
+        public void ShouldFailInNestedOrderringIfMethodWasNotCalled()
+        {
+            MockRepository mocks = new MockRepository();
+            IMyObject myObject = mocks.StrictMock(typeof(IMyObject)) as IMyObject;
 
-			using (mocks.Ordered())
-			{
-				using (mocks.Ordered()) 
-				{
-					myObject.DoSomethingElse();
-					LastCall.Repeat.AtLeastOnce();
-				}
-				myObject.DoSomething(); 
-			}
+            using (mocks.Ordered())
+            {
+                using (mocks.Ordered())
+                {
+                    myObject.DoSomethingElse();
+                    LastCall.Repeat.AtLeastOnce();
+                }
+                myObject.DoSomething();
+            }
 
-			mocks.ReplayAll();
-			myObject.DoSomethingElse();
-			Assert.Throws<ExpectationViolationException>(
-				"IMyObject.DoSomething(); Expected #1, Actual #0.",
-				() => mocks.VerifyAll());
-		}
+            mocks.ReplayAll();
+            myObject.DoSomethingElse();
+            Assert.Throws<ExpectationViolationException>(
+                "IMyObject.DoSomething(); Expected #1, Actual #0.",
+                () => mocks.VerifyAll());
+        }
 
-		[Fact]
-		public void NestedInorderedAndAtLeastOnce()
-		{
-			MockRepository mocks = new MockRepository();
-			IMyObject myObject = mocks.StrictMock(typeof(IMyObject)) as IMyObject;
+        [Fact]
+        public void NestedInorderedAndAtLeastOnce()
+        {
+            MockRepository mocks = new MockRepository();
+            IMyObject myObject = mocks.StrictMock(typeof(IMyObject)) as IMyObject;
 
-			using (mocks.Ordered())
-			{
-				using (mocks.Unordered()) // <-- Works only if ordered
-				{
-					Expect.Call(myObject.SomeProperty).Return(null).Repeat.AtLeastOnce();
-				}
-				myObject.DoSomething();
-			}
+            using (mocks.Ordered())
+            {
+                using (mocks.Unordered()) // <-- Works only if ordered
+                {
+                    Expect.Call(myObject.SomeProperty).Return(null).Repeat.AtLeastOnce();
+                }
+                myObject.DoSomething();
+            }
 
-			mocks.ReplayAll();
+            mocks.ReplayAll();
 
-			Assert.Null(myObject.SomeProperty);
-			Assert.Null(myObject.SomeProperty);
-			Assert.Null(myObject.SomeProperty);
-			myObject.DoSomething();
-			mocks.VerifyAll();
-		}
+            Assert.Null(myObject.SomeProperty);
+            Assert.Null(myObject.SomeProperty);
+            Assert.Null(myObject.SomeProperty);
+            myObject.DoSomething();
+            mocks.VerifyAll();
+        }
 
-		[Fact]
-		public void UnorderedAndAtLeastOnce_CallingAnExtraMethod()
-		{
-			MockRepository mocks = new MockRepository();
-			IMyObject myObject = mocks.StrictMock(typeof(IMyObject)) as IMyObject;
+        [Fact]
+        public void UnorderedAndAtLeastOnce_CallingAnExtraMethod()
+        {
+            MockRepository mocks = new MockRepository();
+            IMyObject myObject = mocks.StrictMock(typeof(IMyObject)) as IMyObject;
 
-			using (mocks.Unordered())
-			{
-				Expect.Call(myObject.SomeProperty).Return(null).Repeat.AtLeastOnce();
-			}
-			myObject.DoSomethingElse();
+            using (mocks.Unordered())
+            {
+                Expect.Call(myObject.SomeProperty).Return(null).Repeat.AtLeastOnce();
+            }
+            myObject.DoSomethingElse();
 
-			mocks.ReplayAll();
+            mocks.ReplayAll();
 
-			Assert.Null(myObject.SomeProperty);
-			Assert.Null(myObject.SomeProperty);
-			Assert.Null(myObject.SomeProperty);
-			
-			Assert.Throws<ExpectationViolationException>(
-				@"IMyObject.DoSomething(); Expected #0, Actual #1.",
-				() => myObject.DoSomething());
-		}
+            Assert.Null(myObject.SomeProperty);
+            Assert.Null(myObject.SomeProperty);
+            Assert.Null(myObject.SomeProperty);
 
-		[Fact]
-		public void OrderedAndAtLeastOnce_CallingAnExtraMethod()
-		{
-			MockRepository mocks = new MockRepository();
-			IMyObject myObject = mocks.StrictMock(typeof(IMyObject)) as IMyObject;
+            Assert.Throws<ExpectationViolationException>(
+                @"IMyObject.DoSomething(); Expected #0, Actual #1.",
+                () => myObject.DoSomething());
+        }
 
-			using (mocks.Ordered())
-			{
-				Expect.Call(myObject.SomeProperty).Return(null).Repeat.AtLeastOnce();
-			}
-			myObject.DoSomethingElse();
+        [Fact]
+        public void OrderedAndAtLeastOnce_CallingAnExtraMethod()
+        {
+            MockRepository mocks = new MockRepository();
+            IMyObject myObject = mocks.StrictMock(typeof(IMyObject)) as IMyObject;
 
-			mocks.ReplayAll();
+            using (mocks.Ordered())
+            {
+                Expect.Call(myObject.SomeProperty).Return(null).Repeat.AtLeastOnce();
+            }
+            myObject.DoSomethingElse();
 
-			Assert.Null(myObject.SomeProperty);
-			Assert.Null(myObject.SomeProperty);
-			Assert.Null(myObject.SomeProperty);
-			
-			Assert.Throws<ExpectationViolationException>(
-				@"IMyObject.DoSomething(); Expected #0, Actual #1.",
-				() => myObject.DoSomething());
-		}
+            mocks.ReplayAll();
 
-	}
+            Assert.Null(myObject.SomeProperty);
+            Assert.Null(myObject.SomeProperty);
+            Assert.Null(myObject.SomeProperty);
+
+            Assert.Throws<ExpectationViolationException>(
+                @"IMyObject.DoSomething(); Expected #0, Actual #1.",
+                () => myObject.DoSomething());
+        }
+
+    }
 }

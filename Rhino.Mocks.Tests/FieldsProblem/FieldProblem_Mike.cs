@@ -29,47 +29,47 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	public class FieldProblem_Mike
-	{
-		[Fact]
-		public void Can_do_nested_virtual_calls()
-		{
-			var mocks = new MockRepository();
-			var subject = mocks.PartialMock<SUT>();
-			mocks.ReplayAll();
+    public class FieldProblem_Mike
+    {
+        [Fact]
+        public void Can_do_nested_virtual_calls()
+        {
+            var mocks = new MockRepository();
+            var subject = mocks.PartialMock<SUT>();
+            mocks.ReplayAll();
 
-			subject.VirtualMethod();
+            subject.VirtualMethod();
 
-			subject.AssertWasCalled(it => it.NestedVirtualMethod());
-		}
+            subject.AssertWasCalled(it => it.NestedVirtualMethod());
+        }
 
-		[Fact]
-		public void Can_do_nested_virtual_calls_when_not_called()
-		{
-			var mocks = new MockRepository();
-			var subject = mocks.PartialMock<SUT>();
-			mocks.ReplayAll();
+        [Fact]
+        public void Can_do_nested_virtual_calls_when_not_called()
+        {
+            var mocks = new MockRepository();
+            var subject = mocks.PartialMock<SUT>();
+            mocks.ReplayAll();
 
 
-			Assert.Throws<ExpectationViolationException>(
-				"SUT.NestedVirtualMethod(); Expected #1, Actual #0.",
-				() => subject.AssertWasCalled(it => it.NestedVirtualMethod()));
-		}
+            Assert.Throws<ExpectationViolationException>(
+                "SUT.NestedVirtualMethod(); Expected #1, Actual #0.",
+                () => subject.AssertWasCalled(it => it.NestedVirtualMethod()));
+        }
 
-		#region Nested type: SUT
+        #region Nested type: SUT
 
-		public class SUT
-		{
-			public virtual void VirtualMethod()
-			{
-				NestedVirtualMethod();
-			}
+        public class SUT
+        {
+            public virtual void VirtualMethod()
+            {
+                NestedVirtualMethod();
+            }
 
-			public virtual void NestedVirtualMethod()
-			{
-			}
-		}
+            public virtual void NestedVirtualMethod()
+            {
+            }
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

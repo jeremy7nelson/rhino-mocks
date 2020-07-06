@@ -13,11 +13,11 @@ namespace Rhino.Mocks.Tests
         {
             var session = MockRepository.GenerateMock<ISession>();
             session.Stub(x =>
-                         x.CreateCriteria(typeof (Customer))
+                         x.CreateCriteria(typeof(Customer))
                              .List()
-                ).Return(new[] {new Customer {Id = 1, Name = "ayende"}});
+                ).Return(new[] { new Customer { Id = 1, Name = "ayende" } });
 
-            Customer customer = session.CreateCriteria(typeof (Customer))
+            Customer customer = session.CreateCriteria(typeof(Customer))
                 .List()
                 .Cast<Customer>()
                 .First();
@@ -36,7 +36,7 @@ namespace Rhino.Mocks.Tests
             Assert.Equal("foo", mockService.Identity.Name);
         }
 
-		[Fact(Skip = "Not supported right now as per Oren")]
+        [Fact(Skip = "Not supported right now as per Oren")]
         public void CanUseRecursiveMocksSimplerAlternateSyntax()
         {
             var mockService = MockRepository.GenerateMock<IMyService>();
@@ -46,7 +46,7 @@ namespace Rhino.Mocks.Tests
             Assert.Equal("foo", mockService.Identity.Name);
         }
 
-		[Fact(Skip = "Not supported in replay mode")]
+        [Fact(Skip = "Not supported in replay mode")]
         public void WillGetSameInstanceOfRecursedMockForGenerateMockStatic()
         {
             var mock = MockRepository.GenerateMock<IMyService>();
@@ -58,7 +58,7 @@ namespace Rhino.Mocks.Tests
             Assert.NotNull(i1);
         }
 
-		[Fact(Skip = "Not supported in replay mode")]
+        [Fact(Skip = "Not supported in replay mode")]
         public void WillGetSameInstanceOfRecursedMockInReplayMode()
         {
             RhinoMocks.Logger = new TraceWriterExpectationLogger(true, true, true);
@@ -77,7 +77,7 @@ namespace Rhino.Mocks.Tests
         [Fact]
         public void WillGetSameInstanceOfRecursedMockWhenNotInReplayMode()
         {
-            RhinoMocks.Logger = new TraceWriterExpectationLogger(true,true,true);
+            RhinoMocks.Logger = new TraceWriterExpectationLogger(true, true, true);
 
             var mock = new MockRepository().DynamicMock<IMyService>();
 

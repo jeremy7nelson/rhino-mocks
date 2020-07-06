@@ -26,126 +26,126 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using Rhino.Mocks.Interfaces;
 using System;
 using Xunit;
-using Rhino.Mocks.Interfaces;
 
 namespace Rhino.Mocks.Tests
 {
-	
-	public class StubTest
-	{
-		[Fact]
-		public void StaticAccessorForStub()
-		{
-			IAnimal animal = MockRepository.GenerateStub<IAnimal>();
-			animal.Eyes = 2;
-			Assert.Equal(2, animal.Eyes );
-		}
 
-		[Fact]
-		public void StubHasPropertyBehaviorForAllProperties()
-		{
-			MockRepository mocks = new MockRepository();
-			IAnimal animal = mocks.Stub<IAnimal>();
-			animal.Legs = 4;
-			Assert.Equal(4, animal.Legs);
+    public class StubTest
+    {
+        [Fact]
+        public void StaticAccessorForStub()
+        {
+            IAnimal animal = MockRepository.GenerateStub<IAnimal>();
+            animal.Eyes = 2;
+            Assert.Equal(2, animal.Eyes);
+        }
 
-			animal.Name = "Rose";
-			Assert.Equal("Rose", animal.Name);
+        [Fact]
+        public void StubHasPropertyBehaviorForAllProperties()
+        {
+            MockRepository mocks = new MockRepository();
+            IAnimal animal = mocks.Stub<IAnimal>();
+            animal.Legs = 4;
+            Assert.Equal(4, animal.Legs);
 
-			Assert.Null(animal.Species);
-			animal.Species = "Caucasusian Shepherd";
-			Assert.Equal("Caucasusian Shepherd", animal.Species);
-		}
+            animal.Name = "Rose";
+            Assert.Equal("Rose", animal.Name);
 
-		[Fact]
-		public void CanRegisterToEventsAndRaiseThem()
-		{
-			MockRepository mocks = new MockRepository();
-			IAnimal animal = mocks.Stub<IAnimal>();
-			animal.Hungry += null; //Note, no expectation!
-			IEventRaiser eventRaiser = LastCall.GetEventRaiser();
+            Assert.Null(animal.Species);
+            animal.Species = "Caucasusian Shepherd";
+            Assert.Equal("Caucasusian Shepherd", animal.Species);
+        }
 
-			bool raised = false;
-			animal.Hungry += delegate
-			{
-				raised = true;
-			};
+        [Fact]
+        public void CanRegisterToEventsAndRaiseThem()
+        {
+            MockRepository mocks = new MockRepository();
+            IAnimal animal = mocks.Stub<IAnimal>();
+            animal.Hungry += null; //Note, no expectation!
+            IEventRaiser eventRaiser = LastCall.GetEventRaiser();
 
-			eventRaiser.Raise(animal, EventArgs.Empty);
-			Assert.True(raised);
-		}
+            bool raised = false;
+            animal.Hungry += delegate
+            {
+                raised = true;
+            };
 
-		[Fact]
-		public void CallingMethodOnStubsDoesNotCreateExpectations()
-		{
-			MockRepository mocks = new MockRepository();
-			IAnimal animal = mocks.Stub<IAnimal>();
-			using (mocks.Record())
-			{
-				animal.Legs = 4;
-				animal.Name = "Rose";
-				animal.Species = "Caucasusian Shepherd";
-				animal.GetMood();
-			}
-			mocks.VerifyAll();
-		}
+            eventRaiser.Raise(animal, EventArgs.Empty);
+            Assert.True(raised);
+        }
 
-		[Fact]
-		public void DemoLegsProperty()
-		{
-			IAnimal animalStub = MockRepository.GenerateStub<IAnimal>();
+        [Fact]
+        public void CallingMethodOnStubsDoesNotCreateExpectations()
+        {
+            MockRepository mocks = new MockRepository();
+            IAnimal animal = mocks.Stub<IAnimal>();
+            using (mocks.Record())
+            {
+                animal.Legs = 4;
+                animal.Name = "Rose";
+                animal.Species = "Caucasusian Shepherd";
+                animal.GetMood();
+            }
+            mocks.VerifyAll();
+        }
 
-			animalStub.Legs = 0;
-			Assert.Equal(0, animalStub.Legs);
+        [Fact]
+        public void DemoLegsProperty()
+        {
+            IAnimal animalStub = MockRepository.GenerateStub<IAnimal>();
 
-			SomeClass instance = new SomeClass(animalStub);
-			instance.SetLegs(10);
-			Assert.Equal(10, animalStub.Legs);
-		}
+            animalStub.Legs = 0;
+            Assert.Equal(0, animalStub.Legs);
 
-		[Fact]
-		public void CanCreateExpectationOnMethod()
-		{
-			MockRepository mocks = new MockRepository();
-			IAnimal animal = mocks.Stub<IAnimal>();
-			using (mocks.Record())
-			{
-				animal.Legs = 4;
-				animal.Name = "Rose";
-				animal.Species = "Caucasusian Shepherd";
-				animal.GetMood();
-				LastCall.Return("Happy");
-			}
-			Assert.Equal("Happy", animal.GetMood());
-			mocks.VerifyAll();
-		}
-	}
+            SomeClass instance = new SomeClass(animalStub);
+            instance.SetLegs(10);
+            Assert.Equal(10, animalStub.Legs);
+        }
 
-	public interface IAnimal
-	{
-		int Legs { get; set; }
-		int Eyes { get; set; }
-		string Name { get; set; }
-		string Species { get; set; }
+        [Fact]
+        public void CanCreateExpectationOnMethod()
+        {
+            MockRepository mocks = new MockRepository();
+            IAnimal animal = mocks.Stub<IAnimal>();
+            using (mocks.Record())
+            {
+                animal.Legs = 4;
+                animal.Name = "Rose";
+                animal.Species = "Caucasusian Shepherd";
+                animal.GetMood();
+                LastCall.Return("Happy");
+            }
+            Assert.Equal("Happy", animal.GetMood());
+            mocks.VerifyAll();
+        }
+    }
 
-		event EventHandler Hungry;
-		string GetMood();
-	}
+    public interface IAnimal
+    {
+        int Legs { get; set; }
+        int Eyes { get; set; }
+        string Name { get; set; }
+        string Species { get; set; }
 
-	public class SomeClass
-	{
-		private IAnimal animal;
+        event EventHandler Hungry;
+        string GetMood();
+    }
 
-		public SomeClass(IAnimal animal)
-		{
-			this.animal = animal;
-		}
+    public class SomeClass
+    {
+        private IAnimal animal;
 
-		public void SetLegs(int count)
-		{
-			animal.Legs = count;
-		}
-	}
+        public SomeClass(IAnimal animal)
+        {
+            this.animal = animal;
+        }
+
+        public void SetLegs(int count)
+        {
+            animal.Legs = count;
+        }
+    }
 }

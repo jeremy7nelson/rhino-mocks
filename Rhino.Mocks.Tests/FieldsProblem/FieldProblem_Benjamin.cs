@@ -2,9 +2,9 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	public class FieldProblem_Benjamin
-	{
-		[Fact]
+    public class FieldProblem_Benjamin
+    {
+        [Fact]
         public void ThisTestPasses()
         {
             var interfaceStub = MockRepository.GenerateStub<InterfaceINeedToStub>();
@@ -26,11 +26,11 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 
             Assert.Equal(4, myInterface.MyIntValue);
         }
-	}
+    }
 
-	public interface InterfaceINeedToStub
-	{
-		int MyIntValue { get; set; }
-		string MyStringValue { get; }
-	}
+    public interface InterfaceINeedToStub
+    {
+        int MyIntValue { get; set; }
+        string MyStringValue { get; }
+    }
 }

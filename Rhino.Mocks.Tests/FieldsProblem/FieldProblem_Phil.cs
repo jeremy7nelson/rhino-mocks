@@ -27,56 +27,55 @@
 #endregion
 
 
-using System;
-using System.Text;
-using Xunit;
 using Rhino.Mocks.Interfaces;
+using System;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	public interface IWithEvent
-	{
-		event EventHandler Load;
-	}
+    public interface IWithEvent
+    {
+        event EventHandler Load;
+    }
 
-	public class EventConsumer
-	{
-		public bool OnLoadCalled = false;
+    public class EventConsumer
+    {
+        public bool OnLoadCalled = false;
 
-		IWithEvent _withEvent;
-		public EventConsumer(IWithEvent withEvent)
-		{
-			_withEvent = withEvent;
-			_withEvent.Load += new EventHandler(OnLoad);
-		}
+        IWithEvent _withEvent;
+        public EventConsumer(IWithEvent withEvent)
+        {
+            _withEvent = withEvent;
+            _withEvent.Load += new EventHandler(OnLoad);
+        }
 
-		void OnLoad(object sender, EventArgs e)
-		{
-			OnLoadCalled = true;
+        void OnLoad(object sender, EventArgs e)
+        {
+            OnLoadCalled = true;
 
-		}
-	}
+        }
+    }
 
 
-	
-	public class FieldProblem_Phil
-	{
 
-		[Fact]
-		public void VerifyingThatEventWasAttached()
-		{
-			MockRepository mocks = new MockRepository();
-			IWithEvent events = (IWithEvent)mocks.StrictMock(typeof(IWithEvent));
-			events.Load += null; //ugly syntax, I know, but the only way to get this to work
-			IEventRaiser raiser = LastCall.IgnoreArguments().GetEventRaiser();
-			mocks.ReplayAll();
+    public class FieldProblem_Phil
+    {
 
-			EventConsumer consumerMock = new EventConsumer(events);
-			//Next line invokes Load event.
-			raiser.Raise(this, EventArgs.Empty);
-			mocks.VerifyAll();
+        [Fact]
+        public void VerifyingThatEventWasAttached()
+        {
+            MockRepository mocks = new MockRepository();
+            IWithEvent events = (IWithEvent)mocks.StrictMock(typeof(IWithEvent));
+            events.Load += null; //ugly syntax, I know, but the only way to get this to work
+            IEventRaiser raiser = LastCall.IgnoreArguments().GetEventRaiser();
+            mocks.ReplayAll();
 
-			Assert.True(consumerMock.OnLoadCalled);
-		}
-	}
+            EventConsumer consumerMock = new EventConsumer(events);
+            //Next line invokes Load event.
+            raiser.Raise(this, EventArgs.Empty);
+            mocks.VerifyAll();
+
+            Assert.True(consumerMock.OnLoadCalled);
+        }
+    }
 }

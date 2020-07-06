@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Reflection;
+using System.Text;
 
 namespace Rhino.Mocks.Constraints
 {
@@ -88,7 +88,7 @@ namespace Rhino.Mocks.Constraints
                 _message = string.Format("Expected value of {0} is '{1}', actual value is null", BuildPropertyName(), expected);
                 return false;
             }
-            
+
             if (expected == null)
             {
                 if (actual != null)
@@ -100,7 +100,7 @@ namespace Rhino.Mocks.Constraints
             else
             {
                 //if both objects are comparable Equals can be used to determine equality. (value types implement IComparable too when boxed)
-                if (expected is IComparable) 
+                if (expected is IComparable)
                 {
                     if (!expected.Equals(actual))
                     {
@@ -183,7 +183,7 @@ namespace Rhino.Mocks.Constraints
         {
             Type tExpected = expected.GetType();
             Type tActual = actual.GetType();
-            
+
             _checkedObjects.Add(actual);
 
             FieldInfo[] fields = tExpected.GetFields(BindingFlags.Instance | BindingFlags.Public);
@@ -227,7 +227,7 @@ namespace Rhino.Mocks.Constraints
                     object actualValue = actualEnumerator.Current;
 
                     _properties.Push(name + string.Format("[{0}]", expectedCount)); //replace the earlier popped property name
-                    
+
                     expectedCount++;
                     actualCount++;
 
@@ -262,7 +262,7 @@ namespace Rhino.Mocks.Constraints
             }
             return true;
         }
-        
+
         /// <summary>
         /// Builds a propertyname from the Stack _properties like 'Order.Product.Price'
         /// to be used in the error message.
@@ -272,7 +272,7 @@ namespace Rhino.Mocks.Constraints
         {
             StringBuilder result = new StringBuilder();
             string[] names = _properties.ToArray();
-            foreach(string name in names)
+            foreach (string name in names)
             {
                 if (result.Length > 0)
                 {

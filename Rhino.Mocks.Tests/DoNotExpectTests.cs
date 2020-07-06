@@ -33,13 +33,13 @@ namespace Rhino.Mocks.Tests
     using System;
     using Xunit;
 
-    
+
     public class DoNotExpectTests
     {
         private MockRepository mocks;
         private IDemo demo;
 
-		public DoNotExpectTests()
+        public DoNotExpectTests()
         {
             mocks = new MockRepository();
             demo = mocks.DynamicMock<IDemo>();
@@ -51,8 +51,8 @@ namespace Rhino.Mocks.Tests
             DoNotExpect.Call(demo.StringArgString("Ayende"));
             mocks.ReplayAll();
             Assert.Throws<ExpectationViolationException>(
-        		"IDemo.StringArgString(\"Ayende\"); Expected #0, Actual #1.",
-				() => demo.StringArgString("Ayende"));
+                "IDemo.StringArgString(\"Ayende\"); Expected #0, Actual #1.",
+                () => demo.StringArgString("Ayende"));
         }
 
         [Fact]
@@ -61,8 +61,8 @@ namespace Rhino.Mocks.Tests
             DoNotExpect.Call(delegate { demo.VoidNoArgs(); });
             mocks.ReplayAll();
             Assert.Throws<ExpectationViolationException>(
-        		"IDemo.VoidNoArgs(); Expected #0, Actual #1.",
-				() => demo.VoidNoArgs());
+                "IDemo.VoidNoArgs(); Expected #0, Actual #1.",
+                () => demo.VoidNoArgs());
         }
 
         [Fact]
@@ -71,8 +71,8 @@ namespace Rhino.Mocks.Tests
             DoNotExpect.Call(delegate { demo.VoidStringArg("Ayende"); });
             mocks.ReplayAll();
             Assert.Throws<ExpectationViolationException>(
-        		"IDemo.VoidStringArg(\"Ayende\"); Expected #0, Actual #1.",
-				() => demo.VoidStringArg("Ayende"));
+                "IDemo.VoidStringArg(\"Ayende\"); Expected #0, Actual #1.",
+                () => demo.VoidStringArg("Ayende"));
         }
 
         [Fact]
@@ -81,8 +81,8 @@ namespace Rhino.Mocks.Tests
             DoNotExpect.Call(demo.VoidNoArgs);
             mocks.ReplayAll();
             Assert.Throws<ExpectationViolationException>(
-        		"IDemo.VoidNoArgs(); Expected #0, Actual #1.",
-				() => demo.VoidNoArgs());
+                "IDemo.VoidNoArgs(); Expected #0, Actual #1.",
+                () => demo.VoidNoArgs());
         }
 
         [Fact]
@@ -91,8 +91,8 @@ namespace Rhino.Mocks.Tests
             DoNotExpect.Call(demo.StringArgString("Ayende"));
             mocks.ReplayAll();
             Assert.Throws<ExpectationViolationException>(
-        		"IDemo.StringArgString(\"Ayende\"); Expected #0, Actual #1.",
-				() => demo.StringArgString("Ayende"));
+                "IDemo.StringArgString(\"Ayende\"); Expected #0, Actual #1.",
+                () => demo.StringArgString("Ayende"));
         }
 
         [Fact]
@@ -102,13 +102,13 @@ namespace Rhino.Mocks.Tests
             mocks.ReplayAll();
             demo.StringArgString("Sneal");
             Assert.Throws<ExpectationViolationException>("IDemo.StringArgString(\"Ayende\"); Expected #0, Actual #1.",
-														 () => demo.StringArgString("Ayende"));
+                                                         () => demo.StringArgString("Ayende"));
         }
 
         [Fact]
         public void ThrowWhenCallIsNull()
         {
-        	Assert.Throws<ArgumentNullException>(() => DoNotExpect.Call(null));
+            Assert.Throws<ArgumentNullException>(() => DoNotExpect.Call(null));
         }
 
         [Fact]
@@ -116,10 +116,10 @@ namespace Rhino.Mocks.Tests
         {
             DoNotExpect.Call(delegate { demo.Prop = "Ayende"; });
             mocks.ReplayAll();
-            
-        	Assert.Throws<ExpectationViolationException>(
-        		"IDemo.set_Prop(\"Ayende\"); Expected #0, Actual #1.",
-				() => demo.Prop = "Ayende");
+
+            Assert.Throws<ExpectationViolationException>(
+                "IDemo.set_Prop(\"Ayende\"); Expected #0, Actual #1.",
+                () => demo.Prop = "Ayende");
         }
 
         [Fact]
@@ -128,10 +128,10 @@ namespace Rhino.Mocks.Tests
             DoNotExpect.Call(demo.Prop);
             mocks.ReplayAll();
             Assert.Throws<ExpectationViolationException>("IDemo.get_Prop(); Expected #0, Actual #1.",
-        	                                             () =>
-        	                                             {
-        	                                             	string soItCompiles = demo.Prop;
-        	                                             });
+                                                         () =>
+                                                         {
+                                                             string soItCompiles = demo.Prop;
+                                                         });
         }
     }
 }

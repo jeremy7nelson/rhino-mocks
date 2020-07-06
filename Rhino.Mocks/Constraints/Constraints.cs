@@ -87,7 +87,7 @@ namespace Rhino.Mocks.Constraints
         /// <param name="publicFieldName">Name of the public field.</param>
         /// <param name="constraint">Constraint to place on the public field value.</param>
         public PublicFieldConstraint(string publicFieldName, AbstractConstraint constraint)
-            : this(null, publicFieldName, constraint) {}
+            : this(null, publicFieldName, constraint) { }
 
         /// <summary>
         /// Creates a new <see cref="PublicFieldConstraint"/> instance, specifying a disambiguating
@@ -317,57 +317,57 @@ namespace Rhino.Mocks.Constraints
     }
     #endregion
 
-	#region Predicate Constraint
-	
-	/// <summary>
-	/// Evaluate a parameter using constraints
-	/// </summary>
-	public class PredicateConstraint<T> : AbstractConstraint
-	{
-		Predicate<T> predicate;
+    #region Predicate Constraint
 
-		/// <summary>
-		/// Create new instance 
-		/// </summary>
-		/// <param name="predicate"></param>
-		public PredicateConstraint(Predicate<T> predicate)
-		{
-			Validate.IsNotNull(predicate, "predicate");
-			this.predicate = predicate;
-		}
+    /// <summary>
+    /// Evaluate a parameter using constraints
+    /// </summary>
+    public class PredicateConstraint<T> : AbstractConstraint
+    {
+        Predicate<T> predicate;
 
-		/// <summary>
-		/// Determines if the object pass the constraints
-		/// </summary>
-		public override bool Eval(object obj)
-		{
-			if(obj!=null && 
-				typeof(T).IsAssignableFrom(obj.GetType()) == false)
-			{
-				throw new InvalidOperationException(
-					string.Format("Predicate accept {0} but parameter is {1} which is not compatible",
-					              typeof (T).FullName,
-					              obj.GetType().FullName));
-			}
-			return predicate((T) obj);
-		}
+        /// <summary>
+        /// Create new instance 
+        /// </summary>
+        /// <param name="predicate"></param>
+        public PredicateConstraint(Predicate<T> predicate)
+        {
+            Validate.IsNotNull(predicate, "predicate");
+            this.predicate = predicate;
+        }
 
-		/// <summary>
-		/// Gets the message for this constraint
-		/// </summary>
-		/// <value></value>
-		public override string Message
-		{
-			get
-			{
-				return string.Format("Predicate ({0})", MethodCallUtil.StringPresentation(null, FormatEmptyArgumnet,predicate.Method, new object[0]));
-			}
-		}
-		
-		private string FormatEmptyArgumnet(Array args, int i)
-		{
-			return "obj";
-		}
+        /// <summary>
+        /// Determines if the object pass the constraints
+        /// </summary>
+        public override bool Eval(object obj)
+        {
+            if (obj != null &&
+                typeof(T).IsAssignableFrom(obj.GetType()) == false)
+            {
+                throw new InvalidOperationException(
+                    string.Format("Predicate accept {0} but parameter is {1} which is not compatible",
+                                  typeof(T).FullName,
+                                  obj.GetType().FullName));
+            }
+            return predicate((T)obj);
+        }
+
+        /// <summary>
+        /// Gets the message for this constraint
+        /// </summary>
+        /// <value></value>
+        public override string Message
+        {
+            get
+            {
+                return string.Format("Predicate ({0})", MethodCallUtil.StringPresentation(null, FormatEmptyArgumnet, predicate.Method, new object[0]));
+            }
+        }
+
+        private string FormatEmptyArgumnet(Array args, int i)
+        {
+            return "obj";
+        }
     }
 
     /// <summary>
@@ -378,23 +378,23 @@ namespace Rhino.Mocks.Constraints
     {
         private readonly LambdaExpression expr;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="LambdaConstraint"/> class.
-		/// </summary>
-		/// <param name="expr">The expr.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LambdaConstraint"/> class.
+        /// </summary>
+        /// <param name="expr">The expr.</param>
         public LambdaConstraint(LambdaExpression expr)
         {
             this.expr = expr;
         }
 
-		/// <summary>
-		/// Determines if the object pass the constraints
-		/// </summary>
-		/// <param name="obj"></param>
-		/// <returns></returns>
+        /// <summary>
+        /// Determines if the object pass the constraints
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Eval(object obj)
         {
-            if (!IsArgumentTypeIsAssignableFrom(expr, obj)) 
+            if (!IsArgumentTypeIsAssignableFrom(expr, obj))
                 return false;
 
             return (bool)expr.Compile().DynamicInvoke(obj);
@@ -402,7 +402,7 @@ namespace Rhino.Mocks.Constraints
 
         private bool IsArgumentTypeIsAssignableFrom(LambdaExpression predicate, object obj)
         {
-            if(obj != null)
+            if (obj != null)
             {
                 if (!predicate.Parameters[0].Type.IsAssignableFrom(obj.GetType()))
                 {
@@ -424,11 +424,11 @@ namespace Rhino.Mocks.Constraints
 
     #endregion
 
-	#region List constraints
+    #region List constraints
 
-	#region Equal
+    #region Equal
 
-	/// <summary>
+    /// <summary>
     /// Constrain that the list contains the same items as the parameter list
     /// </summary>
     public class CollectionEqual : AbstractConstraint
@@ -814,7 +814,7 @@ namespace Rhino.Mocks.Constraints
                 foreach (object outer in these)
                 {
                     bool foundThis = false;
-                    foreach (object inner in (IEnumerable) obj)
+                    foreach (object inner in (IEnumerable)obj)
                     {
                         if (inner.Equals(outer))
                         {
@@ -833,7 +833,7 @@ namespace Rhino.Mocks.Constraints
             return false;
         }
     }
-        #endregion
+    #endregion
 
     #endregion
 
@@ -987,7 +987,7 @@ namespace Rhino.Mocks.Constraints
         /// </summary>
         public override bool Eval(object obj)
         {
-            if (obj !=null)
+            if (obj != null)
             {
                 return regex.IsMatch(obj.ToString());
             }
@@ -1155,7 +1155,7 @@ namespace Rhino.Mocks.Constraints
         {
             if (obj == null)
                 return equal == null;
-        	return Validate.AreEqual(equal, obj);
+            return Validate.AreEqual(equal, obj);
         }
 
         /// <summary>

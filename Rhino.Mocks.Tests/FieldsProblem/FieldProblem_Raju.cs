@@ -1,18 +1,18 @@
-using Xunit;
 using Rhino.Mocks.Constraints;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_Raju
     {
         public class A
         {
-		    private int _a, _b;
-            public int a { get {return _a;} set{_a = value;}}
-			public int b { get {return _b;} set{_b = value;}}
+            private int _a, _b;
+            public int a { get { return _a; } set { _a = value; } }
+            public int b { get { return _b; } set { _b = value; } }
         }
-		
+
         public interface MyInterface
         {
             int retValue(A a);
@@ -39,7 +39,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 
             myInterface.retValue(a);
             LastCall.Return(5).Constraints(
-                Property.Value("a",10) && Property.Value("b",12)
+                Property.Value("a", 10) && Property.Value("b", 12)
                 );
             mock.ReplayAll();
 

@@ -27,31 +27,31 @@
 #endregion
 
 
-using System;
 using Rhino.Mocks.Impl;
 using Rhino.Mocks.Interfaces;
+using System;
 
 namespace Rhino.Mocks
 {
-	/*
+    /*
 	 * class: Expect
 	 * Allows to set expectation on methods that has return values.
 	 * 
 	 * note:
 	 * For methods with void return value, you need to use <LastCall>
 	 */
-	/// <summary>
-	/// Allows to set expectation on methods that has return values.
-	/// For methods with void return value, you need to use LastCall
-	/// </summary>
-	public static class Expect
-	{
-		///<summary>
-		///A delegate that can be used to get better syntax on Expect.Call(delegate { foo.DoSomething(); });
-		///</summary>
-		public delegate void Action();
-	
-		/*
+    /// <summary>
+    /// Allows to set expectation on methods that has return values.
+    /// For methods with void return value, you need to use LastCall
+    /// </summary>
+    public static class Expect
+    {
+        ///<summary>
+        ///A delegate that can be used to get better syntax on Expect.Call(delegate { foo.DoSomething(); });
+        ///</summary>
+        public delegate void Action();
+
+        /*
 		 * Method: Call
 		 * Get the method options for the last method call, which usually will be a method call
 		 * or property that is located inside the <Call>. 
@@ -67,36 +67,36 @@ namespace Rhino.Mocks
 		 * This method is *not* safe for multi threading scenarios!
 		 * If you need to record in a multi threading environment, use the <On> method, which _can_
 		 * handle multi threading scenarios.
-		 */ 
-		/// <summary>
-		/// The method options for the last call on /any/ proxy on /any/ repository on the current thread.
-		/// This method if not safe for multi threading scenarios, use <see cref="On"/>.
-		/// </summary>
-		public static IMethodOptions<T> Call<T>(T ignored)
-		{
-			return LastCall.GetOptions<T>();
-		}
+		 */
+        /// <summary>
+        /// The method options for the last call on /any/ proxy on /any/ repository on the current thread.
+        /// This method if not safe for multi threading scenarios, use <see cref="On"/>.
+        /// </summary>
+        public static IMethodOptions<T> Call<T>(T ignored)
+        {
+            return LastCall.GetOptions<T>();
+        }
 
-		/// <summary>
-		/// Accepts a delegate that will execute inside the method, and then return the resulting
-		/// <see cref="IMethodOptions{T}"/> instance.
-		/// It is expected to be used with anonymous delegates / lambda expressions and only one
-		/// method should be called.
-		/// </summary>
-		/// <example>
-		/// IService mockSrv = mocks.CreateMock(typeof(IService)) as IService;
-		/// Expect.Call(delegate{ mockSrv.Start(); }).Throw(new NetworkException());
-		/// ...
-		/// </example>
-		public static IMethodOptions<Action> Call(Action actionToExecute)
-		{
-			if (actionToExecute == null)
-				throw new ArgumentNullException("actionToExecute", "The action to execute cannot be null");
-			actionToExecute();
-			return LastCall.GetOptions<Action>();
-		}
+        /// <summary>
+        /// Accepts a delegate that will execute inside the method, and then return the resulting
+        /// <see cref="IMethodOptions{T}"/> instance.
+        /// It is expected to be used with anonymous delegates / lambda expressions and only one
+        /// method should be called.
+        /// </summary>
+        /// <example>
+        /// IService mockSrv = mocks.CreateMock(typeof(IService)) as IService;
+        /// Expect.Call(delegate{ mockSrv.Start(); }).Throw(new NetworkException());
+        /// ...
+        /// </example>
+        public static IMethodOptions<Action> Call(Action actionToExecute)
+        {
+            if (actionToExecute == null)
+                throw new ArgumentNullException("actionToExecute", "The action to execute cannot be null");
+            actionToExecute();
+            return LastCall.GetOptions<Action>();
+        }
 
-		/*
+        /*
 		 * Method: On
 		 * Get the method options for the last method call on the mockInstance.
 		 * Unless you're recording in multiply threads, you are probably better off
@@ -108,13 +108,13 @@ namespace Rhino.Mocks
 		 * Thread safety:
 		 * This method can be used in mutli threading scenarios.
 		 */
-		/// <summary>
-		/// Get the method options for the last method call on the mockInstance.
-		/// </summary>
-		public static ICreateMethodExpectation On(object mockedInstace)
-		{
-			IMockedObject mockedObject = MockRepository.GetMockedObject(mockedInstace);
-			return new CreateMethodExpectation(mockedObject, mockedInstace);
-		}
-	}
+        /// <summary>
+        /// Get the method options for the last method call on the mockInstance.
+        /// </summary>
+        public static ICreateMethodExpectation On(object mockedInstace)
+        {
+            IMockedObject mockedObject = MockRepository.GetMockedObject(mockedInstace);
+            return new CreateMethodExpectation(mockedObject, mockedInstace);
+        }
+    }
 }

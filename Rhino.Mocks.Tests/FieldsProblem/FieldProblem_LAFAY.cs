@@ -3,16 +3,16 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_LAFAY
     {
         private IDemo demo;
         private MockRepository mocks;
 
-		public FieldProblem_LAFAY()
+        public FieldProblem_LAFAY()
         {
             mocks = new MockRepository();
-            demo = mocks.StrictMock(typeof (IDemo)) as IDemo;
+            demo = mocks.StrictMock(typeof(IDemo)) as IDemo;
         }
 
         [Fact]

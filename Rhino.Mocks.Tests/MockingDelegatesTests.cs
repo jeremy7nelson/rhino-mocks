@@ -27,18 +27,16 @@
 #endregion
 
 
+using Rhino.Mocks.Exceptions;
 using System;
-using System.IO;
 using System.Reflection;
 using Xunit;
-using Rhino.Mocks.Exceptions;
-using Rhino.Mocks.Interfaces;
 
 namespace Rhino.Mocks.Tests
 {
     public delegate object ObjectDelegateWithNoParams();
 
-    
+
     public class MockingDelegatesTests
     {
         private MockRepository mocks;
@@ -47,7 +45,7 @@ namespace Rhino.Mocks.Tests
         private delegate string StringDelegateWithParams(int a, string b);
         private delegate int IntDelegateWithRefAndOutParams(ref int a, out string b);
 
-		public MockingDelegatesTests()
+        public MockingDelegatesTests()
         {
             mocks = new MockRepository();
         }
@@ -209,8 +207,8 @@ namespace Rhino.Mocks.Tests
         [Fact]
         public void DelegateBaseTypeCannotBeMocked()
         {
-        	Assert.Throws<InvalidOperationException>("Cannot mock the Delegate base type.",
-        	                                         () => mocks.StrictMock(typeof (Delegate)));
+            Assert.Throws<InvalidOperationException>("Cannot mock the Delegate base type.",
+                                                     () => mocks.StrictMock(typeof(Delegate)));
         }
 
         private int Return1_Plus2_A(ref int a, out string b)

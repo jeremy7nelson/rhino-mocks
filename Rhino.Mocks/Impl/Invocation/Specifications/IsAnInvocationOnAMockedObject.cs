@@ -12,7 +12,7 @@ namespace Rhino.Mocks.Impl.Invocation.Specifications
         ///</summary>
         public bool IsSatisfiedBy(IInvocation invocation)
         {
-            return invocation.Method.DeclaringType == typeof (IMockedObject);
+            return invocation.Method.DeclaringType == typeof(IMockedObject);
         }
     }
 }

@@ -27,65 +27,63 @@
 #endregion
 
 
+using Rhino.Mocks.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
-using Rhino.Mocks.Interfaces;
-using Rhino.Mocks.Utilities;
 
 namespace Rhino.Mocks.Impl
 {
-	/// <summary>
-	/// Raise events for all subscribers for an event
-	/// </summary>
-	public class EventRaiser : IEventRaiser
-	{
-		string eventName;
-		IMockedObject proxy;
+    /// <summary>
+    /// Raise events for all subscribers for an event
+    /// </summary>
+    public class EventRaiser : IEventRaiser
+    {
+        string eventName;
+        IMockedObject proxy;
 
-		///<summary>
-		/// Create an event raiser for the specified event on this instance.
-		///</summary>
-		public static IEventRaiser Create(object instance, string eventName)
-		{
-			IMockedObject proxy = instance as IMockedObject;
-			if (proxy == null)
-				throw new ArgumentException("Parameter must be a mocked object", "instance");
-			return new EventRaiser(proxy, eventName);
-		}
+        ///<summary>
+        /// Create an event raiser for the specified event on this instance.
+        ///</summary>
+        public static IEventRaiser Create(object instance, string eventName)
+        {
+            IMockedObject proxy = instance as IMockedObject;
+            if (proxy == null)
+                throw new ArgumentException("Parameter must be a mocked object", "instance");
+            return new EventRaiser(proxy, eventName);
+        }
 
-		/// <summary>
-		/// Creates a new instance of <c>EventRaiser</c>
-		/// </summary>
-		public EventRaiser(IMockedObject proxy, string eventName)
-		{
-			this.eventName = eventName;
-			this.proxy = proxy;
-		}
+        /// <summary>
+        /// Creates a new instance of <c>EventRaiser</c>
+        /// </summary>
+        public EventRaiser(IMockedObject proxy, string eventName)
+        {
+            this.eventName = eventName;
+            this.proxy = proxy;
+        }
 
-		#region IEventRaiser Members
+        #region IEventRaiser Members
 
-		/// <summary>
-		/// Raise the event
-		/// </summary>
-		public void Raise(params object[] args)
-		{
-			Delegate subscribed = proxy.GetEventSubscribers(eventName);
-			if (subscribed != null)
-			{
-				AssertMatchingParameters(subscribed.Method, args);
-			    try
-			    {
-			        subscribed.DynamicInvoke(args);
-			    }
-			    catch (TargetInvocationException e)
-			    {
-			        PreserveStackTrace(e.InnerException);
-			        throw e.InnerException;
-			    }
-			}
-		}
+        /// <summary>
+        /// Raise the event
+        /// </summary>
+        public void Raise(params object[] args)
+        {
+            Delegate subscribed = proxy.GetEventSubscribers(eventName);
+            if (subscribed != null)
+            {
+                AssertMatchingParameters(subscribed.Method, args);
+                try
+                {
+                    subscribed.DynamicInvoke(args);
+                }
+                catch (TargetInvocationException e)
+                {
+                    PreserveStackTrace(e.InnerException);
+                    throw e.InnerException;
+                }
+            }
+        }
 
         private static void PreserveStackTrace(Exception exception)
         {
@@ -94,49 +92,49 @@ namespace Rhino.Mocks.Impl
             preserveStackTrace.Invoke(exception, null);
         }
 
-		private static void AssertMatchingParameters(MethodInfo method, object[] args)
-		{
-			ParameterInfo[] parameterInfos = method.GetParameters();
-			int paramsCount = parameterInfos.Length;
-			if(args== null || args.Length != paramsCount)
-			{
-				int actualCount;
-				if(args==null)
-					actualCount = 0;
-				else 
-					actualCount = args.Length;
-				string msg = string.Format("You have called the event raiser with the wrong number of parameters. Expected {0} but was {1}", paramsCount, actualCount);
-				throw new InvalidOperationException(msg);
-			}
-			List<string> errors = new List<string>();
-			for (int i = 0; i < parameterInfos.Length; i++)
-			{
-				if ((args[i] == null && parameterInfos[i].ParameterType.IsValueType) ||
-					(args[i] != null && parameterInfos[i].ParameterType.IsInstanceOfType(args[i])==false))
-				{
-					string type = "null";
-					if(args[i]!=null)
-						type = args[i].GetType().FullName;
-					errors.Add("Parameter #" + (i+1) + " is " + type + " but should be " +
-														parameterInfos[i].ParameterType);
-				}
-			}
-			if(errors.Count>0)
-			{
-				throw new InvalidOperationException(string.Join(Environment.NewLine, errors.ToArray()));
-			}
-		}
+        private static void AssertMatchingParameters(MethodInfo method, object[] args)
+        {
+            ParameterInfo[] parameterInfos = method.GetParameters();
+            int paramsCount = parameterInfos.Length;
+            if (args == null || args.Length != paramsCount)
+            {
+                int actualCount;
+                if (args == null)
+                    actualCount = 0;
+                else
+                    actualCount = args.Length;
+                string msg = string.Format("You have called the event raiser with the wrong number of parameters. Expected {0} but was {1}", paramsCount, actualCount);
+                throw new InvalidOperationException(msg);
+            }
+            List<string> errors = new List<string>();
+            for (int i = 0; i < parameterInfos.Length; i++)
+            {
+                if ((args[i] == null && parameterInfos[i].ParameterType.IsValueType) ||
+                    (args[i] != null && parameterInfos[i].ParameterType.IsInstanceOfType(args[i]) == false))
+                {
+                    string type = "null";
+                    if (args[i] != null)
+                        type = args[i].GetType().FullName;
+                    errors.Add("Parameter #" + (i + 1) + " is " + type + " but should be " +
+                                                        parameterInfos[i].ParameterType);
+                }
+            }
+            if (errors.Count > 0)
+            {
+                throw new InvalidOperationException(string.Join(Environment.NewLine, errors.ToArray()));
+            }
+        }
 
-		/// <summary>
-		/// The most common signature for events
-		/// Here to allow intellisense to make better guesses about how 
-		/// it should suggest parameters.
-		/// </summary>
-		public void Raise(object sender, EventArgs e)
-		{
-			Raise(new object[] { sender, e });
-		}
+        /// <summary>
+        /// The most common signature for events
+        /// Here to allow intellisense to make better guesses about how 
+        /// it should suggest parameters.
+        /// </summary>
+        public void Raise(object sender, EventArgs e)
+        {
+            Raise(new object[] { sender, e });
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

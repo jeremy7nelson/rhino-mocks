@@ -27,10 +27,6 @@
 #endregion
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Rhino.Mocks
 {
     /// <summary>
@@ -44,7 +40,7 @@ namespace Rhino.Mocks
         /// A method with no arguments and no return value that will be called under the mock context.
         /// </summary>
         public delegate void Proc();
-        
+
         /// <summary>
         /// Initialize a code block where Mocker.Current is initialized.
         /// At the end of the code block, all the expectation will be verified.
@@ -91,7 +87,7 @@ namespace Rhino.Mocks
         /// FluentMocker implements some kind of fluent interface attempt
         /// for saying "With the Mocks [mocks], Expecting (in same order) [things] verify [that]."
         /// </summary>
-        public class FluentMocker: IMockVerifier
+        public class FluentMocker : IMockVerifier
         {
             private MockRepository _mocks;
 

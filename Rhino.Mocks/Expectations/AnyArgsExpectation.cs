@@ -35,73 +35,73 @@ using Range = Rhino.Mocks.Impl.Range;
 
 namespace Rhino.Mocks.Expectations
 {
-	/// <summary>
-	/// Expectation that matches any arguments for the method.
-	/// </summary>
-	public class AnyArgsExpectation : AbstractExpectation
-	{
-		/// <summary>
-		/// Creates a new <see cref="AnyArgsExpectation"/> instance.
-		/// </summary>
-		/// <param name="invocation">Invocation for this expectation</param>
+    /// <summary>
+    /// Expectation that matches any arguments for the method.
+    /// </summary>
+    public class AnyArgsExpectation : AbstractExpectation
+    {
+        /// <summary>
+        /// Creates a new <see cref="AnyArgsExpectation"/> instance.
+        /// </summary>
+        /// <param name="invocation">Invocation for this expectation</param>
         /// <param name="expectedRange">Number of method calls for this expectations</param>
         public AnyArgsExpectation(IInvocation invocation, Range expectedRange) : base(invocation, expectedRange)
-		{
-		}
+        {
+        }
 
-		/// <summary>
-		/// Creates a new <see cref="AnyArgsExpectation"/> instance.
-		/// </summary>
-		/// <param name="expectation">Expectation.</param>
-		public AnyArgsExpectation(IExpectation expectation) : base(expectation)
-		{
-		}
+        /// <summary>
+        /// Creates a new <see cref="AnyArgsExpectation"/> instance.
+        /// </summary>
+        /// <param name="expectation">Expectation.</param>
+        public AnyArgsExpectation(IExpectation expectation) : base(expectation)
+        {
+        }
 
-		/// <summary>
-		/// Validate the arguments for the method.
-		/// </summary>
-		/// <param name="args">The arguments with which the method was called</param>
-		protected override bool DoIsExpected(object[] args)
-		{
-			return true;
-		}
+        /// <summary>
+        /// Validate the arguments for the method.
+        /// </summary>
+        /// <param name="args">The arguments with which the method was called</param>
+        protected override bool DoIsExpected(object[] args)
+        {
+            return true;
+        }
 
-		/// <summary>
-		/// Gets the error message.
-		/// </summary>
-		/// <value></value>
-		public override string ErrorMessage
-		{
-			get
-			{
-				MethodCallUtil.FormatArgumnet format = new MethodCallUtil.FormatArgumnet(AnyFormatArg);
-				string stringPresentation = MethodCallUtil.StringPresentation(Originalinvocation, format, Method, new object[0]);
-				return CreateErrorMessage(stringPresentation);
-			}
-		}
+        /// <summary>
+        /// Gets the error message.
+        /// </summary>
+        /// <value></value>
+        public override string ErrorMessage
+        {
+            get
+            {
+                MethodCallUtil.FormatArgumnet format = new MethodCallUtil.FormatArgumnet(AnyFormatArg);
+                string stringPresentation = MethodCallUtil.StringPresentation(Originalinvocation, format, Method, new object[0]);
+                return CreateErrorMessage(stringPresentation);
+            }
+        }
 
-		/// <summary>
-		/// Determines if the object equal to expectation
-		/// </summary>
-		public override bool Equals(object obj)
-		{
-			AnyArgsExpectation other = obj as AnyArgsExpectation;
-			if (other == null)
-				return false;
+        /// <summary>
+        /// Determines if the object equal to expectation
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            AnyArgsExpectation other = obj as AnyArgsExpectation;
+            if (other == null)
+                return false;
             return Method.Equals(other.Method);
-		}
+        }
 
-		/// <summary>
-		/// Get the hash code
-		/// </summary>
-		public override int GetHashCode()
-		{
-			return Method.GetHashCode();
-		}
+        /// <summary>
+        /// Get the hash code
+        /// </summary>
+        public override int GetHashCode()
+        {
+            return Method.GetHashCode();
+        }
 
-		private static string AnyFormatArg(Array args, int i)
-		{
-			return "any";
-		}
-	}
+        private static string AnyFormatArg(Array args, int i)
+        {
+            return "any";
+        }
+    }
 }

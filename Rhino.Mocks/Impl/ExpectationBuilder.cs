@@ -1,9 +1,9 @@
-﻿using System;
-using System.Reflection;
-using Castle.Core.Interceptor;
+﻿using Castle.Core.Interceptor;
 using Rhino.Mocks.Constraints;
 using Rhino.Mocks.Expectations;
 using Rhino.Mocks.Interfaces;
+using System;
+using System.Reflection;
 
 namespace Rhino.Mocks.Impl
 {

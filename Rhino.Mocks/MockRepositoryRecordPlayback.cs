@@ -31,58 +31,58 @@ using System.Runtime.InteropServices;
 
 namespace Rhino.Mocks
 {
-	internal class PlaybackModeChanger : IModeChanger
-	{
-		private readonly MockRepository m_repository;
+    internal class PlaybackModeChanger : IModeChanger
+    {
+        private readonly MockRepository m_repository;
 
-		public PlaybackModeChanger(MockRepository repository)
-		{
-			m_repository = repository;
-		}
+        public PlaybackModeChanger(MockRepository repository)
+        {
+            m_repository = repository;
+        }
 
-		public void Dispose()
-		{
-			if (DisposableActionsHelper.ExceptionWasThrownAndDisposableActionShouldNotBeCalled())
-				return;
-			m_repository.VerifyAll();
-		}
-	}
+        public void Dispose()
+        {
+            if (DisposableActionsHelper.ExceptionWasThrownAndDisposableActionShouldNotBeCalled())
+                return;
+            m_repository.VerifyAll();
+        }
+    }
 
-	internal static class DisposableActionsHelper
-	{
-		internal static bool ExceptionWasThrownAndDisposableActionShouldNotBeCalled()
-		{
-			//If we're running under Mono, then we don't want to call Marshall.GetExceptionCode as it
-			// currently is not implemented
-			Type t = Type.GetType("Mono.Runtime");
-			if (t == null)
-			{
-				// Probably running the .NET Framework
-				if (Marshal.GetExceptionCode() != 0)
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-	}
+    internal static class DisposableActionsHelper
+    {
+        internal static bool ExceptionWasThrownAndDisposableActionShouldNotBeCalled()
+        {
+            //If we're running under Mono, then we don't want to call Marshall.GetExceptionCode as it
+            // currently is not implemented
+            Type t = Type.GetType("Mono.Runtime");
+            if (t == null)
+            {
+                // Probably running the .NET Framework
+                if (Marshal.GetExceptionCode() != 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 
-	internal class RecordModeChanger : IModeChanger
-	{
-		private readonly MockRepository m_repository;
+    internal class RecordModeChanger : IModeChanger
+    {
+        private readonly MockRepository m_repository;
 
-		public RecordModeChanger(MockRepository repository)
-		{
-			m_repository = repository;
-		}
+        public RecordModeChanger(MockRepository repository)
+        {
+            m_repository = repository;
+        }
 
-		public void Dispose()
-		{
-			if (DisposableActionsHelper.ExceptionWasThrownAndDisposableActionShouldNotBeCalled())
-				return;
-			m_repository.ReplayAll();
-		}
-	}
+        public void Dispose()
+        {
+            if (DisposableActionsHelper.ExceptionWasThrownAndDisposableActionShouldNotBeCalled())
+                return;
+            m_repository.ReplayAll();
+        }
+    }
 
     ///<summary>
     /// Interface which allows for the optional usage:
@@ -97,6 +97,6 @@ namespace Rhino.Mocks
     ///</summary>
     public interface IModeChanger : IDisposable
     {
-        
+
     }
 }

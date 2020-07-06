@@ -32,99 +32,99 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	
-	public class FieldProblem_Thierry
-	{
-		[Fact]
-		public void ReproducedWithOutArraysContainingMockedObject2()
-		{
-			MockRepository mocks = new MockRepository();
-			IPlugin plugin = mocks.StrictMock<IPlugin>();
-			IPlugin[] allPlugins;
 
-			// PluginMng
-			IPluginMng pluginMng = (IPluginMng) mocks.StrictMock(typeof (IPluginMng));
-			pluginMng.GetPlugins(out allPlugins);
+    public class FieldProblem_Thierry
+    {
+        [Fact]
+        public void ReproducedWithOutArraysContainingMockedObject2()
+        {
+            MockRepository mocks = new MockRepository();
+            IPlugin plugin = mocks.StrictMock<IPlugin>();
+            IPlugin[] allPlugins;
 
-			LastCall.IgnoreArguments().OutRef(
-				new object[] {new IPlugin[] {plugin}}
-				);
+            // PluginMng
+            IPluginMng pluginMng = (IPluginMng)mocks.StrictMock(typeof(IPluginMng));
+            pluginMng.GetPlugins(out allPlugins);
 
-			mocks.ReplayAll();
+            LastCall.IgnoreArguments().OutRef(
+                new object[] { new IPlugin[] { plugin } }
+                );
 
-			pluginMng.GetPlugins(out allPlugins);
+            mocks.ReplayAll();
 
-			Assert.Equal(1, allPlugins.Length);
-			Assert.Same(plugin, allPlugins[0]);
-		}
+            pluginMng.GetPlugins(out allPlugins);
 
-		[Fact]
-		public void MockGenericMethod1()
-		{
-			MockRepository mocks = new MockRepository();
-			IWithGeneric1 stubbed = mocks.StrictMock<IWithGeneric1>();
+            Assert.Equal(1, allPlugins.Length);
+            Assert.Same(plugin, allPlugins[0]);
+        }
 
-			byte myValue = 3;
-			int returnedValue = 3;
+        [Fact]
+        public void MockGenericMethod1()
+        {
+            MockRepository mocks = new MockRepository();
+            IWithGeneric1 stubbed = mocks.StrictMock<IWithGeneric1>();
 
-			Expect.Call(stubbed.DoNothing<byte>(myValue)).Return(returnedValue);
-			mocks.ReplayAll();
-			int x = stubbed.DoNothing<byte>(myValue);
-			Assert.Equal(myValue, x);
+            byte myValue = 3;
+            int returnedValue = 3;
 
-			mocks.VerifyAll();
-		}
+            Expect.Call(stubbed.DoNothing<byte>(myValue)).Return(returnedValue);
+            mocks.ReplayAll();
+            int x = stubbed.DoNothing<byte>(myValue);
+            Assert.Equal(myValue, x);
 
-		[Fact]
-		public void MockGenericMethod2()
-		{
-			MockRepository mocks = new MockRepository();
-			IWithGeneric2 stubbed = mocks.StrictMock<IWithGeneric2>();
+            mocks.VerifyAll();
+        }
 
-			byte myValue = 4;
-			Expect.Call(stubbed.DoNothing<byte>(myValue)).Return(myValue);
-			mocks.ReplayAll();
-			byte x = stubbed.DoNothing<byte>(myValue);
-			Assert.Equal(myValue, x);
+        [Fact]
+        public void MockGenericMethod2()
+        {
+            MockRepository mocks = new MockRepository();
+            IWithGeneric2 stubbed = mocks.StrictMock<IWithGeneric2>();
 
-			mocks.VerifyAll();
-		}
+            byte myValue = 4;
+            Expect.Call(stubbed.DoNothing<byte>(myValue)).Return(myValue);
+            mocks.ReplayAll();
+            byte x = stubbed.DoNothing<byte>(myValue);
+            Assert.Equal(myValue, x);
 
-		[Fact]
-		public void CanMockComplexReturnType()
-		{
-			MockRepository mocks = new MockRepository();
-			IWithGeneric2 stubbed = mocks.StrictMock<IWithGeneric2>();
+            mocks.VerifyAll();
+        }
 
-			byte myValue = 4;
-			List<byte> bytes = new List<byte>();
-			bytes.Add(myValue);
-			Expect.Call(stubbed.DoNothing<IList<byte>>(null)).Return(bytes);
-			mocks.ReplayAll();
-			IList<byte> bytesResult = stubbed.DoNothing<IList<byte>>(null);
-			Assert.Equal(bytes, bytesResult);
+        [Fact]
+        public void CanMockComplexReturnType()
+        {
+            MockRepository mocks = new MockRepository();
+            IWithGeneric2 stubbed = mocks.StrictMock<IWithGeneric2>();
 
-			mocks.VerifyAll();
-		}
-	}
+            byte myValue = 4;
+            List<byte> bytes = new List<byte>();
+            bytes.Add(myValue);
+            Expect.Call(stubbed.DoNothing<IList<byte>>(null)).Return(bytes);
+            mocks.ReplayAll();
+            IList<byte> bytesResult = stubbed.DoNothing<IList<byte>>(null);
+            Assert.Equal(bytes, bytesResult);
 
-	public interface IWithGeneric2
-	{
-		T DoNothing<T>(T x);
-	}
+            mocks.VerifyAll();
+        }
+    }
 
-	public interface IWithGeneric1
-	{
-		int DoNothing<T>(T x);
-	}
+    public interface IWithGeneric2
+    {
+        T DoNothing<T>(T x);
+    }
+
+    public interface IWithGeneric1
+    {
+        int DoNothing<T>(T x);
+    }
 
 
-	public interface IPluginMng
-	{
-		void GetPlugins(out IPlugin[] plugins);
-	}
+    public interface IPluginMng
+    {
+        void GetPlugins(out IPlugin[] plugins);
+    }
 
-	public interface IPlugin
-	{
-	}
+    public interface IPlugin
+    {
+    }
 }

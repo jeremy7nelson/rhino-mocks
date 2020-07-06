@@ -28,108 +28,107 @@
 
 
 using System;
-using Rhino.Mocks.Constraints;
 
 namespace Rhino.Mocks.Constraints
 {
-	/*
+    /*
 	 * Class: Is
 	 * 
 	 * Common constraints.
-	 */ 
-	/// <summary>
-	/// Central location for constraints
-	/// </summary>
-	public static class Is
-	{
-		/*
+	 */
+    /// <summary>
+    /// Central location for constraints
+    /// </summary>
+    public static class Is
+    {
+        /*
 		 * method: GreaterThan
 		 * 
 		 * Determines whatever the parameter is greater than objToCompare.
 		 * The parameter must implement IComparable 
-		 */ 
-		/// <summary>
-		/// Evaluate a greater than constraint for <see cref="IComparable"/>.
-		/// </summary>
-		/// <param name="objToCompare">The object the parameter should be greater than</param>
-		public static AbstractConstraint GreaterThan(IComparable objToCompare)
-		{
-			return new ComparingConstraint(objToCompare, true, false);
-		}
+		 */
+        /// <summary>
+        /// Evaluate a greater than constraint for <see cref="IComparable"/>.
+        /// </summary>
+        /// <param name="objToCompare">The object the parameter should be greater than</param>
+        public static AbstractConstraint GreaterThan(IComparable objToCompare)
+        {
+            return new ComparingConstraint(objToCompare, true, false);
+        }
 
-		/*
+        /*
 		 * method: LessThan
 		 * 
 		 * Determines whatever the parameter is less than objToCompare.
 		 * The parameter must implement IComparable 
-		 */ 
-		/// <summary>
-		/// Evaluate a less than constraint for <see cref="IComparable"/>.
-		/// </summary>
-		/// <param name="objToCompare">The object the parameter should be less than</param>
-		public static AbstractConstraint LessThan(IComparable objToCompare)
-		{
-			return new ComparingConstraint(objToCompare, false, false);
-		}
+		 */
+        /// <summary>
+        /// Evaluate a less than constraint for <see cref="IComparable"/>.
+        /// </summary>
+        /// <param name="objToCompare">The object the parameter should be less than</param>
+        public static AbstractConstraint LessThan(IComparable objToCompare)
+        {
+            return new ComparingConstraint(objToCompare, false, false);
+        }
 
-	   /*
-		* method: LessThanOrEqual
-		* 
-		* Determines whatever the parameter is less than or equal to objToCompare.
-		* The parameter must implement IComparable 
-		*/ 
-		/// <summary>
-		/// Evaluate a less than or equal constraint for <see cref="IComparable"/>.
-		/// </summary>
-		/// <param name="objToCompare">The object the parameter should be less than or equal to</param>
-		public static AbstractConstraint LessThanOrEqual(IComparable objToCompare)
-		{
-			return new ComparingConstraint(objToCompare, false, true);
-		}
+        /*
+         * method: LessThanOrEqual
+         * 
+         * Determines whatever the parameter is less than or equal to objToCompare.
+         * The parameter must implement IComparable 
+         */
+        /// <summary>
+        /// Evaluate a less than or equal constraint for <see cref="IComparable"/>.
+        /// </summary>
+        /// <param name="objToCompare">The object the parameter should be less than or equal to</param>
+        public static AbstractConstraint LessThanOrEqual(IComparable objToCompare)
+        {
+            return new ComparingConstraint(objToCompare, false, true);
+        }
 
-	   /*
-		* method: GreaterThanOrEqual
-		* 
-		* Determines whatever the parameter is greater than or equal to objToCompare.
-		* The parameter must implement IComparable 
-		*/ 
-		/// <summary>
-		/// Evaluate a greater than or equal constraint for <see cref="IComparable"/>.
-		/// </summary>
-		/// <param name="objToCompare">The object the parameter should be greater than or equal to</param>
-		public static AbstractConstraint GreaterThanOrEqual(IComparable objToCompare)
-		{
-			return new ComparingConstraint(objToCompare, true, true);
-		}
+        /*
+         * method: GreaterThanOrEqual
+         * 
+         * Determines whatever the parameter is greater than or equal to objToCompare.
+         * The parameter must implement IComparable 
+         */
+        /// <summary>
+        /// Evaluate a greater than or equal constraint for <see cref="IComparable"/>.
+        /// </summary>
+        /// <param name="objToCompare">The object the parameter should be greater than or equal to</param>
+        public static AbstractConstraint GreaterThanOrEqual(IComparable objToCompare)
+        {
+            return new ComparingConstraint(objToCompare, true, true);
+        }
 
-	   /*
-		* method: Equal
-		* 
-		* Determines whatever the parameter equal to obj.
-		*/ 
-		/// <summary>
-		/// Evaluate an equal constraint for <see cref="IComparable"/>.
-		/// </summary>
-		/// <param name="obj">The object the parameter should equal to</param>
-		public static AbstractConstraint Equal(object obj)
-		{
-			return new Equal(obj);
-		}
+        /*
+         * method: Equal
+         * 
+         * Determines whatever the parameter equal to obj.
+         */
+        /// <summary>
+        /// Evaluate an equal constraint for <see cref="IComparable"/>.
+        /// </summary>
+        /// <param name="obj">The object the parameter should equal to</param>
+        public static AbstractConstraint Equal(object obj)
+        {
+            return new Equal(obj);
+        }
 
 
-		/*
+        /*
 		 * method: NotEqual
 		 * 
 		 * Determines whatever the parameter does not equal to obj.
-		 */ 
-		/// <summary>
-		/// Evaluate a not equal constraint for <see cref="IComparable"/>.
-		/// </summary>
-		/// <param name="obj">The object the parameter should not equal to</param>
-		public static AbstractConstraint NotEqual(object obj)
-		{
-			return !new Equal(obj);
-		}
+		 */
+        /// <summary>
+        /// Evaluate a not equal constraint for <see cref="IComparable"/>.
+        /// </summary>
+        /// <param name="obj">The object the parameter should not equal to</param>
+        public static AbstractConstraint NotEqual(object obj)
+        {
+            return !new Equal(obj);
+        }
 
         /// <summary>
         /// Evaluate a same as constraint.
@@ -149,64 +148,50 @@ namespace Rhino.Mocks.Constraints
             return !new Same(obj);
         }
 
-		/*
+        /*
 		 * method: Anything
 		 * 
 		 * This constraint always succeeds
-		 */ 
-		/// <summary>
-		/// A constraints that accept anything
-		/// </summary>
-		/// <returns></returns>
-		public static AbstractConstraint Anything()
-		{
-			return new Anything();
-		}
+		 */
+        /// <summary>
+        /// A constraints that accept anything
+        /// </summary>
+        /// <returns></returns>
+        public static AbstractConstraint Anything()
+        {
+            return new Anything();
+        }
 
-		/*
+        /*
 		 * Method: Null
 		 * 
 		 * Determines whatever the parameter is null
 		 * 
 		 */
-		/// <summary>
-		/// A constraint that accept only nulls
-		/// </summary>
-		/// <returns></returns>
-		public static AbstractConstraint Null()
-		{
-			return new Equal(null);
-		}
+        /// <summary>
+        /// A constraint that accept only nulls
+        /// </summary>
+        /// <returns></returns>
+        public static AbstractConstraint Null()
+        {
+            return new Equal(null);
+        }
 
-		/*
+        /*
 		 * Method: NotNull
 		 * 
 		 * Determines whatever the parameter is not null
 		 * 
 		 */
-		/// <summary>
-		/// A constraint that accept only non null values
-		/// </summary>
-		/// <returns></returns>
-		public static AbstractConstraint NotNull()
-		{
-			return !new Equal(null);
-		}
+        /// <summary>
+        /// A constraint that accept only non null values
+        /// </summary>
+        /// <returns></returns>
+        public static AbstractConstraint NotNull()
+        {
+            return !new Equal(null);
+        }
 
-		/*
-		 * Method: TypeOf
-		 * 
-		 * Determines whatever the parameter if of the specified type.
-		 * 
-		 */
-		/// <summary>
-		/// A constraint that accept only value of the specified type
-		/// </summary>
-		public static AbstractConstraint TypeOf(Type type)
-		{
-			return new TypeOf(type);
-		}
-		
         /*
 		 * Method: TypeOf
 		 * 
@@ -216,18 +201,32 @@ namespace Rhino.Mocks.Constraints
         /// <summary>
         /// A constraint that accept only value of the specified type
         /// </summary>
-		public static AbstractConstraint TypeOf<T>()
-		{
-			return new TypeOf(typeof(T));
-		}
+        public static AbstractConstraint TypeOf(Type type)
+        {
+            return new TypeOf(type);
+        }
 
-		/// <summary>
-		/// Evaluate a parameter using a predicate
-		/// </summary>
-		/// <param name="predicate">The predicate to use</param>
-		public static AbstractConstraint Matching<T>(Predicate<T> predicate)
-		{
-			return new PredicateConstraint<T>(predicate);
-		}
-	}
+        /*
+		 * Method: TypeOf
+		 * 
+		 * Determines whatever the parameter if of the specified type.
+		 * 
+		 */
+        /// <summary>
+        /// A constraint that accept only value of the specified type
+        /// </summary>
+        public static AbstractConstraint TypeOf<T>()
+        {
+            return new TypeOf(typeof(T));
+        }
+
+        /// <summary>
+        /// Evaluate a parameter using a predicate
+        /// </summary>
+        /// <param name="predicate">The predicate to use</param>
+        public static AbstractConstraint Matching<T>(Predicate<T> predicate)
+        {
+            return new PredicateConstraint<T>(predicate);
+        }
+    }
 }

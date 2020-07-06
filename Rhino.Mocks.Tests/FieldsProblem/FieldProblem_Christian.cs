@@ -2,7 +2,7 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
+
     public class FieldProblem_Christian
     {
         [Fact]

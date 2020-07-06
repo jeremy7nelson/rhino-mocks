@@ -31,73 +31,73 @@ using System;
 
 namespace Rhino.Mocks.Tests
 {
-	using Xunit;
-
-	
-	public class MockingAbstractClass : IDisposable
-	{
-		private MockRepository mocks;
-
-		public MockingAbstractClass()
-		{
-			mocks = new MockRepository();
-		}
-
-		public void Dispose()
-		{
-			mocks.VerifyAll();
-		}
-
-		[Fact]
-		public void MockAbsPropertyGetter()
-		{
-			AbsCls ac = (AbsCls)mocks.StrictMock(typeof(AbsCls));
-			Expect.Call(ac.AbPropGet).Return("n");
-			mocks.ReplayAll();
-			Assert.Equal("n", ac.AbPropGet);
-		}
-
-		[Fact]
-		public void MockAbsPropertySetter()
-		{
-			AbsCls ac = (AbsCls)mocks.StrictMock(typeof(AbsCls));
-			Expect.Call(ac.AbPropSet = "n");
-			mocks.ReplayAll();
-			ac.AbPropSet = "n";
-		}
+    using Xunit;
 
 
-		[Fact]
-		public void MockAbsProp()
-		{
-			AbsCls ac = (AbsCls)mocks.StrictMock(typeof(AbsCls));
-			Expect.Call(ac.AbProp = "n");
-			Expect.Call(ac.AbProp).Return("u");
-			mocks.ReplayAll();
-			ac.AbProp = "n";
-			Assert.Equal("u", ac.AbProp);
-		}
+    public class MockingAbstractClass : IDisposable
+    {
+        private MockRepository mocks;
 
-		[Fact]
-		public void MockAbstractMethod()
-		{
-			AbsCls ac = (AbsCls)mocks.StrictMock(typeof(AbsCls));
-			Expect.Call(ac.Method()).Return(45);
-			mocks.ReplayAll();
-			Assert.Equal(45, ac.Method());
-	
-		}
+        public MockingAbstractClass()
+        {
+            mocks = new MockRepository();
+        }
 
-		public abstract class AbsCls
-		{
-			public abstract string AbPropGet { get; }
+        public void Dispose()
+        {
+            mocks.VerifyAll();
+        }
 
-			public abstract string AbPropSet { set; }
+        [Fact]
+        public void MockAbsPropertyGetter()
+        {
+            AbsCls ac = (AbsCls)mocks.StrictMock(typeof(AbsCls));
+            Expect.Call(ac.AbPropGet).Return("n");
+            mocks.ReplayAll();
+            Assert.Equal("n", ac.AbPropGet);
+        }
 
-			public abstract string AbProp { get; set; }
+        [Fact]
+        public void MockAbsPropertySetter()
+        {
+            AbsCls ac = (AbsCls)mocks.StrictMock(typeof(AbsCls));
+            Expect.Call(ac.AbPropSet = "n");
+            mocks.ReplayAll();
+            ac.AbPropSet = "n";
+        }
 
-			public abstract int Method();
 
-		}
-	}
+        [Fact]
+        public void MockAbsProp()
+        {
+            AbsCls ac = (AbsCls)mocks.StrictMock(typeof(AbsCls));
+            Expect.Call(ac.AbProp = "n");
+            Expect.Call(ac.AbProp).Return("u");
+            mocks.ReplayAll();
+            ac.AbProp = "n";
+            Assert.Equal("u", ac.AbProp);
+        }
+
+        [Fact]
+        public void MockAbstractMethod()
+        {
+            AbsCls ac = (AbsCls)mocks.StrictMock(typeof(AbsCls));
+            Expect.Call(ac.Method()).Return(45);
+            mocks.ReplayAll();
+            Assert.Equal(45, ac.Method());
+
+        }
+
+        public abstract class AbsCls
+        {
+            public abstract string AbPropGet { get; }
+
+            public abstract string AbPropSet { set; }
+
+            public abstract string AbProp { get; set; }
+
+            public abstract int Method();
+
+        }
+    }
 }

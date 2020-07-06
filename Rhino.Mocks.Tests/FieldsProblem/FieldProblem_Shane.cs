@@ -1,53 +1,51 @@
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	using System;
-	using System.Diagnostics;
-	using Exceptions;
-	using Xunit;
+    using Exceptions;
+    using Xunit;
 
-	
-	public class FieldProblem_Shane
-	{
-		[Fact]
-		public void WillMerge_UnorderedRecorder_WhenRecorderHasSingleRecorderInside()
-		{
-			MockRepository mocks = new MockRepository();
-			ICustomer customer = mocks.StrictMock<ICustomer>();
 
-			CustomerMapper mapper = new CustomerMapper();
+    public class FieldProblem_Shane
+    {
+        [Fact]
+        public void WillMerge_UnorderedRecorder_WhenRecorderHasSingleRecorderInside()
+        {
+            MockRepository mocks = new MockRepository();
+            ICustomer customer = mocks.StrictMock<ICustomer>();
 
-			using (mocks.Record())
-			using (mocks.Ordered())
-			{
-				Expect.Call(customer.Id).Return(0);
+            CustomerMapper mapper = new CustomerMapper();
 
-				customer.IsPreferred = true;
-			}
+            using (mocks.Record())
+            using (mocks.Ordered())
+            {
+                Expect.Call(customer.Id).Return(0);
 
-			Assert.Throws<ExpectationViolationException>("Unordered method call! The expected call is: 'Ordered: { ICustomer.get_Id(); }' but was: 'ICustomer.set_IsPreferred(True);'", () =>
-			{
-				using (mocks.Playback())
-				{
-					mapper.MarkCustomerAsPreferred(customer);
-				}
-			});
-		}
-	}
+                customer.IsPreferred = true;
+            }
 
-	public interface ICustomer
-	{
-		int Id { get; }
+            Assert.Throws<ExpectationViolationException>("Unordered method call! The expected call is: 'Ordered: { ICustomer.get_Id(); }' but was: 'ICustomer.set_IsPreferred(True);'", () =>
+            {
+                using (mocks.Playback())
+                {
+                    mapper.MarkCustomerAsPreferred(customer);
+                }
+            });
+        }
+    }
 
-		bool IsPreferred { get; set; }
-	}
+    public interface ICustomer
+    {
+        int Id { get; }
 
-	public class CustomerMapper
-	{
-		public void MarkCustomerAsPreferred(ICustomer customer)
-		{
-			customer.IsPreferred = true;
+        bool IsPreferred { get; set; }
+    }
 
-			int id = customer.Id;
-		}
-	}
+    public class CustomerMapper
+    {
+        public void MarkCustomerAsPreferred(ICustomer customer)
+        {
+            customer.IsPreferred = true;
+
+            int id = customer.Id;
+        }
+    }
 }

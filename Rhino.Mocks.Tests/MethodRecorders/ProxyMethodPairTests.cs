@@ -27,92 +27,92 @@
 #endregion
 
 
+using Rhino.Mocks.Impl;
+using Rhino.Mocks.MethodRecorders;
 using System;
 using System.Reflection;
 using Xunit;
-using Rhino.Mocks.Impl;
-using Rhino.Mocks.MethodRecorders;
 
 namespace Rhino.Mocks.Tests.MethodRecorders
 {
-	
-	public class ProxyMethodPairTests
-	{
+
+    public class ProxyMethodPairTests
+    {
         private MethodInfo endsWith = typeof(string).GetMethod("EndsWith", new Type[] { typeof(string) });
         private MethodInfo startsWith = typeof(string).GetMethod("StartsWith", new Type[] { typeof(string) });
 
-		[Fact]
-		public void CtorValueReturnedInProperties()
-		{
-			object mockProxy = new object(); // mock for the mocked, he he
-			ProxyMethodPair pair = new ProxyMethodPair(mockProxy, endsWith);
-			Assert.Same(mockProxy, pair.Proxy);
-			Assert.Same(endsWith, pair.Method);
-		}
+        [Fact]
+        public void CtorValueReturnedInProperties()
+        {
+            object mockProxy = new object(); // mock for the mocked, he he
+            ProxyMethodPair pair = new ProxyMethodPair(mockProxy, endsWith);
+            Assert.Same(mockProxy, pair.Proxy);
+            Assert.Same(endsWith, pair.Method);
+        }
 
-		[Fact]
-		public void EqualsToAnotherProxy()
-		{
-			ProxyInstance mockProxy = new ProxyInstance(null);
-			ProxyMethodPair pair1 = new ProxyMethodPair(mockProxy, endsWith);
-			ProxyMethodPair pair2 = new ProxyMethodPair(mockProxy, endsWith);
-			Assert.Equal(pair1, pair2);
-			Assert.Equal(pair2, pair1); //make sure that it works both ways
-		}
+        [Fact]
+        public void EqualsToAnotherProxy()
+        {
+            ProxyInstance mockProxy = new ProxyInstance(null);
+            ProxyMethodPair pair1 = new ProxyMethodPair(mockProxy, endsWith);
+            ProxyMethodPair pair2 = new ProxyMethodPair(mockProxy, endsWith);
+            Assert.Equal(pair1, pair2);
+            Assert.Equal(pair2, pair1); //make sure that it works both ways
+        }
 
-		[Fact]
-		public void NotEqualToNull()
-		{
-			ProxyInstance mockProxy = new ProxyInstance(null);
-			ProxyMethodPair pair1 = new ProxyMethodPair(mockProxy, endsWith);
-			Assert.False(pair1.Equals(null));
-		}
+        [Fact]
+        public void NotEqualToNull()
+        {
+            ProxyInstance mockProxy = new ProxyInstance(null);
+            ProxyMethodPair pair1 = new ProxyMethodPair(mockProxy, endsWith);
+            Assert.False(pair1.Equals(null));
+        }
 
-		[Fact]
-		public void NotEqualIfNotSameObject()
-		{
-			ProxyInstance mockProxy1 = new ProxyInstance(null);
-			ProxyInstance mockProxy2 = new ProxyInstance(null);
-			ProxyMethodPair pair1 = new ProxyMethodPair(mockProxy1, endsWith);
-			ProxyMethodPair pair2 = new ProxyMethodPair(mockProxy2, endsWith);
-			Assert.NotEqual(pair1, pair2);
-			Assert.NotEqual(pair2, pair1); //make sure that it works both ways
-		}
+        [Fact]
+        public void NotEqualIfNotSameObject()
+        {
+            ProxyInstance mockProxy1 = new ProxyInstance(null);
+            ProxyInstance mockProxy2 = new ProxyInstance(null);
+            ProxyMethodPair pair1 = new ProxyMethodPair(mockProxy1, endsWith);
+            ProxyMethodPair pair2 = new ProxyMethodPair(mockProxy2, endsWith);
+            Assert.NotEqual(pair1, pair2);
+            Assert.NotEqual(pair2, pair1); //make sure that it works both ways
+        }
 
-		[Fact]
-		public void NotEqualIfNotSameMethod()
-		{
-			ProxyInstance mockProxy = new ProxyInstance(null);
-			ProxyMethodPair pair1 = new ProxyMethodPair(mockProxy, endsWith);
-			ProxyMethodPair pair2 = new ProxyMethodPair(mockProxy, startsWith);
-			Assert.NotEqual(pair1, pair2);
-			Assert.NotEqual(pair2, pair1); //make sure that it works both ways
-		}
+        [Fact]
+        public void NotEqualIfNotSameMethod()
+        {
+            ProxyInstance mockProxy = new ProxyInstance(null);
+            ProxyMethodPair pair1 = new ProxyMethodPair(mockProxy, endsWith);
+            ProxyMethodPair pair2 = new ProxyMethodPair(mockProxy, startsWith);
+            Assert.NotEqual(pair1, pair2);
+            Assert.NotEqual(pair2, pair1); //make sure that it works both ways
+        }
 
-		[Fact]
-		public void NotEqualIfNotSameMethodAndNotSameProxy()
-		{
-			ProxyInstance mockProxy1 = new ProxyInstance(null);
-			ProxyInstance mockProxy2 = new ProxyInstance(null);
-			ProxyMethodPair pair1 = new ProxyMethodPair(mockProxy1, this.endsWith);
-			ProxyMethodPair pair2 = new ProxyMethodPair(mockProxy2, this.startsWith);
-			Assert.NotEqual(pair1, pair2);
-			Assert.NotEqual(pair2, pair1); //make sure that it works both ways
-		}
+        [Fact]
+        public void NotEqualIfNotSameMethodAndNotSameProxy()
+        {
+            ProxyInstance mockProxy1 = new ProxyInstance(null);
+            ProxyInstance mockProxy2 = new ProxyInstance(null);
+            ProxyMethodPair pair1 = new ProxyMethodPair(mockProxy1, this.endsWith);
+            ProxyMethodPair pair2 = new ProxyMethodPair(mockProxy2, this.startsWith);
+            Assert.NotEqual(pair1, pair2);
+            Assert.NotEqual(pair2, pair1); //make sure that it works both ways
+        }
 
-		[Fact]
-		public void ProxyNullThrows()
-		{
-			Assert.Throws<ArgumentNullException>("Value cannot be null.\r\nParameter name: proxy", () => new ProxyMethodPair(null, endsWith));
-		}
+        [Fact]
+        public void ProxyNullThrows()
+        {
+            Assert.Throws<ArgumentNullException>("Value cannot be null.\r\nParameter name: proxy", () => new ProxyMethodPair(null, endsWith));
+        }
 
-		[Fact]
-		public void MethodNullThrows()
-		{
-			ProxyInstance mockProxy = new ProxyInstance(null);
+        [Fact]
+        public void MethodNullThrows()
+        {
+            ProxyInstance mockProxy = new ProxyInstance(null);
 
-			Assert.Throws<ArgumentNullException>("Value cannot be null.\r\nParameter name: method",
-			                                     () => new ProxyMethodPair(mockProxy, null));
-		}
-	}
+            Assert.Throws<ArgumentNullException>("Value cannot be null.\r\nParameter name: method",
+                                                 () => new ProxyMethodPair(mockProxy, null));
+        }
+    }
 }

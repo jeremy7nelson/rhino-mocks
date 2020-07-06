@@ -29,15 +29,15 @@
 
 namespace Rhino.Mocks.Interfaces
 {
-	/// <summary>
-	/// Interface to allow calling a method and immediately get it's options.
-	/// </summary>
-	public interface ICreateMethodExpectation
-	{
-		/// <summary>
-		/// Get the method options for the call
-		/// </summary>
-		/// <param name="ignored">The method call should go here, the return value is ignored</param>
-		IMethodOptions<T> Call<T>(T ignored);
-	}
+    /// <summary>
+    /// Interface to allow calling a method and immediately get it's options.
+    /// </summary>
+    public interface ICreateMethodExpectation
+    {
+        /// <summary>
+        /// Get the method options for the call
+        /// </summary>
+        /// <param name="ignored">The method call should go here, the return value is ignored</param>
+        IMethodOptions<T> Call<T>(T ignored);
+    }
 }

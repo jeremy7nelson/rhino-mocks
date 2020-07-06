@@ -27,107 +27,107 @@
 #endregion
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	using System;
-	using Xunit;
-	using Rhino.Mocks.Constraints;
+    using Rhino.Mocks.Constraints;
+    using System;
+    using Xunit;
 
-	public class ClassWithFinalizer
-	{
-		~ClassWithFinalizer()
-		{
-			Console.WriteLine(5);
-		}
-	}
+    public class ClassWithFinalizer
+    {
+        ~ClassWithFinalizer()
+        {
+            Console.WriteLine(5);
+        }
+    }
 
-	
-	public class FieldProblem_Eric
-	{
-		[Fact]
-		public void MockAClassWithFinalizer()
-		{
-			MockRepository mocks = new MockRepository();
-			ClassWithFinalizer withFinalizer = (ClassWithFinalizer) mocks.StrictMock(typeof (ClassWithFinalizer));
-			mocks.ReplayAll();
-			mocks.VerifyAll(); //move it to verify state
-			withFinalizer = null; // abandon the variable, will make it avialable for GC.
-			GC.WaitForPendingFinalizers();
-		}
 
-		#region Nested type: Class1Test
+    public class FieldProblem_Eric
+    {
+        [Fact]
+        public void MockAClassWithFinalizer()
+        {
+            MockRepository mocks = new MockRepository();
+            ClassWithFinalizer withFinalizer = (ClassWithFinalizer)mocks.StrictMock(typeof(ClassWithFinalizer));
+            mocks.ReplayAll();
+            mocks.VerifyAll(); //move it to verify state
+            withFinalizer = null; // abandon the variable, will make it avialable for GC.
+            GC.WaitForPendingFinalizers();
+        }
 
-		
-		public class Class1Test
-		{
-			[Fact]
-			public void ThisWorks()
-			{
-				MockRepository mockery = new MockRepository();
-				IFoo mockFoo = mockery.StrictMock<IFoo>();
-				int junk = 3;
-				using (mockery.Record())
-				{
-					Expect.Call(mockFoo.foo(ref junk)).
-						IgnoreArguments().
-						Constraints(Is.Anything()).
-						OutRef(3).
-						Repeat.Once().
-						Return(true);
-				}
-				using (mockery.Playback())
-				{
-					ClassUnderTest cut = new ClassUnderTest();
-					Assert.Equal(3, cut.doit(mockFoo));
-				}
-			}
+        #region Nested type: Class1Test
 
-			[Fact]
-			public void ThisDoesnt()
-			{
-				MockRepository mockery = new MockRepository();
-				IFoo mockFoo = mockery.StrictMock<IFoo>();
-				int junk = 3;
-				using (mockery.Record())
-				{
-					Expect.Call(mockFoo.foo(ref junk)).
-						IgnoreArguments().
-						OutRef(3).
-						Constraints(Is.Anything()).
-						Repeat.Once().
-						Return(true);
-				}
-				using (mockery.Playback())
-				{
-					ClassUnderTest cut = new ClassUnderTest();
-					Assert.Equal(3, cut.doit(mockFoo));
-				}
-			}
-		}
 
-		#endregion
+        public class Class1Test
+        {
+            [Fact]
+            public void ThisWorks()
+            {
+                MockRepository mockery = new MockRepository();
+                IFoo mockFoo = mockery.StrictMock<IFoo>();
+                int junk = 3;
+                using (mockery.Record())
+                {
+                    Expect.Call(mockFoo.foo(ref junk)).
+                        IgnoreArguments().
+                        Constraints(Is.Anything()).
+                        OutRef(3).
+                        Repeat.Once().
+                        Return(true);
+                }
+                using (mockery.Playback())
+                {
+                    ClassUnderTest cut = new ClassUnderTest();
+                    Assert.Equal(3, cut.doit(mockFoo));
+                }
+            }
 
-		#region Nested type: ClassUnderTest
+            [Fact]
+            public void ThisDoesnt()
+            {
+                MockRepository mockery = new MockRepository();
+                IFoo mockFoo = mockery.StrictMock<IFoo>();
+                int junk = 3;
+                using (mockery.Record())
+                {
+                    Expect.Call(mockFoo.foo(ref junk)).
+                        IgnoreArguments().
+                        OutRef(3).
+                        Constraints(Is.Anything()).
+                        Repeat.Once().
+                        Return(true);
+                }
+                using (mockery.Playback())
+                {
+                    ClassUnderTest cut = new ClassUnderTest();
+                    Assert.Equal(3, cut.doit(mockFoo));
+                }
+            }
+        }
 
-		public class ClassUnderTest
-		{
-			public int doit(IFoo fooer)
-			{
-				int results = 0;
-				if (fooer.foo(ref results))
-					return results;
-				else
-					return -1;
-			}
-		}
+        #endregion
 
-		#endregion
+        #region Nested type: ClassUnderTest
 
-		#region Nested type: IFoo
+        public class ClassUnderTest
+        {
+            public int doit(IFoo fooer)
+            {
+                int results = 0;
+                if (fooer.foo(ref results))
+                    return results;
+                else
+                    return -1;
+            }
+        }
 
-		public interface IFoo
-		{
-			bool foo(ref int fooSquared);
-		}
+        #endregion
 
-		#endregion
-	}
+        #region Nested type: IFoo
+
+        public interface IFoo
+        {
+            bool foo(ref int fooSquared);
+        }
+
+        #endregion
+    }
 }

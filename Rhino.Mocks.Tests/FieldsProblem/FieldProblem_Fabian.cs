@@ -27,78 +27,78 @@
 #endregion
 
 
-using Xunit;
 using Rhino.Mocks.Interfaces;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	
-	public class FieldProblem_Fabian
-	{
-		public delegate R Func<A1, R>(A1 a1);
 
-		public delegate void Proc<A1, A2>(A1 a1, A2 a2);
+    public class FieldProblem_Fabian
+    {
+        public delegate R Func<A1, R>(A1 a1);
 
-		public delegate int StringInt(string s);
+        public delegate void Proc<A1, A2>(A1 a1, A2 a2);
 
-		public interface ICache<TKey, TValue>
-		{
-			TValue GetValue(TKey key);
-			void Add(TKey key, TValue value);
-		}
+        public delegate int StringInt(string s);
 
-		[Fact]
-		public void TestExpectCall()
-		{
-			MockRepository mocks = new MockRepository();
-			ICache<string, int> mockCache = mocks.StrictMock<ICache<string, int>>();
-			Expect.Call(mockCache.GetValue("a")).Do((Func<string, int>)delegate
-			{
-				return 1;
-			});
-			mocks.ReplayAll();
+        public interface ICache<TKey, TValue>
+        {
+            TValue GetValue(TKey key);
+            void Add(TKey key, TValue value);
+        }
 
-			int i = mockCache.GetValue("a");
-			Assert.Equal(1,i );
+        [Fact]
+        public void TestExpectCall()
+        {
+            MockRepository mocks = new MockRepository();
+            ICache<string, int> mockCache = mocks.StrictMock<ICache<string, int>>();
+            Expect.Call(mockCache.GetValue("a")).Do((Func<string, int>)delegate
+            {
+                return 1;
+            });
+            mocks.ReplayAll();
 
-			mocks.VerifyAll();
-		}
+            int i = mockCache.GetValue("a");
+            Assert.Equal(1, i);
 
-		[Fact]
-		public void TestLastCall()
-		{
-			MockRepository mocks = new MockRepository();
-			ICache<string, int> mockCache = mocks.StrictMock<ICache<string, int>>();
-			mockCache.Add("a", 1);
-			LastCall.Do((Proc<string, int>)delegate
-			{
-			});
-			mocks.ReplayAll();
+            mocks.VerifyAll();
+        }
 
-			mockCache.Add("a", 1);
+        [Fact]
+        public void TestLastCall()
+        {
+            MockRepository mocks = new MockRepository();
+            ICache<string, int> mockCache = mocks.StrictMock<ICache<string, int>>();
+            mockCache.Add("a", 1);
+            LastCall.Do((Proc<string, int>)delegate
+            {
+            });
+            mocks.ReplayAll();
 
-			mocks.VerifyAll();
-		}
+            mockCache.Add("a", 1);
 
-		[Fact]
-		public void TestExpectCallWithNonGenericDelegate()
-		{
-			MockRepository mocks = new MockRepository();
-			ICache<string, int> mockCache = mocks.StrictMock<ICache<string, int>>();
-			IMethodOptions<int> opts = Expect.Call(mockCache.GetValue("a"));
-			opts.Do(new StringInt(GetValue));
-			mocks.ReplayAll();
+            mocks.VerifyAll();
+        }
 
-			int i = mockCache.GetValue("a");
+        [Fact]
+        public void TestExpectCallWithNonGenericDelegate()
+        {
+            MockRepository mocks = new MockRepository();
+            ICache<string, int> mockCache = mocks.StrictMock<ICache<string, int>>();
+            IMethodOptions<int> opts = Expect.Call(mockCache.GetValue("a"));
+            opts.Do(new StringInt(GetValue));
+            mocks.ReplayAll();
 
-			Assert.Equal(2, i);
+            int i = mockCache.GetValue("a");
 
-			mocks.VerifyAll();
-		}
+            Assert.Equal(2, i);
 
-		private int GetValue(string s)
-		{
-			return 2;
-		}
-	}
+            mocks.VerifyAll();
+        }
+
+        private int GetValue(string s)
+        {
+            return 2;
+        }
+    }
 }

@@ -27,12 +27,12 @@
 #endregion
 
 
+using Castle.DynamicProxy;
 using System;
 using System.Collections;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
-using Castle.DynamicProxy;
 
 namespace Rhino.Mocks.Impl
 {
@@ -42,15 +42,15 @@ namespace Rhino.Mocks.Impl
     /// </summary>
     internal class DelegateTargetInterfaceCreator
     {
-        private long counter=0;
-        
+        private long counter = 0;
+
         /// <summary>
         /// The scope for all the delegate interfaces create by this mock repository.
         /// </summary>
         private ModuleScope moduleScope = new ModuleScope();
 
         private IDictionary delegateTargetInterfaces = new Hashtable();
-        
+
         /// <summary>
         /// Gets a type with an "Invoke" method suitable for use as a target of the
         /// specified delegate type.
@@ -72,7 +72,7 @@ namespace Rhino.Mocks.Impl
             }
             return type;
         }
-        
+
         private Type CreateCallableInterfaceFromDelegate(Type delegateType)
         {
             Type type;

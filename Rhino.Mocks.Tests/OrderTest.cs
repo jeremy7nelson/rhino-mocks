@@ -28,19 +28,18 @@
 
 
 using System;
-using System.Text;
 
 using Xunit;
 
 namespace Rhino.Mocks.Tests
 {
-    
+
     public class OrderedTests
     {
         private delegate void ConfigureMockDelegate(MockRepository mocks, I1 mockObject);
 
         #region TestOrderedTimesMin0
-		//Test that a Times min of 0 works correctly inside an ordered recorder
+        //Test that a Times min of 0 works correctly inside an ordered recorder
         [Fact]
         public void TestOrderedTimesMin0()
         {
@@ -109,8 +108,8 @@ namespace Rhino.Mocks.Tests
         #endregion
 
         #region TestOrderedAtLeastOnce
-		[Fact]
-		public void TestOrderedAtLeastOnce()
+        [Fact]
+        public void TestOrderedAtLeastOnce()
         {
             ConfigureMockDelegate deleg = new ConfigureMockDelegate(ConfigureOrderedAtLeastOnce);
 
@@ -137,8 +136,8 @@ namespace Rhino.Mocks.Tests
         #endregion
 
         #region TestOrderedTimesMin0WithNestedUnordered
-		[Fact]
-		public void TestOrderedTimesMin0WithNestedUnordered()
+        [Fact]
+        public void TestOrderedTimesMin0WithNestedUnordered()
         {
             ConfigureMockDelegate deleg = new ConfigureMockDelegate(ConfigureOrderedTimesMin0WithNestedUnordered);
 
@@ -184,8 +183,8 @@ namespace Rhino.Mocks.Tests
         /// <param name="mockConfigurer">A delegate to use to configure the mock.</param>
         /// <param name="isValid">Whether the order should be valid or not.</param>
         /// <param name="methodOrder">The method order (e.g. "ABC", "ABBC").</param>
-        private static void AssertOrderValidity( ConfigureMockDelegate mockConfigurer, bool isValid, 
-                                                 string methodOrder )
+        private static void AssertOrderValidity(ConfigureMockDelegate mockConfigurer, bool isValid,
+                                                 string methodOrder)
         {
             MockRepository mocks = new MockRepository();
 
@@ -220,7 +219,7 @@ namespace Rhino.Mocks.Tests
             {
                 if (isValid)
                 {
-					Assert.False(true, string.Format("Order {0} was supposed to be ok, but got error: {1}", methodOrder, ex.Message));
+                    Assert.False(true, string.Format("Order {0} was supposed to be ok, but got error: {1}", methodOrder, ex.Message));
                 }
                 else
                 {
@@ -230,7 +229,7 @@ namespace Rhino.Mocks.Tests
 
             if (!isValid)
             {
-				Assert.False(true, string.Format("Order {0} was supposed to fail, but did not.", methodOrder));
+                Assert.False(true, string.Format("Order {0} was supposed to fail, but did not.", methodOrder));
             }
         }
         #endregion

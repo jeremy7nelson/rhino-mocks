@@ -36,7 +36,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
     {
         public virtual void Foo()
         {
-            
+
         }
     }
 }

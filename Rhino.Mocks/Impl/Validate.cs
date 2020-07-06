@@ -27,33 +27,33 @@
 #endregion
 
 
-using System;
-using System.Linq.Expressions;
 using Rhino.Mocks.Interfaces;
-using System.Reflection;
+using System;
 using System.Collections;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Rhino.Mocks.Impl
 {
-	/// <summary>
-	/// Validate arguments for methods
-	/// </summary>
-	public static class Validate
-	{
-		/// <summary>
-		/// Validate that the passed argument is not null.
-		/// </summary>
-		/// <param name="obj">The object to validate</param>
-		/// <param name="name">The name of the argument</param>
-		/// <exception cref="ArgumentNullException">
-		/// If the obj is null, an ArgumentNullException with the passed name
-		/// is thrown.
-		/// </exception>
-		public static void IsNotNull(object obj, string name)
-		{
-			if (obj == null)
-				throw new ArgumentNullException(name);
-		}
+    /// <summary>
+    /// Validate arguments for methods
+    /// </summary>
+    public static class Validate
+    {
+        /// <summary>
+        /// Validate that the passed argument is not null.
+        /// </summary>
+        /// <param name="obj">The object to validate</param>
+        /// <param name="name">The name of the argument</param>
+        /// <exception cref="ArgumentNullException">
+        /// If the obj is null, an ArgumentNullException with the passed name
+        /// is thrown.
+        /// </exception>
+        public static void IsNotNull(object obj, string name)
+        {
+            if (obj == null)
+                throw new ArgumentNullException(name);
+        }
 
         /// <summary>
         /// Validates that the passed argument is not null
@@ -76,32 +76,32 @@ namespace Rhino.Mocks.Impl
             if (reference.Body.GetConstantValue<T>() == null) throw new ArgumentNullException(GetParameterName(reference), message);
         }
 
-		/// <summary>
-		/// Validate that the arguments are equal.
-		/// </summary>
-		/// <param name="expectedArgs">Expected args.</param>
-		/// <param name="actualArgs">Actual Args.</param>
-		public static bool ArgsEqual(object[] expectedArgs, object[] actualArgs)
-		{
-			return RecursiveCollectionEqual(expectedArgs, actualArgs);
-		}
+        /// <summary>
+        /// Validate that the arguments are equal.
+        /// </summary>
+        /// <param name="expectedArgs">Expected args.</param>
+        /// <param name="actualArgs">Actual Args.</param>
+        public static bool ArgsEqual(object[] expectedArgs, object[] actualArgs)
+        {
+            return RecursiveCollectionEqual(expectedArgs, actualArgs);
+        }
 
-		/// <summary>
-		/// Validate that the two arguments are equals, including validation for
-		/// when the arguments are collections, in which case it will validate their values.
-		/// </summary>
-		public static bool AreEqual(object expectedArg, object actualArg)
-		{
-			return RecursiveCollectionEqual(new object[] { expectedArg }, new object[] { actualArg });
-		}
+        /// <summary>
+        /// Validate that the two arguments are equals, including validation for
+        /// when the arguments are collections, in which case it will validate their values.
+        /// </summary>
+        public static bool AreEqual(object expectedArg, object actualArg)
+        {
+            return RecursiveCollectionEqual(new object[] { expectedArg }, new object[] { actualArg });
+        }
 
-		#region Implementation
+        #region Implementation
 
         private static bool RecursiveCollectionEqual(ICollection expectedArgs, ICollection actualArgs)
         {
-            if(expectedArgs == null && actualArgs == null)
+            if (expectedArgs == null && actualArgs == null)
                 return true;
-            if(expectedArgs==null || actualArgs==null)
+            if (expectedArgs == null || actualArgs == null)
                 return false;
 
             if (expectedArgs.Count != actualArgs.Count)
@@ -154,7 +154,7 @@ namespace Rhino.Mocks.Impl
             //if any of them is a mocked object, use mocks equality
             //this may not be what the user is expecting, but it is needed, because
             //otherwise we get into endless loop.
-            return MockedObjectsEquality.Instance.Equals(expected,actual);
+            return MockedObjectsEquality.Instance.Equals(expected, actual);
         }
 
         private static string GetParameterName(Expression reference)
@@ -181,6 +181,6 @@ namespace Rhino.Mocks.Impl
             return Expression.Lambda<Func<T>>(Expression.Convert(expression, typeof(T)), new ParameterExpression[0]).Compile()();
         }
 
-		#endregion
-	}
+        #endregion
+    }
 }

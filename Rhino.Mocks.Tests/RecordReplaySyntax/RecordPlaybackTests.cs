@@ -31,79 +31,79 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.RecordPlaybackSyntax
 {
-	
-	public class RecordPlaybackTests
-	{
-		[Fact]
-		public void CanRecordPlayback()
-		{
-			MockRepository mockRepository;
-			mockRepository = new MockRepository();
-			IFoo mockedFoo = mockRepository.StrictMock<IFoo>();
-			using (mockRepository.Record())
-			{
-				Expect.Call(mockedFoo.Bar()).Return(42);
-			}
-			using (mockRepository.Playback())
-			{
-				Fooz fooz = new Fooz(mockedFoo);
-				fooz.Barz();
-			}
-		}
 
-		[Fact]
-		public void PlaybackThrowsOtherExceptionDoesntReport()
-		{
-			MockRepository mockRepository;
-			mockRepository = new MockRepository();
-			IFoo mockedFoo = mockRepository.StrictMock<IFoo>();
-			using (mockRepository.Record())
-			{
-				Expect.Call(mockedFoo.Bar()).Return(42);
-			}
-			Assert.Throws<ArgumentException>(delegate
-			{
-				using (mockRepository.Playback())
-				{
-					throw new ArgumentException();
-				}
-			});
-		}
+    public class RecordPlaybackTests
+    {
+        [Fact]
+        public void CanRecordPlayback()
+        {
+            MockRepository mockRepository;
+            mockRepository = new MockRepository();
+            IFoo mockedFoo = mockRepository.StrictMock<IFoo>();
+            using (mockRepository.Record())
+            {
+                Expect.Call(mockedFoo.Bar()).Return(42);
+            }
+            using (mockRepository.Playback())
+            {
+                Fooz fooz = new Fooz(mockedFoo);
+                fooz.Barz();
+            }
+        }
 
-		[Fact]
-		public void RecordThrowsOtherExceptionDoesntReport()
-		{
-			MockRepository mockRepository;
-			mockRepository = new MockRepository();
-			IFoo mockedFoo = mockRepository.StrictMock<IFoo>();
-			Assert.Throws<ArgumentException>(() =>
-			{
-				using (mockRepository.Record())
-				{
-					mockedFoo.Bar(); //create expectation but doesn't setup return value
-					throw new ArgumentException();
-				}
-			});
-		}
-	}
+        [Fact]
+        public void PlaybackThrowsOtherExceptionDoesntReport()
+        {
+            MockRepository mockRepository;
+            mockRepository = new MockRepository();
+            IFoo mockedFoo = mockRepository.StrictMock<IFoo>();
+            using (mockRepository.Record())
+            {
+                Expect.Call(mockedFoo.Bar()).Return(42);
+            }
+            Assert.Throws<ArgumentException>(delegate
+            {
+                using (mockRepository.Playback())
+                {
+                    throw new ArgumentException();
+                }
+            });
+        }
 
-	internal interface IFoo
-	{
-		int Bar();
-	}
+        [Fact]
+        public void RecordThrowsOtherExceptionDoesntReport()
+        {
+            MockRepository mockRepository;
+            mockRepository = new MockRepository();
+            IFoo mockedFoo = mockRepository.StrictMock<IFoo>();
+            Assert.Throws<ArgumentException>(() =>
+            {
+                using (mockRepository.Record())
+                {
+                    mockedFoo.Bar(); //create expectation but doesn't setup return value
+                    throw new ArgumentException();
+                }
+            });
+        }
+    }
 
-	internal class Fooz
-	{
-		private readonly IFoo m_foo;
+    internal interface IFoo
+    {
+        int Bar();
+    }
 
-		public Fooz(IFoo foo)
-		{
-			m_foo = foo;
-		}
+    internal class Fooz
+    {
+        private readonly IFoo m_foo;
 
-		public void Barz()
-		{
-			m_foo.Bar();
-		}
-	}
+        public Fooz(IFoo foo)
+        {
+            m_foo = foo;
+        }
+
+        public void Barz()
+        {
+            m_foo.Bar();
+        }
+    }
 }

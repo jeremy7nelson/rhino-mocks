@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using Rhino.Mocks.Impl.Invocation.Actions;
 using Rhino.Mocks.Impl.Invocation.Specifications;
 using Rhino.Mocks.Interfaces;
+using System.Collections.Generic;
 
 namespace Rhino.Mocks.Impl.Invocation
 {

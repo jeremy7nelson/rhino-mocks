@@ -7,78 +7,78 @@ using Xunit;
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
 
-	public interface ITestInterface
-	{
-		ITestInterface AddService<TService, TComponent>() where TComponent : TService;
-	}
+    public interface ITestInterface
+    {
+        ITestInterface AddService<TService, TComponent>() where TComponent : TService;
+    }
 
-	public class TestInterface : MarshalByRefObject
-	{
-		public virtual TestInterface AddService<TService, TComponent>() where TComponent : TService
-		{
-			return this;
-		}
-	}
+    public class TestInterface : MarshalByRefObject
+    {
+        public virtual TestInterface AddService<TService, TComponent>() where TComponent : TService
+        {
+            return this;
+        }
+    }
 
-	public class FieldProblem_Alexey
-	{
-		[Fact]
-		public void MockInterfaceWithGenericMethodWithConstraints()
-		{
-			MockRepository mockery = new MockRepository();
+    public class FieldProblem_Alexey
+    {
+        [Fact]
+        public void MockInterfaceWithGenericMethodWithConstraints()
+        {
+            MockRepository mockery = new MockRepository();
 
-			ITestInterface mockObj = mockery.StrictMockWithRemoting<ITestInterface>();
-			mockObj.AddService<IDisposable, SqlConnection>();
-			LastCall.Return(mockObj);
-			mockery.ReplayAll();
+            ITestInterface mockObj = mockery.StrictMockWithRemoting<ITestInterface>();
+            mockObj.AddService<IDisposable, SqlConnection>();
+            LastCall.Return(mockObj);
+            mockery.ReplayAll();
 
-			mockObj.AddService<IDisposable, SqlConnection>();
+            mockObj.AddService<IDisposable, SqlConnection>();
 
-			mockery.VerifyAll();
-		}
+            mockery.VerifyAll();
+        }
 
-		[Fact]
-		public void MockInterfaceWithGenericMethodWithConstraints_WhenNotValid()
-		{
-			MockRepository mockery = new MockRepository();
+        [Fact]
+        public void MockInterfaceWithGenericMethodWithConstraints_WhenNotValid()
+        {
+            MockRepository mockery = new MockRepository();
 
-			ITestInterface mockObj = mockery.StrictMockWithRemoting<ITestInterface>();
-			mockObj.AddService<IDisposable, SqlConnection>();
-			LastCall.Return(mockObj);
-			mockery.ReplayAll();
+            ITestInterface mockObj = mockery.StrictMockWithRemoting<ITestInterface>();
+            mockObj.AddService<IDisposable, SqlConnection>();
+            LastCall.Return(mockObj);
+            mockery.ReplayAll();
 
-			Assert.Throws<ExpectationViolationException>(
-				"ITestInterface.AddService<System.IDisposable, System.Data.SqlClient.SqlConnection>(); Expected #1, Actual #0.",
-				() => mockery.VerifyAll());
-		}
+            Assert.Throws<ExpectationViolationException>(
+                "ITestInterface.AddService<System.IDisposable, System.Data.SqlClient.SqlConnection>(); Expected #1, Actual #0.",
+                () => mockery.VerifyAll());
+        }
 
-		[Fact]
-		public void MockInterfaceWithGenericMethodWithConstraints_WhenNotValid_UsingDynamicMock()
-		{
-			MockRepository mockery = new MockRepository();
+        [Fact]
+        public void MockInterfaceWithGenericMethodWithConstraints_WhenNotValid_UsingDynamicMock()
+        {
+            MockRepository mockery = new MockRepository();
 
-			ITestInterface mockObj = mockery.DynamicMockWithRemoting<ITestInterface>();
-			mockObj.AddService<IDisposable, SqlConnection>();
-			LastCall.Return(mockObj);
-			mockery.ReplayAll();
+            ITestInterface mockObj = mockery.DynamicMockWithRemoting<ITestInterface>();
+            mockObj.AddService<IDisposable, SqlConnection>();
+            LastCall.Return(mockObj);
+            mockery.ReplayAll();
 
-			Assert.Throws<ExpectationViolationException>(
-				"ITestInterface.AddService<System.IDisposable, System.Data.SqlClient.SqlConnection>(); Expected #1, Actual #0.",
-				() => mockery.VerifyAll());
-		}
+            Assert.Throws<ExpectationViolationException>(
+                "ITestInterface.AddService<System.IDisposable, System.Data.SqlClient.SqlConnection>(); Expected #1, Actual #0.",
+                () => mockery.VerifyAll());
+        }
 
-		[Fact]
-		public void MockInterfaceWithGenericMethodWithConstraints_UsingDynamicMock()
-		{
-			MockRepository mockery = new MockRepository();
+        [Fact]
+        public void MockInterfaceWithGenericMethodWithConstraints_UsingDynamicMock()
+        {
+            MockRepository mockery = new MockRepository();
 
-			ITestInterface mockObj = mockery.DynamicMockWithRemoting<ITestInterface>();
-			mockery.ReplayAll();
+            ITestInterface mockObj = mockery.DynamicMockWithRemoting<ITestInterface>();
+            mockery.ReplayAll();
 
-			mockObj.AddService<IDisposable, SqlConnection>();
+            mockObj.AddService<IDisposable, SqlConnection>();
 
-			mockery.VerifyAll();
-		}
-	}
+            mockery.VerifyAll();
+        }
+    }
 }
 #endif
