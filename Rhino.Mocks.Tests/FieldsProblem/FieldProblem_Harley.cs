@@ -1,10 +1,8 @@
-#if DOTNET35
 using System;
 using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
     public class FieldProblem_Harley
     {
 
@@ -29,7 +27,6 @@ namespace Rhino.Mocks.Tests.FieldsProblem
         }
     }
 
-
     public class ClassRaisingException
     {
         public ClassRaisingException(FieldProblem_Harley.ClassToMock eventRaisingClass)
@@ -43,6 +40,4 @@ namespace Rhino.Mocks.Tests.FieldsProblem
                 throw new ArgumentOutOfRangeException();
         }
     }
-
 }
-#endif

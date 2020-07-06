@@ -1,11 +1,8 @@
-#if DOTNET35
 using System;
 using Xunit;
-using Rhino.Mocks;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
     public class FieldProblem_TrueWill
     {
         [Fact]
@@ -41,6 +38,4 @@ You can use the property directly to achieve the same result: mockObject.SomePro
 
         int Number { get; set; }
     }
-
 }
-#endif

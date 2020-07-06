@@ -27,14 +27,13 @@
 #endregion
 
 
-using System;
-using Xunit;
 using Rhino.Mocks.Exceptions;
 using Rhino.Mocks.Interfaces;
+using System;
+using Xunit;
 
 namespace Rhino.Mocks.Tests
 {
-	
 	public class MockRepositoryTests
 	{
 		private MockRepository mocks;
@@ -115,7 +114,6 @@ namespace Rhino.Mocks.Tests
 			mocks.ReplayAll();
 		}
 
-
 		[Fact]
 		public void CallingVerifyAndThenVerifyAll()
 		{
@@ -141,7 +139,6 @@ namespace Rhino.Mocks.Tests
 				"This action is invalid when the mock object is in verified state.",
 				() => demo.ReturnIntNoArgs());
 		}
-
 
 		[Fact]
 		public void CallingLastMethodOptionsOnReplay()
@@ -599,14 +596,13 @@ namespace Rhino.Mocks.Tests
             Assert.NotNull(MockRepository.GenerateMock<IDemo>());
         }
 
+#if NETFRAMEWORK
 		[Fact]
 		public void GenerateStrictMockWithRemoting()
 		{
             IDemo mock = MockRepository.GenerateStrictMockWithRemoting<IDemo>();
 			Assert.NotNull(mock);
-#if DOTNET35
 			Assert.True(mock.GetMockRepository().IsInReplayMode(mock));
-#endif
 		}
 
 		[Fact]
@@ -614,10 +610,9 @@ namespace Rhino.Mocks.Tests
 		{
             IDemo mock = MockRepository.GenerateDynamicMockWithRemoting<IDemo>();
 			Assert.NotNull(mock);
-#if DOTNET35
 			Assert.True(mock.GetMockRepository().IsInReplayMode(mock));
-#endif
         }
+#endif
 
 		public class ClassWithNonDefaultConstructor 
         {

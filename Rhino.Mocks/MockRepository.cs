@@ -28,21 +28,23 @@
 
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Reflection;
-using System.Text;
 using Castle.Core.Interceptor;
 using Castle.DynamicProxy;
 using Rhino.Mocks.Exceptions;
 using Rhino.Mocks.Generated;
 using Rhino.Mocks.Impl;
 using Rhino.Mocks.Impl.Invocation;
+#if NETFRAMEWORK
 using Rhino.Mocks.Impl.RemotingMock;
+#endif
 using Rhino.Mocks.Interfaces;
 using Rhino.Mocks.MethodRecorders;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Reflection;
+using System.Text;
 
 namespace Rhino.Mocks
 {
@@ -116,7 +118,7 @@ namespace Rhino.Mocks
         /// </summary>
         protected delegate IMockState CreateMockState(IMockedObject mockedObject);
 
-        #region Variables
+#region Variables
 
         /*
          * Variable: generatorMap
@@ -178,9 +180,9 @@ namespace Rhino.Mocks
         private ProxyGenerationOptions proxyGenerationOptions;
         private InvocationVisitorsFactory invocationVisitorsFactory;
 
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
 
         /*
          * Property: Recorder
@@ -196,9 +198,9 @@ namespace Rhino.Mocks
             get { return recorders.Peek() as IMethodRecorder; }
         }
 
-        #endregion
+#endregion
 
-        #region c'tors
+#region c'tors
 
         /* function: MockRepository
          * Create a new instance of MockRepository
@@ -230,9 +232,9 @@ namespace Rhino.Mocks
         }
 
 
-        #endregion
+#endregion
 
-        #region Methods
+#region Methods
 
         /*
          * Method: Ordered
@@ -342,11 +344,14 @@ namespace Rhino.Mocks
         /// <param name="argumentsForConstructor">Arguments for the class' constructor, if mocking a concrete class</param>
         public object StrictMock(Type type, params object[] argumentsForConstructor)
         {
+#if NETFRAMEWORK
             if (ShouldUseRemotingProxy(type, argumentsForConstructor))
                 return RemotingMock(type, CreateRecordState);
+#endif
             return StrictMultiMock(type, new Type[0], argumentsForConstructor);
         }
 
+#if NETFRAMEWORK
         /// <summary>
         /// Creates a remoting mock for the specified type.
         /// </summary>
@@ -390,6 +395,7 @@ namespace Rhino.Mocks
         {
             return (T)RemotingMock(typeof(T), CreateRecordState);
         }
+#endif
 
         /// <summary>
         /// Creates a mock from several types, with strict semantics.
@@ -471,11 +477,14 @@ namespace Rhino.Mocks
         /// <param name="argumentsForConstructor">Arguments for the class' constructor, if mocking a concrete class</param>
         public object DynamicMock(Type type, params object[] argumentsForConstructor)
         {
+#if NETFRAMEWORK
             if (ShouldUseRemotingProxy(type, argumentsForConstructor))
                 return RemotingMock(type, CreateDynamicRecordState);
+#endif
             return DynamicMultiMock(type, new Type[0], argumentsForConstructor);
         }
 
+#if NETFRAMEWORK
         /// <summary>Creates a dynamic mock for the specified type.</summary>
         /// <param name="type">Type.</param>
         /// <param name="argumentsForConstructor">Arguments for the class' constructor, if mocking a concrete class</param>
@@ -492,6 +501,7 @@ namespace Rhino.Mocks
         {
             return (T)RemotingMock(typeof(T), CreateDynamicRecordState);
         }
+#endif
 
         /// <summary>Creates a mock object that defaults to calling the class methods if no expectation is set on the method.</summary>
         /// <param name="type">Type.</param>
@@ -522,6 +532,7 @@ namespace Rhino.Mocks
             return CreateMockObject(type, CreatePartialRecordState, extraTypesWithMarker.ToArray(), argumentsForConstructor);
         }
 
+#if NETFRAMEWORK
         /// <summary>Creates a mock object using remoting proxies</summary>
         /// <param name="type">Type to mock - must be MarshalByRefObject</param>
         /// <returns>Mock object</returns>
@@ -536,6 +547,7 @@ namespace Rhino.Mocks
             proxies.Add(transparentProxy, value);
             return transparentProxy;
         }
+#endif
 
         /// <summary>
         /// Cause the mock state to change to replay, any further call is compared to the 
@@ -651,9 +663,9 @@ namespace Rhino.Mocks
             return proxies[mock].GetLastMethodOptions<T>();
         }
 
-        #endregion
+#endregion
 
-        #region Implementation Details
+#region Implementation Details
 
         /*
          * Method: MethodCall
@@ -882,9 +894,9 @@ namespace Rhino.Mocks
             recorders.Push(newRecorder);
         }
 
-        #endregion
+#endregion
 
-        #region Convenience Methods
+#region Convenience Methods
 
         /// <summary>
         /// All the mock objects in this repository will be moved
@@ -1047,9 +1059,9 @@ namespace Rhino.Mocks
             repository.proxies[proxy].SetExceptionToThrowOnVerify(expectationViolationException);
         }
 
-        #endregion
+#endregion
 
-        #region AAA Methods (formerly MockRepositoryAAA.cs)
+#region AAA Methods (formerly MockRepositoryAAA.cs)
         /* MockRepositoryAAA.cs contains further definitions on MockRepository.  MockRepository right now is too large of a class and allowing
          * to exist as partials "masks" the problems of this growing class".  The items in this reagion are transplants from the other file location
          */
@@ -1211,6 +1223,7 @@ namespace Rhino.Mocks
             return CreateMockInReplay(r => r.PartialMultiMock(type, extraTypes, argumentsForConstructor));
         }
 
+#if NETFRAMEWORK
         /// <summary>
         /// Generate a mock object with dynamic replay semantics and remoting without needing the mock repository
         /// </summary>
@@ -1226,6 +1239,7 @@ namespace Rhino.Mocks
         {
             return CreateMockInReplay(r => r.StrictMockWithRemoting<T>(argumentsForConstructor));
         }
+#endif
 
         /// <summary>Helper method to create a mock object without a repository instance and put the object back into replay mode.</summary>
         /// <typeparam name="T">The type of mock object to create</typeparam>
@@ -1240,9 +1254,9 @@ namespace Rhino.Mocks
         }
        
 
-        #endregion
+#endregion
 
-        #region Mock Repository using (formerly part of MockRepositoryRecordPlayback.cs)
+#region Mock Repository using (formerly part of MockRepositoryRecordPlayback.cs)
         /* Much like the "AAA Methods ..." region block above, the code in this region was in it's own file
          * which masked the problem of the growing file"
          */
@@ -1275,7 +1289,7 @@ namespace Rhino.Mocks
             return new PlaybackModeChanger(this);
         }
 
-        #endregion
+#endregion
 
         /// <summary>
         /// Creates a mock for the spesified type with strict mocking semantics.
@@ -1295,16 +1309,20 @@ namespace Rhino.Mocks
         /// <param name="argumentsForConstructor">Arguments for the class' constructor, if mocking a concrete class</param>
         public T StrictMock<T>(params object[] argumentsForConstructor)
         {
+#if NETFRAMEWORK
             if (ShouldUseRemotingProxy(typeof(T), argumentsForConstructor))
                 return (T)RemotingMock(typeof(T), CreateRecordState);
+#endif
             return (T)CreateMockObject(typeof(T), CreateRecordState, new Type[0], argumentsForConstructor);
         }
 
+#if NETFRAMEWORK
         private static bool ShouldUseRemotingProxy(Type type, object[] argumentsForConstructor)
         {
             return typeof(MarshalByRefObject).IsAssignableFrom(type) &&
                 (argumentsForConstructor == null || argumentsForConstructor.Length == 0);
         }
+#endif
 
         /*
          * Method: DynamicMock<T>
@@ -1320,8 +1338,10 @@ namespace Rhino.Mocks
         public T DynamicMock<T>(params object[] argumentsForConstructor)
             where T : class
         {
+#if NETFRAMEWORK
             if (ShouldUseRemotingProxy(typeof(T), argumentsForConstructor))
                 return (T)RemotingMock(typeof(T), CreateDynamicRecordState);
+#endif
             return (T)CreateMockObject(typeof(T), CreateDynamicRecordState, new Type[0], argumentsForConstructor);
         }
 
@@ -1438,8 +1458,10 @@ namespace Rhino.Mocks
         public object Stub(Type type, params object[] argumentsForConstructor)
         {
             CreateMockState createStub = mockedObject => new StubRecordMockState(mockedObject, this);
+#if NETFRAMEWORK
             if (ShouldUseRemotingProxy(type, argumentsForConstructor))
                 return RemotingMock(type, createStub);
+#endif
             return CreateMockObject(type, createStub, new Type[0], argumentsForConstructor);
         }
 

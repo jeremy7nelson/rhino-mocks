@@ -27,13 +27,13 @@
 #endregion
 
 
-using System;
-using System.Reflection;
-using System.Text;
 using Castle.Core.Interceptor;
 using Rhino.Mocks.Impl;
 using Rhino.Mocks.Interfaces;
 using Rhino.Mocks.Utilities;
+using System;
+using System.Text;
+using Range = Rhino.Mocks.Impl.Range;
 
 namespace Rhino.Mocks.Expectations
 {

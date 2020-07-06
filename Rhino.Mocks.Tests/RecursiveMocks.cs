@@ -1,13 +1,11 @@
-#if DOTNET35
+using Rhino.Mocks.Impl;
 using System;
 using System.Collections;
 using System.Linq;
 using Xunit;
-using Rhino.Mocks.Impl;
 
 namespace Rhino.Mocks.Tests
 {
-    
     public class RecursiveMocks
     {
         [Fact]
@@ -116,4 +114,3 @@ namespace Rhino.Mocks.Tests
         }
     }
 }
-#endif

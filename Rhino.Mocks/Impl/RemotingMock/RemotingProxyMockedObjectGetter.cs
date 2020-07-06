@@ -1,3 +1,4 @@
+#if NETFRAMEWORK
 namespace Rhino.Mocks.Impl.RemotingMock
 {
     using Rhino.Mocks.Interfaces;
@@ -17,3 +18,4 @@ namespace Rhino.Mocks.Impl.RemotingMock
         }
     }
 }
+#endif

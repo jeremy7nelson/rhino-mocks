@@ -1,12 +1,12 @@
+#if NETFRAMEWORK
+using Castle.Core.Interceptor;
+using Rhino.Mocks.Interfaces;
+using System;
+using System.Runtime.Remoting.Messaging;
+using System.Runtime.Remoting.Proxies;
+
 namespace Rhino.Mocks.Impl.RemotingMock
 {
-    using System;
-    using System.Reflection;
-    using System.Runtime.Remoting.Messaging;
-    using System.Runtime.Remoting.Proxies;
-    using Castle.Core.Interceptor;
-    using Rhino.Mocks.Interfaces;
-
     internal class RemotingProxy : RealProxy
     {
         private readonly IInterceptor _interceptor;
@@ -117,3 +117,4 @@ namespace Rhino.Mocks.Impl.RemotingMock
         }
     }
 }
+#endif

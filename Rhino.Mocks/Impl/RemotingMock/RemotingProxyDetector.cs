@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
+#if NETFRAMEWORK
 namespace Rhino.Mocks.Impl.RemotingMock
 {
     internal class RemotingProxyDetector : IRemotingProxyOperation
@@ -19,3 +16,4 @@ namespace Rhino.Mocks.Impl.RemotingMock
         }
     }
 }
+#endif

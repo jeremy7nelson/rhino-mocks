@@ -27,15 +27,14 @@
 #endregion
 
 
-using System;
-using Xunit;
 using Rhino.Mocks.Exceptions;
 using Rhino.Mocks.Impl;
 using Rhino.Mocks.Interfaces;
+using System;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	
 	public class UsingEvents
 	{
 		MockRepository mocks;
@@ -210,8 +209,6 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 			raiser.Raise(this, EventArgs.Empty);
 		}
 
-#if DOTNET35
-		
         [Fact]
         public void RaiseEventUsingExtensionMethod() 
         {
@@ -246,8 +243,6 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 
             Assert.True(called);
 		}
-#endif
-
 	}
 
 	public interface IWithEvents

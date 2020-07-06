@@ -1,10 +1,7 @@
-#if DOTNET35
 using Xunit;
-
 
 namespace Rhino.Mocks.Tests
 {
-	
 	public class WhenCalledTests
 	{
 		[Fact]
@@ -51,4 +48,3 @@ namespace Rhino.Mocks.Tests
 
 	}
 }
-#endif

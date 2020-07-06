@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
+#if NETFRAMEWORK
 namespace Rhino.Mocks.Impl.RemotingMock
 {
     /// <summary>
@@ -25,3 +22,4 @@ namespace Rhino.Mocks.Impl.RemotingMock
         void Process(RemotingProxy proxy);
     }
 }
+#endif

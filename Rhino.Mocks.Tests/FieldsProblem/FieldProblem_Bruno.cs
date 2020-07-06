@@ -26,7 +26,7 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-
+#if NETFRAMEWORK
 using System;
 using System.EnterpriseServices;
 using Xunit;
@@ -54,3 +54,4 @@ namespace Rhino.Mocks.Tests.FieldsProblem
         }
     }
 }
+#endif

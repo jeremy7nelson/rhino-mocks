@@ -1,15 +1,12 @@
+using Rhino.Mocks.Exceptions;
+using System;
+using System.Data;
+using Xunit;
+
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	using System;
-	using System.Data;
-	using Exceptions;
-	using Xunit;
-	using Rhino.Mocks;
-
-	
 	public class FieldProblem_Andrew
 	{
-#if DOTNET35
 		[Fact]
 		public void Will_get_unexpect_error()
 		{
@@ -31,7 +28,6 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 
 			Assert.Throws<ExpectationViolationException>("IDbCommand.set_Connection(null); Expected #1, Actual #0.", () => mockCommand.VerifyAllExpectations());
 		}
-#endif
 	}
 
 	public class TestException : Exception

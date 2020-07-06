@@ -1,12 +1,11 @@
+#if NETFRAMEWORK
+using Rhino.Mocks.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Data.SqlClient;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	using System.Data.SqlClient;
-	using Exceptions;
-	using Xunit;
 
 	public interface ITestInterface
 	{
@@ -21,7 +20,6 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 		}
 	}
 
-	
 	public class FieldProblem_Alexey
 	{
 		[Fact]
@@ -83,3 +81,4 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 		}
 	}
 }
+#endif

@@ -27,13 +27,13 @@
 #endregion
 
 
+using Rhino.Mocks.Constraints;
+using Rhino.Mocks.Expectations;
+using Rhino.Mocks.Interfaces;
 using System;
 using System.Reflection;
 using Xunit;
-using Rhino.Mocks.Constraints;
-using Rhino.Mocks.Expectations;
-using Rhino.Mocks.Impl;
-using Rhino.Mocks.Interfaces;
+using Range = Rhino.Mocks.Impl.Range;
 
 namespace Rhino.Mocks.Tests.Expectations
 {

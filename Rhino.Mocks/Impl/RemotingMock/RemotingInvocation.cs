@@ -1,5 +1,4 @@
-using System;
-
+#if NETFRAMEWORK
 namespace Rhino.Mocks.Impl.RemotingMock
 {
     using System;
@@ -103,3 +102,4 @@ namespace Rhino.Mocks.Impl.RemotingMock
         }
     }
 }
+#endif

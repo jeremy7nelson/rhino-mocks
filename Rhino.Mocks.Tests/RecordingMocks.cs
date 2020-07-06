@@ -26,16 +26,14 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-#if DOTNET35
+using Rhino.Mocks.Constraints;
+using Rhino.Mocks.Exceptions;
 using System;
 using System.Collections.Generic;
 using Xunit;
-using Rhino.Mocks.Constraints;
-using Rhino.Mocks.Exceptions;
 
 namespace Rhino.Mocks.Tests
 {
-	
 	public class RecordingMocks
 	{
 		[Fact]
@@ -66,7 +64,6 @@ namespace Rhino.Mocks.Tests
 			Assert.Equal(foo.bar(), "closed");
 			Assert.Equal(foo.bar(), "closed");
 		}
-
 
 		[Fact]
 		public void WhenStubbingWillAllowManyCallsOnTheSameExpectation()
@@ -698,4 +695,3 @@ namespace Rhino.Mocks.Tests
 		#endregion
 	}
 }
-#endif

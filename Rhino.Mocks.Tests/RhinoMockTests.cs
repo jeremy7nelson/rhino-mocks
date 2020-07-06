@@ -27,16 +27,14 @@
 #endregion
 
 
-using System;
-using System.Collections;
-using System.ServiceModel;
-using Xunit;
 using Rhino.Mocks.Exceptions;
 using Rhino.Mocks.Tests.Callbacks;
+using System;
+using System.Collections;
+using Xunit;
 
 namespace Rhino.Mocks.Tests
 {
-	
 	public class RhinoMockTests
 	{
 		private MockRepository mocks;
@@ -338,7 +336,7 @@ Message: Should be called only once",
 			demo.VoidNoArgs();
 			LastCall.Callback(new DelegateDefinations.NoArgsDelegate(ThrowFromCallback));
 			mocks.ReplayAll();
-			Assert.Throws<AddressAlreadyInUseException>(demo.VoidNoArgs);
+			Assert.Throws<ApplicationException>(demo.VoidNoArgs);
 		}
 
 		#region Private Methods
@@ -366,7 +364,7 @@ Message: Should be called only once",
 
 		private bool ThrowFromCallback()
 		{
-			throw new AddressAlreadyInUseException();
+			throw new ApplicationException();
 		}
 
 		public class ObjectThatOverrideToString

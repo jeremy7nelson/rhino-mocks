@@ -27,18 +27,17 @@
 #endregion
 
 
+#if NETFRAMEWORK
+using Rhino.Mocks.Exceptions;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Security.Permissions;
 using Xunit;
-using Rhino.Mocks.Exceptions;
 [assembly:EnvironmentPermission(SecurityAction.RequestMinimum)]
-
 
 namespace Rhino.Mocks.Tests.Remoting
 {
-
 	/// <summary>
 	/// Test scenarios where mock objects are called from different
 	/// application domain.
@@ -53,7 +52,6 @@ namespace Rhino.Mocks.Tests.Remoting
 		{
 			FileInfo assemblyFile = new FileInfo(
 				Assembly.GetExecutingAssembly().Location);
-
 			otherDomain = AppDomain.CreateDomain("other domain", null,
 				AppDomain.CurrentDomain.BaseDirectory, null, false);
 
@@ -62,8 +60,6 @@ namespace Rhino.Mocks.Tests.Remoting
 				typeof(ContextSwitcher).FullName);
 
 		}
-
-
 
 		public void Dispose()
 		{
@@ -81,7 +77,6 @@ namespace Rhino.Mocks.Tests.Remoting
 			contextSwitcher.DoStuff(demo);
 			mocks.VerifyAll();
 		}
-
 	
 		[Fact]
 		public void MockInterfaceWithSameName()
@@ -110,8 +105,6 @@ namespace Rhino.Mocks.Tests.Remoting
 				() => contextSwitcher.DoStuff(demo));
 		}
 
-
-
 		[Fact]
 		public void MockInterfaceUnexpectedCall()
 		{
@@ -125,8 +118,6 @@ namespace Rhino.Mocks.Tests.Remoting
 				() => contextSwitcher.DoStuff(demo));
 		}
 
-
-
 		[Fact]
 		public void MockClass()
 		{
@@ -138,8 +129,6 @@ namespace Rhino.Mocks.Tests.Remoting
 			mocks.VerifyAll();
 		}
 
-
-
 		public void MockClassExpectException()
 		{
 			MockRepository mocks = new MockRepository();
@@ -150,7 +139,6 @@ namespace Rhino.Mocks.Tests.Remoting
 				"That was expected for class.",
 				() => contextSwitcher.DoStuff(demo));
 		}
-
 
 		[Fact]
 		public void MockClassUnexpectedCall()
@@ -164,5 +152,5 @@ namespace Rhino.Mocks.Tests.Remoting
 				() => contextSwitcher.DoStuff(demo));
 		}
 	}
-
 }
+#endif

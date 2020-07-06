@@ -1,3 +1,4 @@
+#if NETFRAMEWORK
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -79,3 +80,4 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 		bool WriteLog(EventLogEntryType entryType, string system, string component, string text, int eventId);
 	}
 }
+#endif

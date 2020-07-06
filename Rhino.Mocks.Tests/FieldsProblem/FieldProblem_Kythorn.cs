@@ -27,14 +27,11 @@
 #endregion
 
 
-#if DOTNET35
-
 using System;
 using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	
 	public class FieldProblem_Kythorn
 	{
 		[Fact]
@@ -84,6 +81,7 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 		{
 			string Message { set; }
 		}
+
 		public class Presenter
 		{
 			private readonly IService service;
@@ -95,14 +93,10 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 				this.service = service;
 			}
 
-
 			public void OnViewLoaded()
 			{
 				view.Message = service.GetString();
 			}
 		}
 	}
-
-	
 }
-#endif

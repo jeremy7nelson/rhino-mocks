@@ -1,4 +1,4 @@
-#if DOTNET35
+#if NETFRAMEWORK
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
@@ -7,7 +7,6 @@ using Xunit;
 
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-    
     public class FieldProblem_Will
     {
         [Fact]
@@ -41,5 +40,4 @@ namespace Rhino.Mocks.Tests.FieldsProblem
         }
     }
 }
-
 #endif

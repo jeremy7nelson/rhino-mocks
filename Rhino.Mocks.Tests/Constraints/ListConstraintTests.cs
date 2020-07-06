@@ -26,11 +26,10 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System;
-using Xunit;
 using Rhino.Mocks.Constraints;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using Xunit;
 
 namespace Rhino.Mocks.Tests.Constraints
 {
@@ -87,7 +86,7 @@ namespace Rhino.Mocks.Tests.Constraints
             Assert.False(list.Eval(5));
             Assert.Equal("element at index 2 equal to Hello", list.Message);
         }
-#if DOTNET35
+
         [Fact]
         public void StringKeyedElement()
         {
@@ -97,7 +96,6 @@ namespace Rhino.Mocks.Tests.Constraints
             Assert.False(list.Eval(new Dictionary<string, string>() { { "Name", "Ayende" } }));
             Assert.Equal("element at key Color equal to Red", list.Message);
         }
-#endif
 
         [Fact]
         public void ContainsAll()

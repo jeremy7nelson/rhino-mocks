@@ -1,3 +1,4 @@
+#if NETFRAMEWORK
 using System;
 using System.Web.Security;
 using Xunit;
@@ -48,3 +49,4 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 		}
 	}
 }
+#endif

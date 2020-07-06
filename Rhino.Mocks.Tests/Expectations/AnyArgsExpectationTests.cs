@@ -27,18 +27,16 @@
 #endregion
 
 
+using Castle.DynamicProxy;
+using Rhino.Mocks.Expectations;
+using Rhino.Mocks.Interfaces;
 using System;
 using System.Reflection;
-using Castle.Core.Interceptor;
-using Castle.DynamicProxy;
 using Xunit;
-using Rhino.Mocks.Expectations;
-using Rhino.Mocks.Impl;
-using Rhino.Mocks.Interfaces;
+using Range = Rhino.Mocks.Impl.Range;
 
 namespace Rhino.Mocks.Tests.Expectations
 {
-	
 	public class AnyArgsExpectationTests : AbstractExpectationTests
 	{
 		private ArgsEqualExpectation equal;

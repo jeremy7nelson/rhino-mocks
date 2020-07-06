@@ -23,13 +23,12 @@
 // CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#if DOTNET35
+
+using Rhino.Mocks.Exceptions;
+using Xunit;
+
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	using Exceptions;
-	using Xunit;
-
-	
 	public class FieldProblem_Mike
 	{
 		[Fact]
@@ -57,7 +56,6 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 				() => subject.AssertWasCalled(it => it.NestedVirtualMethod()));
 		}
 
-
 		#region Nested type: SUT
 
 		public class SUT
@@ -75,4 +73,3 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 		#endregion
 	}
 }
-#endif

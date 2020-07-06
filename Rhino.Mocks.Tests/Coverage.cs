@@ -27,12 +27,6 @@
 #endregion
 
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using Xunit;
 using Rhino.Mocks.Constraints;
 using Rhino.Mocks.Exceptions;
 using Rhino.Mocks.Expectations;
@@ -40,6 +34,11 @@ using Rhino.Mocks.Impl;
 using Rhino.Mocks.Interfaces;
 using Rhino.Mocks.Tests.Expectations;
 using Rhino.Mocks.Utilities;
+using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using Xunit;
+using Range = Rhino.Mocks.Impl.Range;
 
 namespace Rhino.Mocks.Tests
 {

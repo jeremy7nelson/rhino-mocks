@@ -1,10 +1,8 @@
-#if DOTNET35
+using System;
+using Xunit;
+
 namespace Rhino.Mocks.Tests.FieldsProblem
 {
-	using System;
-	using Xunit;
-
-	
 	public class FieldProblem_Henrik
 	{
 		[Fact]
@@ -15,4 +13,3 @@ namespace Rhino.Mocks.Tests.FieldsProblem
 		}
 	}
 }
-#endif
